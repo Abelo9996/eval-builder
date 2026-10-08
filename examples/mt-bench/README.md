@@ -25,6 +25,11 @@ questions.
 
 Dataset text is kept verbatim, including the model answers' own punctuation.
 
+[`../sample_logs.jsonl`](../sample_logs.jsonl), used by the README quickstart, is a
+48-line slice of `logs.jsonl`: the first two questions of each category (81, 82, 91, 92,
+..., 151, 152) as answered by gpt-4, alpaca-13b and llama-13b, in file order
+(sha256 `2d5dd229...b42b76e`).
+
 ## 1. Logs to suite ([`suite/`](suite/))
 
 ```
