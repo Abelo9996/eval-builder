@@ -51,6 +51,18 @@ class Workspace:
         return self.root / "labels.jsonl"
 
     @property
+    def label_sheet_html(self) -> Path:
+        return self.root / "label_sheet.html"
+
+    @property
+    def label_sheet_csv(self) -> Path:
+        return self.root / "label_sheet.csv"
+
+    @property
+    def label_plan(self) -> Path:
+        return self.root / "label_plan.json"
+
+    @property
     def judge_check(self) -> Path:
         return self.root / "judge_check.json"
 

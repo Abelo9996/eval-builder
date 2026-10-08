@@ -16,6 +16,9 @@ src/eval_builder/
   judge/run.py     opt-in judge plugin runner (off by default, runs a user command)
   judge/check.py   flip rate, kappa, accuracy, probes, verdicts
   judge/stats.py   Wilson interval, Cohen's kappa, majority vote
+  label.py         which cases a person should label, the CSV sheet, `label import`
+  label_sheet.py   the offline HTML labeling sheet (one file, inline JS, no network)
+  balance.py       the warning when cases or labels are mostly one outcome
   export.py        promptfoo, DeepEval, Inspect AI, JSONL
   report.py        report.md and report.json
   setup_agents.py  `eval-builder setup` for Claude Code, Codex, Cursor
@@ -25,7 +28,8 @@ src/eval_builder/
 
 ## Rules
 
-- No model calls and no network access in the package. The judge runner only starts a
+- No model calls and no network access in the package. (Exported files may call a
+  model when the user runs them, for example the DeepEval test calling a wired judge.) The judge runner only starts a
   command the user names, and only with an explicit flag.
 - Deterministic: same inputs and seed give the same selection and the same files.
 - Every number the tool reports must be traceable to a file in the workspace.

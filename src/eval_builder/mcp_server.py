@@ -14,6 +14,8 @@ from .ingest import ingest as ingest_fn
 from .judge.check import Thresholds
 from .judge.check import judge_check as judge_check_fn
 from .judge.plan import judge_plan as judge_plan_fn
+from .label import label as label_fn
+from .label import label_import as label_import_fn
 from .report import build_report
 from .select import select as select_fn
 from .status import status as status_fn
@@ -24,8 +26,9 @@ INSTRUCTIONS = (
     "ingest -> select -> draft -> list_cases, then update_case and set_rubric (fill expected "
     "behavior and criteria with the user) -> validate -> judge_plan -> run every request in "
     "judge_requests.jsonl through the judge model and append {request_id, verdict} lines to "
-    "judgments.jsonl -> judge_check -> export -> report. Every tool takes `workspace` "
-    "(default ./evalset). Never invent human labels; ask the user for them."
+    "judgments.jsonl -> label (a person labels the sheet it writes) -> label_import -> "
+    "judge_check -> export -> report. Every tool takes `workspace` (default ./evalset). "
+    "Never invent human labels or fill in the label sheet yourself; a person does that."
 )
 
 
@@ -157,6 +160,34 @@ def build_server() -> Any:
         return judge_plan_fn(workspace, judges, trials, probes, probe_trials)
 
     @mcp.tool()
+    def label(
+        workspace: str = "evalset",
+        n: int = 24,
+        seed: int = 0,
+        include_labeled: bool = False,
+        uncertain_share: float = 0.5,
+    ) -> dict[str, Any]:
+        """Step 6. Human labels, part 1. Picks the ready cases a person should label to check
+        the judges (default 24; judge_check needs 20): balanced across outcomes (the judges'
+        consensus, or the logged failure flag before judges ran) and aimed at cases where
+        judges disagree or flip. Writes label_sheet.html (offline, one case per screen,
+        keyboard shortcuts, judge verdicts hidden) and label_sheet.csv for spreadsheet users.
+        Give the user the sheet path and ask them to label it and export labels.jsonl.
+        Never label the cases yourself. Next: label_import with the exported file."""
+        return label_fn(workspace, n, seed, include_labeled, uncertain_share)
+
+    @mcp.tool()
+    def label_import(
+        path: str, workspace: str = "evalset", labeler: str | None = None
+    ) -> dict[str, Any]:
+        """Step 6b. Human labels, part 2. Reads the labels.jsonl the sheet exported (or the
+        filled-in label_sheet.csv), checks each row against cases.yaml and the allowed
+        labels, and merges it into <workspace>/labels.jsonl (a new label replaces the same labeler's
+        earlier one). Returns counts, rejected rows with the reason, and a warning when the
+        labels are mostly one outcome. Next: judge_check."""
+        return label_import_fn(workspace, path, labeler)
+
+    @mcp.tool()
     def judge_check(
         workspace: str = "evalset",
         judgments: str | None = None,
@@ -167,11 +198,12 @@ def build_server() -> Any:
         min_cases: int = 10,
         include_cases: bool = False,
     ) -> dict[str, Any]:
-        """Step 6. Read judgments.jsonl (and labels.jsonl, human labels as {"case_id",
-        "label"}) and give each judge a verdict: trustworthy, unstable (flips across
+        """Step 7. Read judgments.jsonl (and labels.jsonl, human labels from label_import)
+        and give each judge a verdict: trustworthy, unstable (flips across
         repeats), biased (answer order or padding moves it), misaligned (low kappa with
         humans) or not_enough_data. Summary rows carry 95% intervals and sample sizes;
-        quote those. `next` says what to do next. include_cases adds each judge's per-case
+        quote those, and pass on `warnings` (for example labels that are mostly one outcome).
+        `next` says what to do next. include_cases adds each judge's per-case
         verdict counts and majorities (with the human label when there is one)."""
         th = Thresholds(
             max_flip_rate=max_flip_rate,
@@ -194,10 +226,12 @@ def build_server() -> Any:
     def export(
         workspace: str = "evalset", formats: list[str] | None = None, judge: str | None = None
     ) -> dict[str, Any]:
-        """Step 7. Export ready cases. formats: promptfoo, deepeval, inspect, jsonl (default
-        all). promptfoo gets the full conversation as chat messages; a pointwise judge that
-        passed judge_check and has a `provider` is wired in as the llm-rubric grader. `judge`
-        forces a judge id (a warning says if it did not pass). Read `notes` in the result."""
+        """Step 8. Export ready cases. formats: promptfoo, deepeval, inspect, jsonl (default
+        all). promptfoo gets the full conversation as chat messages. A pointwise judge that
+        passed judge_check is wired in as the grader with its exact prompt: in promptfoo
+        (llm-rubric, needs a `provider`) and in DeepEval (a custom metric; Ollama providers
+        are called directly, others need a function filled in). Inspect keeps its default
+        grader. `judge` forces a judge id (a warning says if it did not pass). Read `notes`."""
         return export_fn(workspace, formats, judge)
 
     @mcp.tool()

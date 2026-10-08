@@ -22,6 +22,7 @@ def status(workspace: str | Path) -> dict[str, Any]:
         "cases_ready": ready,
         "judge_plan": ws.judge_requests.exists(),
         "judgments": ws.judgments.exists(),
+        "label_sheet": ws.label_sheet_html.exists(),
         "labels": ws.labels.exists(),
         "judge_check": ws.judge_check.exists(),
         "export": (ws.exports / "manifest.json").exists(),
@@ -42,6 +43,14 @@ def status(workspace: str | Path) -> dict[str, Any]:
             "judgments",
             "run each request in judge_requests.jsonl through the judge and append "
             "{request_id, verdict} lines to judgments.jsonl (or eval-builder judge-run)",
+        ),
+        (
+            "labels",
+            f"a person opens {ws.label_sheet_html} in a browser, labels the cases and exports "
+            "labels.jsonl; then eval-builder label import <that file>"
+            if steps["label_sheet"]
+            else "eval-builder label (writes label_sheet.html for a person to label offline), "
+            "then eval-builder label import <exported labels.jsonl>",
         ),
         ("judge_check", "eval-builder judge-check"),
         ("export", "eval-builder export"),

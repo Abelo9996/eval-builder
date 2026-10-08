@@ -67,6 +67,7 @@ def _cmd_select(a: argparse.Namespace) -> int:
     if r["selected_count"] > 10:
         lines.append(f"  ... {r['selected_count'] - 10} more in selection.json")
     lines += [f"note: {x}" for x in r.get("notes", [])]
+    lines += [f"warning: {x}" for x in r.get("warnings", [])]
     lines.append(f"next: {r['next']}")
     _print(r, a.json, "\n".join(lines))
     return 0
@@ -161,10 +162,54 @@ def _cmd_judge_check(a: argparse.Namespace) -> int:
             f"pos={f(s['position_consistency'])} pad={f(s['toward_padded'])}"
         )
         lines += [f"    {x}" for x in s["reasons"]]
+    lines += [f"warning: {w}" for w in r.get("warnings", [])]
     lines.append(f"next: {r['next']}")
     out = {k: v for k, v in r.items() if k != "judges"} if not a.full else r
     _print(out, a.json, "\n".join(lines))
     return 0
+
+
+def _cmd_label(a: argparse.Namespace) -> int:
+    if getattr(a, "label_cmd", None) == "import":
+        return _cmd_label_import(a)
+    from .label import label
+
+    r = label(
+        a.workspace,
+        n=a.n,
+        seed=a.seed,
+        include_labeled=a.include_labeled,
+        uncertain_share=a.uncertain_share,
+    )
+    strata = ", ".join(f"{s} {v['picked']} of {v['candidates']}" for s, v in r["strata"].items())
+    lines = [
+        f"picked {r['picked']} of {r['candidates']} case(s) for a person to label ({strata})",
+        f"  sheet: {r['label_sheet_html']}",
+        f"  csv:   {r['label_sheet_csv']}",
+        f"  why each case was picked: {r['plan_file']}",
+    ]
+    lines += [f"note: {x}" for x in r["notes"]]
+    lines.append(f"next: {r['next']}")
+    _print(r, a.json, "\n".join(lines))
+    return 0
+
+
+def _cmd_label_import(a: argparse.Namespace) -> int:
+    from .label import label_import
+
+    r = label_import(a.workspace, a.file, labeler=a.labeler)
+    counts = ", ".join(f"{k} {v}" for k, v in sorted(r["label_counts"].items())) or "none"
+    lines = [
+        f"imported {r['imported']} label(s) into {r['labels_file']} "
+        f"({r['replaced']} earlier replaced, {r['skipped_blank']} blank skipped, "
+        f"{r['rejected_count']} rejected)",
+        f"labeled cases: {r['labeled_cases']} ({counts})",
+    ]
+    lines += [f"  rejected row {x['row']} ({x['case_id']}): {x['problem']}" for x in r["rejected"]]
+    lines += [f"warning: {w}" for w in r["warnings"]]
+    lines.append(f"next: {r['next']}")
+    _print(r, a.json, "\n".join(lines))
+    return 1 if r["rejected_count"] else 0
 
 
 def _cmd_export(a: argparse.Namespace) -> int:
@@ -183,6 +228,10 @@ def _cmd_export(a: argparse.Namespace) -> int:
     if g:
         prov = g["provider"]["id"] if isinstance(g["provider"], dict) else g["provider"]
         lines.append(f"promptfoo grader: judge {g['judge']} ({prov}), verdict {g['verdict']}")
+    g = r.get("deepeval_grader")
+    if g:
+        prov = g["provider"]["id"] if isinstance(g["provider"], dict) else g["provider"]
+        lines.append(f"DeepEval grader: judge {g['judge']} ({prov}), verdict {g['verdict']}")
     lines += [f"note: {n}" for n in r.get("notes", [])]
     lines.append(f"next: {r['next']}")
     _print(r, a.json, "\n".join(lines))
@@ -328,12 +377,49 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--full", action="store_true", help="include per-case detail in --json output")
     s.set_defaults(func=_cmd_judge_check)
 
+    s = cmd(
+        "label",
+        "Pick the cases a person should label and write an offline labeling sheet "
+        "(label_sheet.html, plus label_sheet.csv for spreadsheets). Then: label import <file>.",
+    )
+    s.add_argument(
+        "-n", type=int, default=24, help="cases to pick (default 24; judge-check needs 20)"
+    )
+    s.add_argument("--seed", type=int, default=0)
+    s.add_argument(
+        "--include-labeled",
+        action="store_true",
+        help="also pick cases that already have a label (for a second labeler)",
+    )
+    s.add_argument(
+        "--uncertain-share",
+        type=float,
+        default=0.5,
+        help="share of each outcome's picks that goes to cases where judges disagree or "
+        "flip (default 0.5)",
+    )
+    s.set_defaults(func=_cmd_label)
+    lsub = s.add_subparsers(dest="label_cmd", metavar="import")
+    imp = lsub.add_parser(
+        "import",
+        help="Check labels exported from the sheet (or the filled-in CSV) and merge them into "
+        "labels.jsonl",
+        description="Check labels exported from the sheet (labels.jsonl), the filled-in "
+        "label_sheet.csv, or JSON on stdin (-), and merge them into <workspace>/labels.jsonl. "
+        "A label replaces an earlier one for the same case and labeler.",
+    )
+    imp.add_argument("file", help="labels.jsonl from the sheet, a .csv, or - for stdin")
+    imp.add_argument("-w", "--workspace", default=argparse.SUPPRESS, help="workspace directory")
+    imp.add_argument("--json", action="store_true", default=argparse.SUPPRESS, help="print JSON")
+    imp.add_argument("--labeler", help="name to record when the rows do not carry one")
+    imp.set_defaults(func=_cmd_label)
+
     s = cmd("export", "Export ready cases for promptfoo, DeepEval, Inspect AI and JSONL.")
     s.add_argument("--formats", help="comma separated (default: promptfoo,deepeval,inspect,jsonl)")
     s.add_argument(
         "--judge",
-        help="rubric.yaml judge to wire into promptfoo as the grader (default: the first "
-        "pointwise judge that passed judge-check and has a provider)",
+        help="rubric.yaml judge to wire in as the grader in promptfoo and DeepEval (default: "
+        "the first pointwise judge that passed judge-check; promptfoo also needs a provider)",
     )
     s.set_defaults(func=_cmd_export)
 

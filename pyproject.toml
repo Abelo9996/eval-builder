@@ -1,6 +1,6 @@
 [project]
 name = "eval-builder"
-version = "0.1.1"
+version = "0.1.2"
 description = "Turn real LLM app logs into an eval suite and measure which LLM judges you can trust."
 readme = "README.md"
 license = "MIT"
@@ -43,6 +43,10 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+# the HTML/CSS/JS template of the labeling sheet is one long string
+"src/eval_builder/label_sheet.py" = ["E501"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
