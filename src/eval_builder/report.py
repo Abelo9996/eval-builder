@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from . import __version__
+from .balance import proportions
 from .draft import load_cases
 from .io import read_json, write_json
 from .workspace import Workspace
@@ -234,6 +235,19 @@ def render_markdown(d: dict[str, Any], title: str | None = None) -> str:
                 + " ".join(s.rstrip(".") + "." for s in r["reasons"])
             )
         L.append("")
+        hl = {k: v for k, v in (jc.get("human_label_counts") or {}).items() if v}
+        if hl:
+            top = max(hl.values()) / sum(hl.values())
+            L += [
+                f"Human labels on judged cases: {proportions(hl)}. A judge that always gave "
+                f"the most common label would score {top:.0%} accuracy, which is the bar "
+                "accuracy has to clear; kappa already corrects for it.",
+                "",
+            ]
+        for w in jc.get("warnings") or []:
+            L.append(f"- Warning: {_md_escape(w)}")
+        if jc.get("warnings"):
+            L.append("")
     run = d.get("judge_run")
     if run:
         L += ["Judge calls made through the opt-in judge plugin (`judge-run`):", ""]

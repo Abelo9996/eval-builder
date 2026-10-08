@@ -9,7 +9,6 @@ every verdict lists the numbers behind it.
 
 from __future__ import annotations
 
-import contextlib
 import json
 import re
 from collections import Counter, defaultdict
@@ -17,6 +16,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
+from ..balance import proportions, skew_warning
 from ..io import read_jsonl, write_json
 from ..workspace import Workspace
 from .stats import cohen_kappa, kappa_interval, majority, majority_vote_stability, wilson
@@ -37,6 +37,8 @@ class Thresholds:
     min_labeled: int = 20
 
 
+_FENCE = re.compile(r"^```(?:json)?|```$", re.I | re.M)
+_JSON_FIELD = re.compile(r'"(verdict|label|pass|winner)"\s*:\s*"?([A-Za-z0-9_]+)', re.I)
 _PAIR_A = re.compile(r"^\W*(?:\[\[)?\s*(?:answer\s*|assistant\s*|response\s*)?a\b", re.I)
 _PAIR_B = re.compile(r"^\W*(?:\[\[)?\s*(?:answer\s*|assistant\s*|response\s*)?b\b", re.I)
 _PAIR_TIE = re.compile(r"^\W*(?:\[\[)?\s*(?:tie|c|equal|draw|both)\b", re.I)
@@ -46,10 +48,19 @@ def normalize_verdict(v: Any, mode: str) -> str:
     """Canonical label for a judge's raw output. Unparseable pairwise outputs become 'invalid'."""
     if v is None:
         return "invalid"
-    if isinstance(v, str) and v.strip().startswith("{"):
-        # a judge that answers in JSON, for example promptfoo's {"pass": ..., "reason": ...}
-        with contextlib.suppress(json.JSONDecodeError):
-            v = json.loads(v.strip())
+    if isinstance(v, str):
+        text = _FENCE.sub("", v.strip()).strip()
+        if text.startswith("{"):
+            # a judge that answers in JSON, for example promptfoo's {"pass": ..., "reason": ...}
+            try:
+                v = json.loads(text)
+            except json.JSONDecodeError:
+                # cut off mid-reason (token limit): the verdict field usually came first
+                m = _JSON_FIELD.search(text)
+                if not m:
+                    return "invalid"
+                val = m.group(2)
+                v = {"true": True, "false": False}.get(val.lower(), val)
     if isinstance(v, dict):
         for key in ("verdict", "label", "pass", "winner"):
             if key in v:
@@ -234,6 +245,8 @@ def check_judge(
             else None,
             "human_label_counts": dict(Counter(human)),
             "judge_label_counts": dict(Counter(judge_labels)),
+            # accuracy of a judge that always gives the most common human label
+            "majority_baseline": round(Counter(human).most_common(1)[0][1] / len(human), 4),
         }
 
     # position probe: majority in swapped order vs original order
@@ -414,11 +427,15 @@ def judge_check(
     lpath = Path(labels) if labels else ws.labels
     human = load_labels(lpath, mode_by_case) if lpath.exists() else {}
     judges = {jid: check_judge(jrows, human, th) for jid, jrows in sorted(by_judge.items())}
+    judged = {str(r["case_id"]) for r in rows}
+    used = {cid: lab for cid, lab in human.items() if cid in judged}
     result = {
         "judge_check_file": str(ws.judge_check),
         "judgments_file": str(jpath),
         "labels_file": str(lpath) if lpath.exists() else None,
         "labeled_cases": len(human),
+        "human_label_counts": dict(Counter(used.values())),
+        "warnings": _balance_warnings(used, judges),
         "thresholds": asdict(th),
         "summary": [_summary(jid, r) for jid, r in judges.items()],
         "judges": judges,
@@ -427,6 +444,32 @@ def judge_check(
     result["next"] = _next_step(result, th, ws)
     write_json(ws.judge_check, result)
     return result
+
+
+def _balance_warnings(used: dict[str, str], judges: dict[str, dict[str, Any]]) -> list[str]:
+    """Warn when the labels (or a judge's answers on them) are mostly one outcome."""
+    out = []
+    w = skew_warning(
+        Counter(used.values()),
+        "the human labels on judged cases",
+        "Have a person label more cases of the other outcome (`eval-builder label` picks "
+        "across outcomes and aims at cases where judges disagree)",
+    )
+    if w:
+        out.append(w)
+    for jid, r in judges.items():
+        ag = r["human_agreement"]
+        if not ag or ag["cases"] < 5:
+            continue
+        jc = {k: v for k, v in ag["judge_label_counts"].items() if v}
+        if len(jc) == 1:
+            ((top, n),) = jc.items()
+            out.append(
+                f"judge {jid} gave the same verdict, {top!r}, on all {n} labeled cases; its "
+                f"accuracy ({ag['accuracy']['rate']:.0%}) is just the share of {top!r} labels "
+                f"({proportions(ag['human_label_counts'])})"
+            )
+    return out
 
 
 def _summary(jid: str, r: dict[str, Any]) -> dict[str, Any]:
@@ -452,6 +495,7 @@ def _summary(jid: str, r: dict[str, Any]) -> dict[str, Any]:
         "kappa_ci95": agree.get("kappa_ci95"),
         "accuracy": (agree.get("accuracy") or {}).get("rate"),
         "accuracy_ci95": ci(agree.get("accuracy")),
+        "majority_baseline": agree.get("majority_baseline"),
         "position_consistency": (pos.get("consistency") or {}).get("rate"),
         "position_consistency_ci95": ci(pos.get("consistency")),
         "toward_padded": (pad.get("toward_padded") or {}).get("rate"),
@@ -466,12 +510,14 @@ def _next_step(result: dict[str, Any], th: Thresholds, ws: Workspace) -> str:
             f"export: judges {result['trustworthy']} passed; export wires a passing pointwise "
             "judge into promptfoo when its rubric.yaml entry has a `provider`"
         )
-    if result["labeled_cases"] < th.min_labeled:
+    labeled = sum(result["human_label_counts"].values())  # labels on cases the judges saw
+    if labeled < th.min_labeled:
         return (
-            f"ask a person to label at least {th.min_labeled} ready cases "
-            f"(have {result['labeled_cases']}): one JSON line per case in "
-            f'{ws.labels.name}, {{"case_id": "case-001", "label": "pass"}}, using the '
-            "judge's labels. Never write these labels yourself. Then run judge_check again"
+            f"a person needs to label at least {th.min_labeled} judged cases (have "
+            f"{labeled}). Run `eval-builder label` (MCP: label): it picks the "
+            "cases worth labeling and writes label_sheet.html for them to label offline; then "
+            "`eval-builder label import <exported file>` (MCP: label_import) and run "
+            "judge_check again. Never write these labels yourself"
         )
     return (
         "no judge passed; read each judge's reasons. Typical fixes: majority vote over 3 "

@@ -20,6 +20,7 @@ from scipy import sparse
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+from .balance import skew_warning
 from .ingest import load_traces
 from .io import write_json
 from .schema import Trace
@@ -172,9 +173,32 @@ def select(
             "duplicates, so all of them were picked"
         )
     result["notes"] = notes
+    result["warnings"] = selection_warnings(result)
     result["next"] = "run draft to turn the selection into cases.yaml"
     write_json(ws.selection, result)
     return result
+
+
+def selection_warnings(result: dict[str, Any]) -> list[str]:
+    """Warn when the picks are mostly one logged outcome (only when the logs have one)."""
+    if not result["population"]["failures_unique"]:
+        return []
+    fails = result["selected_failures"]
+    counts = {
+        "logged failures": fails,
+        "no failure logged": result["selected_count"] - fails,
+    }
+    w = skew_warning(
+        counts,
+        "the selected cases",
+        "Before you trust a judge's accuracy on these cases, have a person label a set that "
+        "covers both outcomes (`eval-builder label` picks one after draft), or change "
+        "--failure-share",
+        consequence="if a judge is checked on these cases, one that always says "
+        + ("fail" if fails * 2 >= result["selected_count"] else "pass")
+        + " would match the logged outcome on {share} of them",
+    )
+    return [w] if w else []
 
 
 def select_traces(
