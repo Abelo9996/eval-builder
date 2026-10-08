@@ -1,0 +1,55 @@
+{
+  "resourceSpans": [
+    {
+      "resource": {"attributes": [{"key": "service.name", "value": {"stringValue": "support-agent"}}]},
+      "scopeSpans": [
+        {
+          "scope": {"name": "opentelemetry.instrumentation.openai"},
+          "spans": [
+            {
+              "traceId": "aaaa0000000000000000000000000001", "spanId": "01", "name": "invoke_agent support",
+              "startTimeUnixNano": "1", "endTimeUnixNano": "100",
+              "attributes": [{"key": "gen_ai.operation.name", "value": {"stringValue": "invoke_agent"}},
+                             {"key": "gen_ai.agent.name", "value": {"stringValue": "support"}},
+                             {"key": "app.route", "value": {"stringValue": "billing"}}]
+            },
+            {
+              "traceId": "aaaa0000000000000000000000000001", "spanId": "02", "parentSpanId": "01", "name": "execute_tool lookup_invoice",
+              "startTimeUnixNano": "10", "endTimeUnixNano": "20",
+              "attributes": [{"key": "gen_ai.operation.name", "value": {"stringValue": "execute_tool"}},
+                             {"key": "gen_ai.tool.name", "value": {"stringValue": "lookup_invoice"}}]
+            },
+            {
+              "traceId": "aaaa0000000000000000000000000001", "spanId": "03", "parentSpanId": "01", "name": "chat gpt-4o",
+              "startTimeUnixNano": "30", "endTimeUnixNano": "90",
+              "attributes": [
+                {"key": "gen_ai.operation.name", "value": {"stringValue": "chat"}},
+                {"key": "gen_ai.provider.name", "value": {"stringValue": "openai"}},
+                {"key": "gen_ai.request.model", "value": {"stringValue": "gpt-4o"}},
+                {"key": "gen_ai.input.messages", "value": {"stringValue": "[{\"role\":\"system\",\"parts\":[{\"type\":\"text\",\"content\":\"You help with billing.\"}]},{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"content\":\"Why was I charged twice?\"}]}]"}},
+                {"key": "gen_ai.output.messages", "value": {"stringValue": "[{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"The second charge is a pending authorization that will drop off.\"}],\"finish_reason\":\"stop\"}]"}}
+              ]
+            },
+            {
+              "traceId": "bbbb0000000000000000000000000002", "spanId": "11", "name": "openai.chat",
+              "startTimeUnixNano": "1", "endTimeUnixNano": "50",
+              "status": {"code": 2, "message": "rate limited"},
+              "attributes": [
+                {"key": "gen_ai.system", "value": {"stringValue": "openai"}},
+                {"key": "gen_ai.request.model", "value": {"stringValue": "gpt-4o-mini"}},
+                {"key": "gen_ai.prompt.0.role", "value": {"stringValue": "user"}},
+                {"key": "gen_ai.prompt.0.content", "value": {"stringValue": "Summarize my last invoice"}},
+                {"key": "gen_ai.completion.0.role", "value": {"stringValue": "assistant"}},
+                {"key": "gen_ai.completion.0.content", "value": {"stringValue": ""}}
+              ]
+            },
+            {
+              "traceId": "cccc0000000000000000000000000003", "spanId": "21", "name": "http GET /health",
+              "attributes": [{"key": "http.method", "value": {"stringValue": "GET"}}]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

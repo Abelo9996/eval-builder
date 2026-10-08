@@ -1,0 +1,4 @@
+{"id": "g1", "input": "Translate 'hello' to Spanish", "output": "Hola", "metadata": {"route": "translate", "feedback": 1}}
+{"input": "Translate 'goodbye' to French", "output": "Au revoir", "metadata": {"route": "translate"}}
+{"input": "Call me at (415) 555-0134 about card 4111 1111 1111 1111", "output": "Noted.", "metadata": {"route": "support", "error": true}}
+{"output": "orphan output with no input"}

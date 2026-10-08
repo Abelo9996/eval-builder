@@ -1,0 +1,32 @@
+{
+  "data": [
+    {
+      "id": "lf-trace-1",
+      "name": "rag-answer",
+      "input": {"question": "What is our refund window?"},
+      "output": {"role": "assistant", "content": "Refunds are accepted within 30 days."},
+      "metadata": {"env": "prod"},
+      "tags": ["rag"],
+      "scores": [{"name": "user-feedback", "value": 0}, {"name": "faithfulness", "value": 0.9}],
+      "observations": [
+        {"id": "o1", "type": "SPAN", "name": "retrieve", "level": "DEFAULT", "startTime": "2026-01-01T00:00:00Z"},
+        {"id": "o2", "type": "GENERATION", "name": "llm", "model": "gpt-4o", "level": "DEFAULT", "startTime": "2026-01-01T00:00:01Z",
+         "input": [{"role": "user", "content": "What is our refund window?"}],
+         "output": {"role": "assistant", "content": "Refunds are accepted within 30 days."}}
+      ]
+    },
+    {
+      "id": "lf-trace-2",
+      "name": "agent",
+      "input": null,
+      "output": null,
+      "observations": [
+        {"id": "o3", "type": "TOOL", "name": "search_orders", "level": "ERROR", "startTime": "2026-01-01T00:01:00Z"},
+        {"id": "o4", "type": "GENERATION", "name": "llm", "model": "gpt-4o-mini", "startTime": "2026-01-01T00:01:01Z",
+         "input": {"messages": [{"role": "system", "content": "Be brief."}, {"role": "user", "content": "Where is order 1234?"}]},
+         "output": "I could not find that order."}
+      ]
+    }
+  ],
+  "meta": {"page": 1, "totalItems": 2}
+}
