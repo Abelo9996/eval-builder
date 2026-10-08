@@ -57,6 +57,11 @@ def test_normalize_verdict() -> None:
     assert normalize_verdict("PASS.", "pointwise") == "pass"
     assert normalize_verdict(4.0, "pointwise") == "4"
     assert normalize_verdict(True, "pointwise") == "pass"
+    # JSON answers, for example a judge written for promptfoo's llm-rubric
+    assert normalize_verdict('{"pass": false, "reason": "no code"}', "pointwise") == "fail"
+    assert normalize_verdict({"pass": True}, "pointwise") == "pass"
+    assert normalize_verdict('{"verdict": "B"}', "pairwise") == "B"
+    assert normalize_verdict('{"reason": "unsure"}', "pointwise") == "invalid"
 
 
 def test_flip_rate_kappa_and_trustworthy() -> None:
@@ -197,3 +202,13 @@ def test_judge_check_files_and_request_join(tmp_path: Path) -> None:
     assert j["human_agreement"]["accuracy"]["k"] == 4
     assert j["human_agreement"]["kappa"] is None  # everyone says A: chance agreement is 1
     assert (ws / "judge_check.json").exists()
+    # the summary carries the intervals and sample sizes, so MCP callers need no file reads
+    s = r["summary"][0]
+    assert s["cases"] == 4 and s["labeled_cases"] == 4 and s["flip_rate_ci95"] is not None
+    assert s["accuracy_ci95"] == j["human_agreement"]["accuracy"]["ci95"]
+    assert r["next"].startswith("no judge passed")  # 4 labels meet this test's min_labeled
+
+
+def test_judge_check_missing_judgments_says_how(tmp_path: Path) -> None:
+    with pytest.raises(FileNotFoundError, match="run judge_plan first"):
+        judge_check(tmp_path)

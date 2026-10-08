@@ -29,6 +29,26 @@ def test_plan_pointwise_with_pad(ready_workspace: Path) -> None:
     assert {x["probe"] for x in rows} == {"none", "pad"}
 
 
+def test_plan_documents_request_rows(ready_workspace: Path) -> None:
+    r = judge_plan(ready_workspace, trials=1)
+    row = json.loads((ready_workspace / "judge_requests.jsonl").open().readline())
+    assert set(r["request_fields"]) <= set(row)  # every documented field is really there
+    assert "judge" in r["request_fields"] and "request_id" in r["next"]
+
+
+def test_plan_refuses_nothing_to_judge(ready_workspace: Path) -> None:
+    from eval_builder.draft import load_cases, update_case
+
+    for c in load_cases(ready_workspace)["cases"]:
+        update_case(ready_workspace, c["id"], status="draft")
+    with pytest.raises(ValueError, match="no cases have status: ready"):
+        judge_plan(ready_workspace)
+    cases = [{"id": "c0", "input": "q", "observed_output": "a", "criteria": []}]
+    todo = {"criteria": [], "judges": [{"id": "TODO-judge-id", "prompt": "TODO: x"}]}
+    with pytest.raises(ValueError, match="still have a TODO"):
+        build_requests(cases, todo)
+
+
 def test_plan_renders_context_placeholder() -> None:
     cases = [
         {

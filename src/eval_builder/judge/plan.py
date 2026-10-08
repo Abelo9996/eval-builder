@@ -11,6 +11,19 @@ from ..workspace import Workspace
 
 PROBES = ("swap", "pad")
 
+# What each line of judge_requests.jsonl holds, so whoever runs the judge does not guess.
+REQUEST_FIELDS = {
+    "request_id": "unique id; copy it into the judgment row",
+    "judge": "judge id from rubric.yaml (which model or prompt to use)",
+    "case_id": "case in cases.yaml",
+    "mode": "pointwise or pairwise",
+    "probe": "none, swap (answers trade places) or pad (irrelevant paragraph appended)",
+    "trial": "repeat number; use the same prompt and settings for every trial",
+    "labels": "allowed verdicts",
+    "prompt": "the rendered judge prompt to send (null if the judge has no prompt template)",
+    "presented": "the fields that were filled into the prompt",
+}
+
 # Deliberately irrelevant filler for the verbosity probe. It adds length without
 # adding anything that answers the question, so a judge's verdict should not move.
 PAD_TEXT = (
@@ -67,13 +80,27 @@ def build_requests(
     for p in probes:
         if p not in PROBES:
             raise ValueError(f"unknown probe {p!r}; expected one of {PROBES}")
-    all_judges = {j["id"]: j for j in rubric.get("judges") or []}
+    all_judges = {str(j.get("id", "")): j for j in rubric.get("judges") or []}
     if not all_judges:
-        raise ValueError("rubric.yaml defines no judges")
+        raise ValueError(
+            "rubric.yaml defines no judges; add one with set_rubric (MCP) or edit rubric.yaml: "
+            "{id, mode: pointwise|pairwise, labels: [pass, fail], prompt: '...{input}...{output}'}"
+        )
     chosen = judges or list(all_judges)
     missing = [j for j in chosen if j not in all_judges]
     if missing:
-        raise ValueError(f"judges not in rubric.yaml: {missing}")
+        raise ValueError(f"judges not in rubric.yaml: {missing}; known: {sorted(all_judges)}")
+    todo = [j for j in chosen if "TODO" in j or "TODO" in str(all_judges[j].get("prompt") or "")]
+    if todo:
+        raise ValueError(
+            f"judge(s) {todo} in rubric.yaml still have a TODO id or prompt; write the real "
+            "judge id and prompt first (run validate to see every problem)"
+        )
+    if not cases:
+        raise ValueError(
+            "no cases have status: ready, so there is nothing to judge; fill expected_behavior "
+            "and criteria, set status: ready (update_case), then run validate"
+        )
     crit_desc = {c["id"]: c.get("description", "") for c in rubric.get("criteria") or []}
     rows: list[dict[str, Any]] = []
     for jid in chosen:
@@ -141,11 +168,29 @@ def judge_plan(
     per_judge: dict[str, int] = {}
     for r in rows:
         per_judge[r["judge"]] = per_judge.get(r["judge"], 0) + 1
-    return {
+    skipped_pairwise = [
+        jid
+        for jid in (judges or [str(j.get("id")) for j in load_rubric(ws.root).get("judges") or []])
+        if jid not in per_judge
+    ]
+    out: dict[str, Any] = {
         "requests_file": str(ws.judge_requests),
+        "judgments_file": str(ws.judgments),
         "requests": len(rows),
         "per_judge": per_judge,
-        "next": "run every request and append {request_id, verdict} rows (plus the request "
-        "fields) to judgments.jsonl, or use `eval-builder judge-run` with your own "
-        "judge command, then `eval-builder judge-check`",
+        "request_fields": REQUEST_FIELDS,
+        "verdict_row": '{"request_id": "<from the request>", "verdict": "<one of labels>"}',
+        "next": (
+            f"for each line of {ws.judge_requests.name}: send `prompt` to the model named by "
+            f"`judge` and append one JSON line {{request_id, verdict}} to {ws.judgments.name} "
+            "(verdict: the judge's answer, as a label from `labels`, raw text or the "
+            "judge's JSON). Or let eval-builder drive your judge script: `eval-builder judge-run "
+            '--enable-judge-plugin --command "<judge>=<your command>"`. Then run judge_check.'
+        ),
     }
+    if skipped_pairwise:
+        out["warnings"] = [
+            f"judge {j} produced no requests: pairwise judges need cases with compare_output"
+            for j in skipped_pairwise
+        ]
+    return out

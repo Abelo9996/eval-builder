@@ -9,6 +9,8 @@ every verdict lists the numbers behind it.
 
 from __future__ import annotations
 
+import contextlib
+import json
 import re
 from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass
@@ -43,6 +45,15 @@ _PAIR_TIE = re.compile(r"^\W*(?:\[\[)?\s*(?:tie|c|equal|draw|both)\b", re.I)
 def normalize_verdict(v: Any, mode: str) -> str:
     """Canonical label for a judge's raw output. Unparseable pairwise outputs become 'invalid'."""
     if v is None:
+        return "invalid"
+    if isinstance(v, str) and v.strip().startswith("{"):
+        # a judge that answers in JSON, for example promptfoo's {"pass": ..., "reason": ...}
+        with contextlib.suppress(json.JSONDecodeError):
+            v = json.loads(v.strip())
+    if isinstance(v, dict):
+        for key in ("verdict", "label", "pass", "winner"):
+            if key in v:
+                return normalize_verdict(v[key], mode)
         return "invalid"
     if isinstance(v, bool):
         return "pass" if v else "fail"
@@ -121,7 +132,11 @@ def _load_judgments(path: Path, requests_path: Path | None) -> list[dict[str, An
             }
             r = {**base, **r}
         if "judge" not in r or "case_id" not in r:
-            raise ValueError(f"judgment row missing judge/case_id: {r}")
+            raise ValueError(
+                f"judgment row has no judge/case_id and its request_id "
+                f"{r.get('request_id')!r} is not in judge_requests.jsonl; write rows as "
+                '{"request_id": "<id from judge_requests.jsonl>", "verdict": "<label>"}'
+            )
         rows.append(r)
     return rows
 
@@ -381,7 +396,16 @@ def judge_check(
     th = thresholds or Thresholds()
     jpath = Path(judgments) if judgments else ws.judgments
     if not jpath.exists():
-        raise FileNotFoundError(f"{jpath} not found; record judge outputs first")
+        hint = (
+            "run judge_plan first, then run every request in judge_requests.jsonl"
+            if not ws.judge_requests.exists()
+            else "run every request in judge_requests.jsonl"
+        )
+        raise FileNotFoundError(
+            f"{jpath} not found; {hint} and append {{request_id, verdict}} lines to it "
+            "(or use `eval-builder judge-run --enable-judge-plugin --command "
+            '"<judge>=<your command>"`)'
+        )
     rows = _load_judgments(jpath, ws.judge_requests)
     by_judge: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for r in rows:
@@ -391,30 +415,66 @@ def judge_check(
     human = load_labels(lpath, mode_by_case) if lpath.exists() else {}
     judges = {jid: check_judge(jrows, human, th) for jid, jrows in sorted(by_judge.items())}
     result = {
+        "judge_check_file": str(ws.judge_check),
         "judgments_file": str(jpath),
         "labels_file": str(lpath) if lpath.exists() else None,
         "labeled_cases": len(human),
         "thresholds": asdict(th),
-        "summary": [
-            {
-                "judge": jid,
-                "mode": r["mode"],
-                "verdict": r["verdict"],
-                "flip_rate": r["stability"]["flip_rate"]["rate"],
-                "kappa": (r["human_agreement"] or {}).get("kappa"),
-                "accuracy": ((r["human_agreement"] or {}).get("accuracy") or {}).get("rate"),
-                "position_consistency": ((r["position_probe"] or {}).get("consistency") or {}).get(
-                    "rate"
-                ),
-                "toward_padded": ((r["verbosity_probe"] or {}).get("toward_padded") or {}).get(
-                    "rate"
-                ),
-                "reasons": r["reasons"],
-            }
-            for jid, r in judges.items()
-        ],
+        "summary": [_summary(jid, r) for jid, r in judges.items()],
         "judges": judges,
         "trustworthy": [j for j, r in judges.items() if r["verdict"] == "trustworthy"],
     }
+    result["next"] = _next_step(result, th, ws)
     write_json(ws.judge_check, result)
     return result
+
+
+def _summary(jid: str, r: dict[str, Any]) -> dict[str, Any]:
+    """One row per judge with the point estimates, their 95% intervals and sample sizes."""
+    agree = r["human_agreement"] or {}
+    pos = r["position_probe"] or {}
+    pad = r["verbosity_probe"] or {}
+
+    def ci(d: dict[str, Any] | None) -> list[float] | None:
+        return (d or {}).get("ci95")
+
+    return {
+        "judge": jid,
+        "mode": r["mode"],
+        "verdict": r["verdict"],
+        "cases": r["stability"]["cases"],
+        "calls": r["stability"]["calls"],
+        "invalid_outputs": r["stability"]["invalid_outputs"],
+        "flip_rate": r["stability"]["flip_rate"]["rate"],
+        "flip_rate_ci95": ci(r["stability"]["flip_rate"]),
+        "labeled_cases": agree.get("cases", 0),
+        "kappa": agree.get("kappa"),
+        "kappa_ci95": agree.get("kappa_ci95"),
+        "accuracy": (agree.get("accuracy") or {}).get("rate"),
+        "accuracy_ci95": ci(agree.get("accuracy")),
+        "position_consistency": (pos.get("consistency") or {}).get("rate"),
+        "position_consistency_ci95": ci(pos.get("consistency")),
+        "toward_padded": (pad.get("toward_padded") or {}).get("rate"),
+        "toward_padded_ci95": ci(pad.get("toward_padded")),
+        "reasons": r["reasons"],
+    }
+
+
+def _next_step(result: dict[str, Any], th: Thresholds, ws: Workspace) -> str:
+    if result["trustworthy"]:
+        return (
+            f"export: judges {result['trustworthy']} passed; export wires a passing pointwise "
+            "judge into promptfoo when its rubric.yaml entry has a `provider`"
+        )
+    if result["labeled_cases"] < th.min_labeled:
+        return (
+            f"ask a person to label at least {th.min_labeled} ready cases "
+            f"(have {result['labeled_cases']}): one JSON line per case in "
+            f'{ws.labels.name}, {{"case_id": "case-001", "label": "pass"}}, using the '
+            "judge's labels. Never write these labels yourself. Then run judge_check again"
+        )
+    return (
+        "no judge passed; read each judge's reasons. Typical fixes: majority vote over 3 "
+        "calls, run both answer orders and keep agreements, tighten the rubric wording, or "
+        "try a stronger judge model, then run judge_plan and judge_check again"
+    )
