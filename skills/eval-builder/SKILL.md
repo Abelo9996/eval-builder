@@ -28,7 +28,8 @@ workspace directory (default `./evalset`).
    Failures (error flags, negative feedback) are oversampled. Show the user the
    clusters and a few of the reasons cases were picked.
 
-3. **Draft and fill cases with the user.** Run `draft`. For each case, propose an
+3. **Draft and fill cases with the user.** Run `draft`, then `list_cases` to read the
+   cases (input, earlier turns in `context`, logged `observed_output`). For each case, propose an
    `expected_behavior` (one or two sentences on what a good answer does) and the
    criteria it tests, then confirm with the user, especially for domain facts you are
    not sure about. Use `update_case` to save it and set `status: ready`, or
@@ -40,12 +41,20 @@ workspace directory (default `./evalset`).
 5. **Plan judge runs.** Add the user's judges to the rubric (their exact judge
    prompts, mode `pointwise` or `pairwise`, allowed labels). Run `judge_plan` with
    `trials: 5` and `probes: ["swap", "pad"]` (swap only applies to pairwise judges).
+   If the user will grade in promptfoo, give each judge a `provider` (a promptfoo
+   provider id such as `ollama:chat:qwen2.5:7b-instruct` or `openai:gpt-4.1-mini`)
+   and have its prompt answer in JSON, `{"pass": true|false, "reason": "..."}`.
+   Then the judge you check is exactly the grader promptfoo runs (step 9).
 
-6. **Run the judges.** Each row of `judge_requests.jsonl` is one call, with the
-   rendered `prompt`. Either:
+6. **Run the judges.** Each line of `judge_requests.jsonl` is one call. The fields
+   you need: `request_id`, `judge` (the judge id from rubric.yaml), `trial`, `labels`
+   and the rendered `prompt`. Either:
    - run each request yourself through the user's provider at the temperature they
-     use in production, and append `{"request_id": ..., "verdict": ...}` rows to
-     `judgments.jsonl`; or
+     use in production, and append `{"request_id": ..., "verdict": ...}` lines to
+     `judgments.jsonl`. The verdict may be the raw answer text or the judge's JSON;
+     judge_check parses both. A short script is fine; for a local Ollama model, POST
+     `{"model", "prompt", "stream": false, "options": {"temperature", "seed": trial}}`
+     to `http://localhost:11434/api/generate` and use the `response` field; or
    - if the user has a judge script, ask them to run
      `eval-builder judge-run --enable-judge-plugin --command "<judge_id>=<their command>"`.
      The plugin is off by default and eval-builder ships no API keys.
@@ -65,13 +74,20 @@ workspace directory (default `./evalset`).
    orders and only counting agreements, tighter rubric wording, a stronger judge model.
 
 9. **Export.** Run `export` with the user's tool (`promptfoo`, `deepeval`, `inspect`,
-   `jsonl`). The manifest lists file hashes and which judges passed.
+   `jsonl`). The manifest lists file hashes and which judges passed. In promptfoo the
+   app receives the whole conversation as chat messages, and a pointwise judge that
+   passed judge_check and has a `provider` becomes the llm-rubric grader. Read the
+   `notes` in the result and pass them on (for example "judge X passed but has no
+   provider"). The DeepEval and Inspect exports do not wire a judge in.
 
 10. **Report.** Run `report` and give the user `report.md`. Quote numbers from it
     exactly, with their intervals and sample sizes, and repeat its limits section.
     Do not round a weak result into a strong claim.
 
 ## Rules
+
+- If the user is not available to confirm expected behavior, you may mark cases ready,
+  but add a `notes` entry on each saying it was not confirmed, and say so in your answer.
 
 - Everything stays on the machine. eval-builder makes no network calls.
 - Every claim you make about a judge must come from `judge_check.json`.

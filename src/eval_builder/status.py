@@ -10,10 +10,16 @@ from .workspace import Workspace
 
 def status(workspace: str | Path) -> dict[str, Any]:
     ws = Workspace.at(workspace)
-    steps = {
+    ready = 0
+    if ws.cases.exists():
+        from .draft import load_cases
+
+        ready = sum(1 for c in load_cases(ws.root).get("cases") or [] if c.get("status") == "ready")
+    steps: dict[str, Any] = {
         "ingest": ws.traces.exists(),
         "select": ws.selection.exists(),
         "draft": ws.cases.exists(),
+        "cases_ready": ready,
         "judge_plan": ws.judge_requests.exists(),
         "judgments": ws.judgments.exists(),
         "labels": ws.labels.exists(),
@@ -23,9 +29,22 @@ def status(workspace: str | Path) -> dict[str, Any]:
     }
     order = [
         ("ingest", "eval-builder ingest <logs>"),
-        ("select", "eval-builder select"),
+        ("select", "eval-builder select -n 30"),
         ("draft", "eval-builder draft"),
-        ("export", "fill cases, then eval-builder export"),
+        (
+            "cases_ready",
+            "fill expected_behavior and criteria per case and set status: ready "
+            "(update_case or cases.yaml), add criteria and judges (set_rubric or rubric.yaml), "
+            "then eval-builder validate",
+        ),
+        ("judge_plan", "eval-builder judge-plan --probes pad,swap (skip if you have no judges)"),
+        (
+            "judgments",
+            "run each request in judge_requests.jsonl through the judge and append "
+            "{request_id, verdict} lines to judgments.jsonl (or eval-builder judge-run)",
+        ),
+        ("judge_check", "eval-builder judge-check"),
+        ("export", "eval-builder export"),
         ("report", "eval-builder report"),
     ]
     nxt = next((cmd for step, cmd in order if not steps[step]), "done")

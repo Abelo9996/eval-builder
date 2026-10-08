@@ -37,6 +37,7 @@ def _cmd_ingest(a: argparse.Namespace) -> int:
         f"redactions: {red['total']} "
         + (str(red["by_kind"]) if red["enabled"] else "(redaction off)")
     )
+    lines.append("next: eval-builder select -n 30 (add --stratify <metadata keys> to cover them)")
     _print(r, a.json, "\n".join(lines))
     return 0
 
@@ -65,6 +66,8 @@ def _cmd_select(a: argparse.Namespace) -> int:
         lines.append(f"  {s['trace_id']}: {s['reasons'][0]}")
     if r["selected_count"] > 10:
         lines.append(f"  ... {r['selected_count'] - 10} more in selection.json")
+    lines += [f"note: {x}" for x in r.get("notes", [])]
+    lines.append(f"next: {r['next']}")
     _print(r, a.json, "\n".join(lines))
     return 0
 
@@ -97,12 +100,10 @@ def _cmd_judge_plan(a: argparse.Namespace) -> int:
     from .judge.plan import judge_plan
 
     r = judge_plan(a.workspace, _csv(a.judges), a.trials, _csv(a.probes), a.probe_trials)
-    _print(
-        r,
-        a.json,
-        f"{r['requests']} judge requests in {r['requests_file']} "
-        f"{r['per_judge']}\nnext: {r['next']}",
-    )
+    lines = [f"{r['requests']} judge requests in {r['requests_file']} {r['per_judge']}"]
+    lines += [f"warning: {w}" for w in r.get("warnings", [])]
+    lines.append(f"next: {r['next']}")
+    _print(r, a.json, "\n".join(lines))
     return 0
 
 
@@ -160,6 +161,7 @@ def _cmd_judge_check(a: argparse.Namespace) -> int:
             f"pos={f(s['position_consistency'])} pad={f(s['toward_padded'])}"
         )
         lines += [f"    {x}" for x in s["reasons"]]
+    lines.append(f"next: {r['next']}")
     out = {k: v for k, v in r.items() if k != "judges"} if not a.full else r
     _print(out, a.json, "\n".join(lines))
     return 0
@@ -168,7 +170,7 @@ def _cmd_judge_check(a: argparse.Namespace) -> int:
 def _cmd_export(a: argparse.Namespace) -> int:
     from .export import export
 
-    r = export(a.workspace, _csv(a.formats))
+    r = export(a.workspace, _csv(a.formats), a.judge)
     if not r["exported"]:
         errs = r["validation"]["errors"]
         lines = ["not exported: validation failed"] + [
@@ -177,6 +179,12 @@ def _cmd_export(a: argparse.Namespace) -> int:
         _print(r, a.json, "\n".join(lines))
         return 1
     lines = [f"exported {r['cases']} cases"] + [f"  {f['path']}" for f in r["files"]]
+    g = r.get("promptfoo_grader")
+    if g:
+        prov = g["provider"]["id"] if isinstance(g["provider"], dict) else g["provider"]
+        lines.append(f"promptfoo grader: judge {g['judge']} ({prov}), verdict {g['verdict']}")
+    lines += [f"note: {n}" for n in r.get("notes", [])]
+    lines.append(f"next: {r['next']}")
     _print(r, a.json, "\n".join(lines))
     return 0
 
@@ -193,7 +201,12 @@ def _cmd_status(a: argparse.Namespace) -> int:
     from .status import status
 
     r = status(a.workspace)
-    lines = [f"{k}: {'done' if v else '-'}" for k, v in r["steps"].items()]
+    lines = [
+        f"{k}: {v}"
+        if isinstance(v, int) and not isinstance(v, bool)
+        else f"{k}: {'done' if v else '-'}"
+        for k, v in r["steps"].items()
+    ]
     lines.append(f"next: {r['next']}")
     _print(r, a.json, "\n".join(lines))
     return 0
@@ -210,7 +223,7 @@ def _cmd_setup(a: argparse.Namespace) -> int:
         lines.append(f"    {act['detail'].strip()}")
         if "result" in act:
             lines.append(f"    -> {act['result']}")
-    lines.append("applied" if r["applied"] else r["next"])
+    lines.append(("applied. next: " if r["applied"] else "") + r["next"])
     _print(r, a.json, "\n".join(lines))
     return 0
 
@@ -317,6 +330,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     s = cmd("export", "Export ready cases for promptfoo, DeepEval, Inspect AI and JSONL.")
     s.add_argument("--formats", help="comma separated (default: promptfoo,deepeval,inspect,jsonl)")
+    s.add_argument(
+        "--judge",
+        help="rubric.yaml judge to wire into promptfoo as the grader (default: the first "
+        "pointwise judge that passed judge-check and has a provider)",
+    )
     s.set_defaults(func=_cmd_export)
 
     s = cmd("report", "Write report.md and report.json.")

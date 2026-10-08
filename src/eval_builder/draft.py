@@ -128,8 +128,9 @@ def draft(
         "cases_total": len(cases),
         "cases_added": added,
         "rubric_created": rubric_created,
-        "next": "fill expected_behavior and criteria per case, define criteria and judges "
-        "in rubric.yaml, then run `eval-builder validate`",
+        "next": "read the cases (list_cases, or cases.yaml), define criteria and judges "
+        "(set_rubric, or rubric.yaml), fill expected_behavior and criteria per case and set "
+        "status: ready (update_case), then run validate",
     }
 
 

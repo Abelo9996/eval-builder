@@ -49,7 +49,11 @@ def load_records(path: Path) -> list[Any]:
 def parse_file(path: Path, fmt: str | None = None) -> tuple[str, list[Trace], Counter[str], int]:
     """Return (format, traces, skip reasons, records read)."""
     records = load_records(path)
-    fmt = fmt or detect_format(records)
+    if not fmt:
+        try:
+            fmt = detect_format(records)
+        except ValueError as e:
+            raise ValueError(f"{path}: {e}") from e
     if fmt not in FORMATS:
         raise ValueError(f"unknown format {fmt!r}; expected one of {', '.join(FORMATS)}")
     skipped: Counter[str] = Counter()

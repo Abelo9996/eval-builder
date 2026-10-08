@@ -163,6 +163,16 @@ def select(
         dedupe_on=dedupe_on,
         stratify=stratify,
     )
+    notes = []
+    if result["selected_count"] < n:
+        pop = result["population"]
+        notes.append(
+            f"asked for {n} cases but only {pop['unique']} unique traces remain after removing "
+            f"{pop['exact_duplicates_removed']} exact and {pop['near_duplicates_merged']} near "
+            "duplicates, so all of them were picked"
+        )
+    result["notes"] = notes
+    result["next"] = "run draft to turn the selection into cases.yaml"
     write_json(ws.selection, result)
     return result
 

@@ -27,9 +27,15 @@ def detect_format(records: list[Any]) -> str:
         if fmt:
             votes[fmt] = votes.get(fmt, 0) + 1
     if not votes:
+        first = next((r for r in records if isinstance(r, dict)), None)
+        seen = f"first record's keys: {sorted(first)[:12]}" if first else "no JSON objects found"
         raise ValueError(
-            "could not detect the log format; pass --format "
-            "(openai, anthropic, langfuse, otel, generic)"
+            f"could not detect the log format ({seen}). Expected one of: OpenAI chat "
+            '("messages" or "request"/"response"), Anthropic ("messages" with content blocks), '
+            'Langfuse export ("observations"), OpenTelemetry spans ("resourceSpans"), or '
+            'generic JSONL with an input field ("input", "prompt" or "question") and an output '
+            'field ("output", "completion", "answer" or "response"). Rename the fields or pass '
+            "--format to force one"
         )
     return max(votes.items(), key=lambda kv: kv[1])[0]
 
