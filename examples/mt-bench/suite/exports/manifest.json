@@ -1,0 +1,51 @@
+{
+  "cases": 24,
+  "formats": [
+    "promptfoo",
+    "deepeval",
+    "inspect",
+    "jsonl"
+  ],
+  "files": [
+    {
+      "path": "exports/promptfoo/promptfooconfig.yaml",
+      "sha256": "8cf28fe31810942f4b0a1f0ca036a55f73abc00a5bf4632e37a8a9bccf374155"
+    },
+    {
+      "path": "exports/deepeval/dataset.json",
+      "sha256": "9f8184fa50a284c65ad3ec2fbdb23bb252418e256a60f274a8459ce8de925a87"
+    },
+    {
+      "path": "exports/deepeval/test_eval_builder.py",
+      "sha256": "eaa505fed9db83a88c563d63fc05eca7c98f263c0522f6f109136fdd74ed38a5"
+    },
+    {
+      "path": "exports/inspect/dataset.jsonl",
+      "sha256": "a5549d41878924bdef0637fbeda4eec409cdf1760bcd40998f6a9b165de6b22a"
+    },
+    {
+      "path": "exports/inspect/task.py",
+      "sha256": "df284b6b6dedeb833e283cd9226241c17a84bed70924d097e9a6c45cba69c36e"
+    },
+    {
+      "path": "exports/jsonl/cases.jsonl",
+      "sha256": "126606d67661e353624e65b02e209e085aad6af495a6eefed8916344ed0e05e9"
+    }
+  ],
+  "judge_check": {
+    "trustworthy": [],
+    "verdicts": {
+      "qwen2.5-7b-pointwise": "unstable"
+    },
+    "thresholds": {
+      "min_trials": 3,
+      "min_cases": 10,
+      "max_flip_rate": 0.2,
+      "min_position_consistency": 0.8,
+      "max_toward_padded_rate": 0.1,
+      "min_kappa": 0.4,
+      "min_labeled": 20
+    }
+  },
+  "trusted_judge_prompts": {}
+}

@@ -1,0 +1,19 @@
+{
+  "runs": [
+    {
+      "started": "2026-10-08T12:10:12.907191+00:00",
+      "judges": {
+        "qwen2.5-7b-pointwise": {
+          "command": "python examples/judges/ollama_judge.py --model qwen2.5:7b-instruct --num-ctx 4096",
+          "requests": 240,
+          "ok": 240,
+          "errors": 0,
+          "seconds": 191.69,
+          "exit_code": 0
+        }
+      },
+      "finished": "2026-10-08T12:13:24.606460+00:00",
+      "judges_without_command": []
+    }
+  ]
+}

@@ -1,0 +1,794 @@
+{
+  "params": {
+    "n": 24,
+    "seed": 0,
+    "clusters": 9,
+    "failure_share": 0.3,
+    "near_dup_threshold": 0.9,
+    "dedupe_on": "input",
+    "stratify": [
+      "route",
+      "tools",
+      "error",
+      "feedback",
+      "category"
+    ]
+  },
+  "population": {
+    "traces": 480,
+    "exact_duplicates_removed": 400,
+    "near_duplicates_merged": 0,
+    "unique": 80,
+    "failures_unique": 50
+  },
+  "clusters": [
+    {
+      "id": 0,
+      "size": 11,
+      "share": 0.1375,
+      "terms": [
+        "response",
+        "previous response",
+        "previous",
+        "sentence",
+        "post"
+      ],
+      "selected": 3
+    },
+    {
+      "id": 1,
+      "size": 14,
+      "share": 0.175,
+      "terms": [
+        "4z",
+        "express",
+        "triangle",
+        "year",
+        "total"
+      ],
+      "selected": 4
+    },
+    {
+      "id": 2,
+      "size": 7,
+      "share": 0.0875,
+      "terms": [
+        "time",
+        "complexity",
+        "implement",
+        "time complexity",
+        "does"
+      ],
+      "selected": 3
+    },
+    {
+      "id": 3,
+      "size": 8,
+      "share": 0.1,
+      "terms": [
+        "learning",
+        "use",
+        "explain",
+        "provide",
+        "example"
+      ],
+      "selected": 3
+    },
+    {
+      "id": 4,
+      "size": 10,
+      "share": 0.125,
+      "terms": [
+        "word",
+        "like",
+        "river",
+        "musk",
+        "elon musk"
+      ],
+      "selected": 3
+    },
+    {
+      "id": 5,
+      "size": 7,
+      "share": 0.0875,
+      "terms": [
+        "tree",
+        "binary",
+        "binary tree",
+        "function",
+        "write function"
+      ],
+      "selected": 2
+    },
+    {
+      "id": 6,
+      "size": 6,
+      "share": 0.075,
+      "terms": [
+        "number",
+        "10",
+        "program",
+        "divided",
+        "number divided"
+      ],
+      "selected": 1
+    },
+    {
+      "id": 7,
+      "size": 10,
+      "share": 0.125,
+      "terms": [
+        "question",
+        "explain",
+        "father",
+        "david",
+        "brothers"
+      ],
+      "selected": 3
+    },
+    {
+      "id": 8,
+      "size": 7,
+      "share": 0.0875,
+      "terms": [
+        "color",
+        "green",
+        "car",
+        "new",
+        "business"
+      ],
+      "selected": 2
+    }
+  ],
+  "strata": {
+    "feedback": {
+      "(none)": {
+        "population": 30,
+        "selected": 5
+      },
+      "negative": {
+        "population": 50,
+        "selected": 19
+      }
+    },
+    "category": {
+      "coding": {
+        "population": 10,
+        "selected": 4
+      },
+      "extraction": {
+        "population": 10,
+        "selected": 2
+      },
+      "humanities": {
+        "population": 10,
+        "selected": 2
+      },
+      "math": {
+        "population": 10,
+        "selected": 5
+      },
+      "reasoning": {
+        "population": 10,
+        "selected": 3
+      },
+      "roleplay": {
+        "population": 10,
+        "selected": 1
+      },
+      "stem": {
+        "population": 10,
+        "selected": 4
+      },
+      "writing": {
+        "population": 10,
+        "selected": 3
+      }
+    }
+  },
+  "strata_skipped": {},
+  "selected_count": 24,
+  "selected_failures": 19,
+  "selected": [
+    {
+      "trace_id": "q81-alpaca-13b",
+      "reasons": [
+        "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+      ],
+      "cluster": 0,
+      "represents": 6,
+      "duplicates": [
+        "q81-claude-v1",
+        "q81-gpt-3.5-turbo",
+        "q81-gpt-4",
+        "q81-llama-13b",
+        "q81-vicuna-13b-v1.2"
+      ],
+      "failure": true,
+      "failing_in_group": 1,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "writing"
+        ]
+      }
+    },
+    {
+      "trace_id": "q82-alpaca-13b",
+      "reasons": [
+        "adds variety within cluster 0 (11 traces, 14%; response, previous response, previous); least similar to cases already picked there"
+      ],
+      "cluster": 0,
+      "represents": 6,
+      "duplicates": [
+        "q82-claude-v1",
+        "q82-gpt-3.5-turbo",
+        "q82-gpt-4",
+        "q82-llama-13b",
+        "q82-vicuna-13b-v1.2"
+      ],
+      "failure": false,
+      "failing_in_group": 0,
+      "strata": {
+        "feedback": [
+          "(none)"
+        ],
+        "category": [
+          "writing"
+        ]
+      }
+    },
+    {
+      "trace_id": "q144-alpaca-13b",
+      "reasons": [
+        "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+      ],
+      "cluster": 0,
+      "represents": 6,
+      "duplicates": [
+        "q144-claude-v1",
+        "q144-gpt-3.5-turbo",
+        "q144-gpt-4",
+        "q144-llama-13b",
+        "q144-vicuna-13b-v1.2"
+      ],
+      "failure": true,
+      "failing_in_group": 1,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "stem"
+        ]
+      }
+    },
+    {
+      "trace_id": "q111-alpaca-13b",
+      "reasons": [
+        "adds variety within cluster 1 (14 traces, 18%; 4z, express, triangle); least similar to cases already picked there"
+      ],
+      "cluster": 1,
+      "represents": 6,
+      "duplicates": [
+        "q111-claude-v1",
+        "q111-gpt-3.5-turbo",
+        "q111-gpt-4",
+        "q111-llama-13b",
+        "q111-vicuna-13b-v1.2"
+      ],
+      "failure": true,
+      "failing_in_group": 1,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "math"
+        ]
+      }
+    },
+    {
+      "trace_id": "q116-alpaca-13b",
+      "reasons": [
+        "adds variety within cluster 1 (14 traces, 18%; 4z, express, triangle); least similar to cases already picked there"
+      ],
+      "cluster": 1,
+      "represents": 6,
+      "duplicates": [
+        "q116-claude-v1",
+        "q116-gpt-3.5-turbo",
+        "q116-gpt-4",
+        "q116-llama-13b",
+        "q116-vicuna-13b-v1.2"
+      ],
+      "failure": false,
+      "failing_in_group": 0,
+      "strata": {
+        "feedback": [
+          "(none)"
+        ],
+        "category": [
+          "math"
+        ]
+      }
+    },
+    {
+      "trace_id": "q119-alpaca-13b",
+      "reasons": [
+        "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+      ],
+      "cluster": 1,
+      "represents": 6,
+      "duplicates": [
+        "q119-claude-v1",
+        "q119-gpt-3.5-turbo",
+        "q119-gpt-4",
+        "q119-llama-13b",
+        "q119-vicuna-13b-v1.2"
+      ],
+      "failure": true,
+      "failing_in_group": 1,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "math"
+        ]
+      }
+    },
+    {
+      "trace_id": "q134-alpaca-13b",
+      "reasons": [
+        "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+      ],
+      "cluster": 1,
+      "represents": 6,
+      "duplicates": [
+        "q134-claude-v1",
+        "q134-gpt-3.5-turbo",
+        "q134-gpt-4",
+        "q134-llama-13b",
+        "q134-vicuna-13b-v1.2"
+      ],
+      "failure": true,
+      "failing_in_group": 1,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "extraction"
+        ]
+      }
+    },
+    {
+      "trace_id": "q126-alpaca-13b",
+      "reasons": [
+        "covers feedback=(none) (30 unique traces, 38%)"
+      ],
+      "cluster": 2,
+      "represents": 6,
+      "duplicates": [
+        "q126-claude-v1",
+        "q126-gpt-3.5-turbo",
+        "q126-gpt-4",
+        "q126-llama-13b",
+        "q126-vicuna-13b-v1.2"
+      ],
+      "failure": false,
+      "failing_in_group": 0,
+      "strata": {
+        "feedback": [
+          "(none)"
+        ],
+        "category": [
+          "coding"
+        ]
+      }
+    },
+    {
+      "trace_id": "q129-llama-13b",
+      "reasons": [
+        "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+      ],
+      "cluster": 2,
+      "represents": 6,
+      "duplicates": [
+        "q129-alpaca-13b",
+        "q129-claude-v1",
+        "q129-gpt-3.5-turbo",
+        "q129-gpt-4",
+        "q129-vicuna-13b-v1.2"
+      ],
+      "failure": true,
+      "failing_in_group": 1,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "coding"
+        ]
+      }
+    },
+    {
+      "trace_id": "q130-llama-13b",
+      "reasons": [
+        "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+      ],
+      "cluster": 2,
+      "represents": 6,
+      "duplicates": [
+        "q130-alpaca-13b",
+        "q130-claude-v1",
+        "q130-gpt-3.5-turbo",
+        "q130-gpt-4",
+        "q130-vicuna-13b-v1.2"
+      ],
+      "failure": true,
+      "failing_in_group": 1,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "coding"
+        ]
+      }
+    },
+    {
+      "trace_id": "q95-alpaca-13b",
+      "reasons": [
+        "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+      ],
+      "cluster": 3,
+      "represents": 6,
+      "duplicates": [
+        "q95-claude-v1",
+        "q95-gpt-3.5-turbo",
+        "q95-gpt-4",
+        "q95-llama-13b",
+        "q95-vicuna-13b-v1.2"
+      ],
+      "failure": true,
+      "failing_in_group": 2,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "roleplay"
+        ]
+      }
+    },
+    {
+      "trace_id": "q146-llama-13b",
+      "reasons": [
+        "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+      ],
+      "cluster": 3,
+      "represents": 6,
+      "duplicates": [
+        "q146-alpaca-13b",
+        "q146-claude-v1",
+        "q146-gpt-3.5-turbo",
+        "q146-gpt-4",
+        "q146-vicuna-13b-v1.2"
+      ],
+      "failure": true,
+      "failing_in_group": 1,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "stem"
+        ]
+      }
+    },
+    {
+      "trace_id": "q156-alpaca-13b",
+      "reasons": [
+        "covers category=humanities (10 unique traces, 12%)"
+      ],
+      "cluster": 3,
+      "represents": 6,
+      "duplicates": [
+        "q156-claude-v1",
+        "q156-gpt-3.5-turbo",
+        "q156-gpt-4",
+        "q156-llama-13b",
+        "q156-vicuna-13b-v1.2"
+      ],
+      "failure": false,
+      "failing_in_group": 0,
+      "strata": {
+        "feedback": [
+          "(none)"
+        ],
+        "category": [
+          "humanities"
+        ]
+      }
+    },
+    {
+      "trace_id": "q87-llama-13b",
+      "reasons": [
+        "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+      ],
+      "cluster": 4,
+      "represents": 6,
+      "duplicates": [
+        "q87-alpaca-13b",
+        "q87-claude-v1",
+        "q87-gpt-3.5-turbo",
+        "q87-gpt-4",
+        "q87-vicuna-13b-v1.2"
+      ],
+      "failure": true,
+      "failing_in_group": 1,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "writing"
+        ]
+      }
+    },
+    {
+      "trace_id": "q136-llama-13b",
+      "reasons": [
+        "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+      ],
+      "cluster": 4,
+      "represents": 6,
+      "duplicates": [
+        "q136-alpaca-13b",
+        "q136-claude-v1",
+        "q136-gpt-3.5-turbo",
+        "q136-gpt-4",
+        "q136-vicuna-13b-v1.2"
+      ],
+      "failure": true,
+      "failing_in_group": 1,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "extraction"
+        ]
+      }
+    },
+    {
+      "trace_id": "q142-llama-13b",
+      "reasons": [
+        "adds variety within cluster 4 (10 traces, 12%; word, like, river); least similar to cases already picked there"
+      ],
+      "cluster": 4,
+      "represents": 6,
+      "duplicates": [
+        "q142-alpaca-13b",
+        "q142-claude-v1",
+        "q142-gpt-3.5-turbo",
+        "q142-gpt-4",
+        "q142-vicuna-13b-v1.2"
+      ],
+      "failure": true,
+      "failing_in_group": 1,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "stem"
+        ]
+      }
+    },
+    {
+      "trace_id": "q125-alpaca-13b",
+      "reasons": [
+        "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+      ],
+      "cluster": 5,
+      "represents": 6,
+      "duplicates": [
+        "q125-claude-v1",
+        "q125-gpt-3.5-turbo",
+        "q125-gpt-4",
+        "q125-llama-13b",
+        "q125-vicuna-13b-v1.2"
+      ],
+      "failure": true,
+      "failing_in_group": 1,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "coding"
+        ]
+      }
+    },
+    {
+      "trace_id": "q145-alpaca-13b",
+      "reasons": [
+        "adds variety within cluster 5 (7 traces, 9%; tree, binary, binary tree); least similar to cases already picked there"
+      ],
+      "cluster": 5,
+      "represents": 6,
+      "duplicates": [
+        "q145-claude-v1",
+        "q145-gpt-3.5-turbo",
+        "q145-gpt-4",
+        "q145-llama-13b",
+        "q145-vicuna-13b-v1.2"
+      ],
+      "failure": false,
+      "failing_in_group": 0,
+      "strata": {
+        "feedback": [
+          "(none)"
+        ],
+        "category": [
+          "stem"
+        ]
+      }
+    },
+    {
+      "trace_id": "q118-alpaca-13b",
+      "reasons": [
+        "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+      ],
+      "cluster": 6,
+      "represents": 6,
+      "duplicates": [
+        "q118-claude-v1",
+        "q118-gpt-3.5-turbo",
+        "q118-gpt-4",
+        "q118-llama-13b",
+        "q118-vicuna-13b-v1.2"
+      ],
+      "failure": true,
+      "failing_in_group": 1,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "math"
+        ]
+      }
+    },
+    {
+      "trace_id": "q103-llama-13b",
+      "reasons": [
+        "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+      ],
+      "cluster": 7,
+      "represents": 6,
+      "duplicates": [
+        "q103-alpaca-13b",
+        "q103-claude-v1",
+        "q103-gpt-3.5-turbo",
+        "q103-gpt-4",
+        "q103-vicuna-13b-v1.2"
+      ],
+      "failure": true,
+      "failing_in_group": 1,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "reasoning"
+        ]
+      }
+    },
+    {
+      "trace_id": "q104-vicuna-13b-v1.2",
+      "reasons": [
+        "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+      ],
+      "cluster": 7,
+      "represents": 6,
+      "duplicates": [
+        "q104-alpaca-13b",
+        "q104-claude-v1",
+        "q104-gpt-3.5-turbo",
+        "q104-gpt-4",
+        "q104-llama-13b"
+      ],
+      "failure": true,
+      "failing_in_group": 1,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "reasoning"
+        ]
+      }
+    },
+    {
+      "trace_id": "q106-gpt-3.5-turbo",
+      "reasons": [
+        "adds variety within cluster 7 (10 traces, 12%; question, explain, father); least similar to cases already picked there"
+      ],
+      "cluster": 7,
+      "represents": 6,
+      "duplicates": [
+        "q106-alpaca-13b",
+        "q106-claude-v1",
+        "q106-gpt-4",
+        "q106-llama-13b",
+        "q106-vicuna-13b-v1.2"
+      ],
+      "failure": true,
+      "failing_in_group": 3,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "reasoning"
+        ]
+      }
+    },
+    {
+      "trace_id": "q113-alpaca-13b",
+      "reasons": [
+        "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+      ],
+      "cluster": 8,
+      "represents": 6,
+      "duplicates": [
+        "q113-claude-v1",
+        "q113-gpt-3.5-turbo",
+        "q113-gpt-4",
+        "q113-llama-13b",
+        "q113-vicuna-13b-v1.2"
+      ],
+      "failure": true,
+      "failing_in_group": 2,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "math"
+        ]
+      }
+    },
+    {
+      "trace_id": "q159-alpaca-13b",
+      "reasons": [
+        "adds variety within cluster 8 (7 traces, 9%; color, green, car); least similar to cases already picked there"
+      ],
+      "cluster": 8,
+      "represents": 6,
+      "duplicates": [
+        "q159-claude-v1",
+        "q159-gpt-3.5-turbo",
+        "q159-gpt-4",
+        "q159-llama-13b",
+        "q159-vicuna-13b-v1.2"
+      ],
+      "failure": true,
+      "failing_in_group": 2,
+      "strata": {
+        "feedback": [
+          "negative"
+        ],
+        "category": [
+          "humanities"
+        ]
+      }
+    }
+  ]
+}

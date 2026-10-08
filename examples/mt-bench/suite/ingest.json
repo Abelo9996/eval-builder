@@ -1,0 +1,33 @@
+{
+  "traces": 480,
+  "sources": [
+    {
+      "path": "examples/mt-bench/data/logs.jsonl",
+      "sha256": "b718e2880b100ba6eeda94c47e9790358b9e897b8132473064888066bc268aa1",
+      "format": "openai",
+      "records": 480,
+      "traces": 480,
+      "skipped": {}
+    }
+  ],
+  "redactions": {
+    "enabled": true,
+    "total": 0,
+    "by_kind": {},
+    "traces_affected": 0,
+    "by_trace": {},
+    "note": "Values are replaced with [REDACTED_<KIND>]; originals are never written."
+  },
+  "with_error": 0,
+  "feedback": {
+    "negative": 67,
+    "none": 376,
+    "positive": 37
+  },
+  "routes": {
+    "none": 480
+  },
+  "tools": {},
+  "multi_turn": 480,
+  "output_file": "examples/mt-bench/suite/traces.jsonl"
+}

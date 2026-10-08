@@ -1,0 +1,1307 @@
+{
+  "generated_at": "2026-10-08T12:13:29+00:00",
+  "eval_builder_version": "0.1.0",
+  "workspace": "examples/mt-bench/suite",
+  "ingest": {
+    "traces": 480,
+    "sources": [
+      {
+        "path": "examples/mt-bench/data/logs.jsonl",
+        "sha256": "b718e2880b100ba6eeda94c47e9790358b9e897b8132473064888066bc268aa1",
+        "format": "openai",
+        "records": 480,
+        "traces": 480,
+        "skipped": {}
+      }
+    ],
+    "redactions": {
+      "enabled": true,
+      "total": 0,
+      "by_kind": {},
+      "traces_affected": 0,
+      "by_trace": {},
+      "note": "Values are replaced with [REDACTED_<KIND>]; originals are never written."
+    },
+    "with_error": 0,
+    "feedback": {
+      "negative": 67,
+      "none": 376,
+      "positive": 37
+    },
+    "routes": {
+      "none": 480
+    },
+    "tools": {},
+    "multi_turn": 480,
+    "output_file": "examples/mt-bench/suite/traces.jsonl"
+  },
+  "selection": {
+    "params": {
+      "n": 24,
+      "seed": 0,
+      "clusters": 9,
+      "failure_share": 0.3,
+      "near_dup_threshold": 0.9,
+      "dedupe_on": "input",
+      "stratify": [
+        "route",
+        "tools",
+        "error",
+        "feedback",
+        "category"
+      ]
+    },
+    "population": {
+      "traces": 480,
+      "exact_duplicates_removed": 400,
+      "near_duplicates_merged": 0,
+      "unique": 80,
+      "failures_unique": 50
+    },
+    "clusters": [
+      {
+        "id": 0,
+        "size": 11,
+        "share": 0.1375,
+        "terms": [
+          "response",
+          "previous response",
+          "previous",
+          "sentence",
+          "post"
+        ],
+        "selected": 3
+      },
+      {
+        "id": 1,
+        "size": 14,
+        "share": 0.175,
+        "terms": [
+          "4z",
+          "express",
+          "triangle",
+          "year",
+          "total"
+        ],
+        "selected": 4
+      },
+      {
+        "id": 2,
+        "size": 7,
+        "share": 0.0875,
+        "terms": [
+          "time",
+          "complexity",
+          "implement",
+          "time complexity",
+          "does"
+        ],
+        "selected": 3
+      },
+      {
+        "id": 3,
+        "size": 8,
+        "share": 0.1,
+        "terms": [
+          "learning",
+          "use",
+          "explain",
+          "provide",
+          "example"
+        ],
+        "selected": 3
+      },
+      {
+        "id": 4,
+        "size": 10,
+        "share": 0.125,
+        "terms": [
+          "word",
+          "like",
+          "river",
+          "musk",
+          "elon musk"
+        ],
+        "selected": 3
+      },
+      {
+        "id": 5,
+        "size": 7,
+        "share": 0.0875,
+        "terms": [
+          "tree",
+          "binary",
+          "binary tree",
+          "function",
+          "write function"
+        ],
+        "selected": 2
+      },
+      {
+        "id": 6,
+        "size": 6,
+        "share": 0.075,
+        "terms": [
+          "number",
+          "10",
+          "program",
+          "divided",
+          "number divided"
+        ],
+        "selected": 1
+      },
+      {
+        "id": 7,
+        "size": 10,
+        "share": 0.125,
+        "terms": [
+          "question",
+          "explain",
+          "father",
+          "david",
+          "brothers"
+        ],
+        "selected": 3
+      },
+      {
+        "id": 8,
+        "size": 7,
+        "share": 0.0875,
+        "terms": [
+          "color",
+          "green",
+          "car",
+          "new",
+          "business"
+        ],
+        "selected": 2
+      }
+    ],
+    "strata": {
+      "feedback": {
+        "(none)": {
+          "population": 30,
+          "selected": 5
+        },
+        "negative": {
+          "population": 50,
+          "selected": 19
+        }
+      },
+      "category": {
+        "coding": {
+          "population": 10,
+          "selected": 4
+        },
+        "extraction": {
+          "population": 10,
+          "selected": 2
+        },
+        "humanities": {
+          "population": 10,
+          "selected": 2
+        },
+        "math": {
+          "population": 10,
+          "selected": 5
+        },
+        "reasoning": {
+          "population": 10,
+          "selected": 3
+        },
+        "roleplay": {
+          "population": 10,
+          "selected": 1
+        },
+        "stem": {
+          "population": 10,
+          "selected": 4
+        },
+        "writing": {
+          "population": 10,
+          "selected": 3
+        }
+      }
+    },
+    "strata_skipped": {},
+    "selected_count": 24,
+    "selected_failures": 19,
+    "selected": [
+      {
+        "trace_id": "q81-alpaca-13b",
+        "reasons": [
+          "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 0,
+        "represents": 6,
+        "duplicates": [
+          "q81-claude-v1",
+          "q81-gpt-3.5-turbo",
+          "q81-gpt-4",
+          "q81-llama-13b",
+          "q81-vicuna-13b-v1.2"
+        ],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "writing"
+          ]
+        }
+      },
+      {
+        "trace_id": "q82-alpaca-13b",
+        "reasons": [
+          "adds variety within cluster 0 (11 traces, 14%; response, previous response, previous); least similar to cases already picked there"
+        ],
+        "cluster": 0,
+        "represents": 6,
+        "duplicates": [
+          "q82-claude-v1",
+          "q82-gpt-3.5-turbo",
+          "q82-gpt-4",
+          "q82-llama-13b",
+          "q82-vicuna-13b-v1.2"
+        ],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "writing"
+          ]
+        }
+      },
+      {
+        "trace_id": "q144-alpaca-13b",
+        "reasons": [
+          "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 0,
+        "represents": 6,
+        "duplicates": [
+          "q144-claude-v1",
+          "q144-gpt-3.5-turbo",
+          "q144-gpt-4",
+          "q144-llama-13b",
+          "q144-vicuna-13b-v1.2"
+        ],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "stem"
+          ]
+        }
+      },
+      {
+        "trace_id": "q111-alpaca-13b",
+        "reasons": [
+          "adds variety within cluster 1 (14 traces, 18%; 4z, express, triangle); least similar to cases already picked there"
+        ],
+        "cluster": 1,
+        "represents": 6,
+        "duplicates": [
+          "q111-claude-v1",
+          "q111-gpt-3.5-turbo",
+          "q111-gpt-4",
+          "q111-llama-13b",
+          "q111-vicuna-13b-v1.2"
+        ],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "math"
+          ]
+        }
+      },
+      {
+        "trace_id": "q116-alpaca-13b",
+        "reasons": [
+          "adds variety within cluster 1 (14 traces, 18%; 4z, express, triangle); least similar to cases already picked there"
+        ],
+        "cluster": 1,
+        "represents": 6,
+        "duplicates": [
+          "q116-claude-v1",
+          "q116-gpt-3.5-turbo",
+          "q116-gpt-4",
+          "q116-llama-13b",
+          "q116-vicuna-13b-v1.2"
+        ],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "math"
+          ]
+        }
+      },
+      {
+        "trace_id": "q119-alpaca-13b",
+        "reasons": [
+          "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 1,
+        "represents": 6,
+        "duplicates": [
+          "q119-claude-v1",
+          "q119-gpt-3.5-turbo",
+          "q119-gpt-4",
+          "q119-llama-13b",
+          "q119-vicuna-13b-v1.2"
+        ],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "math"
+          ]
+        }
+      },
+      {
+        "trace_id": "q134-alpaca-13b",
+        "reasons": [
+          "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 1,
+        "represents": 6,
+        "duplicates": [
+          "q134-claude-v1",
+          "q134-gpt-3.5-turbo",
+          "q134-gpt-4",
+          "q134-llama-13b",
+          "q134-vicuna-13b-v1.2"
+        ],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "extraction"
+          ]
+        }
+      },
+      {
+        "trace_id": "q126-alpaca-13b",
+        "reasons": [
+          "covers feedback=(none) (30 unique traces, 38%)"
+        ],
+        "cluster": 2,
+        "represents": 6,
+        "duplicates": [
+          "q126-claude-v1",
+          "q126-gpt-3.5-turbo",
+          "q126-gpt-4",
+          "q126-llama-13b",
+          "q126-vicuna-13b-v1.2"
+        ],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "coding"
+          ]
+        }
+      },
+      {
+        "trace_id": "q129-llama-13b",
+        "reasons": [
+          "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 2,
+        "represents": 6,
+        "duplicates": [
+          "q129-alpaca-13b",
+          "q129-claude-v1",
+          "q129-gpt-3.5-turbo",
+          "q129-gpt-4",
+          "q129-vicuna-13b-v1.2"
+        ],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "coding"
+          ]
+        }
+      },
+      {
+        "trace_id": "q130-llama-13b",
+        "reasons": [
+          "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 2,
+        "represents": 6,
+        "duplicates": [
+          "q130-alpaca-13b",
+          "q130-claude-v1",
+          "q130-gpt-3.5-turbo",
+          "q130-gpt-4",
+          "q130-vicuna-13b-v1.2"
+        ],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "coding"
+          ]
+        }
+      },
+      {
+        "trace_id": "q95-alpaca-13b",
+        "reasons": [
+          "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 3,
+        "represents": 6,
+        "duplicates": [
+          "q95-claude-v1",
+          "q95-gpt-3.5-turbo",
+          "q95-gpt-4",
+          "q95-llama-13b",
+          "q95-vicuna-13b-v1.2"
+        ],
+        "failure": true,
+        "failing_in_group": 2,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "roleplay"
+          ]
+        }
+      },
+      {
+        "trace_id": "q146-llama-13b",
+        "reasons": [
+          "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 3,
+        "represents": 6,
+        "duplicates": [
+          "q146-alpaca-13b",
+          "q146-claude-v1",
+          "q146-gpt-3.5-turbo",
+          "q146-gpt-4",
+          "q146-vicuna-13b-v1.2"
+        ],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "stem"
+          ]
+        }
+      },
+      {
+        "trace_id": "q156-alpaca-13b",
+        "reasons": [
+          "covers category=humanities (10 unique traces, 12%)"
+        ],
+        "cluster": 3,
+        "represents": 6,
+        "duplicates": [
+          "q156-claude-v1",
+          "q156-gpt-3.5-turbo",
+          "q156-gpt-4",
+          "q156-llama-13b",
+          "q156-vicuna-13b-v1.2"
+        ],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "humanities"
+          ]
+        }
+      },
+      {
+        "trace_id": "q87-llama-13b",
+        "reasons": [
+          "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 4,
+        "represents": 6,
+        "duplicates": [
+          "q87-alpaca-13b",
+          "q87-claude-v1",
+          "q87-gpt-3.5-turbo",
+          "q87-gpt-4",
+          "q87-vicuna-13b-v1.2"
+        ],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "writing"
+          ]
+        }
+      },
+      {
+        "trace_id": "q136-llama-13b",
+        "reasons": [
+          "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 4,
+        "represents": 6,
+        "duplicates": [
+          "q136-alpaca-13b",
+          "q136-claude-v1",
+          "q136-gpt-3.5-turbo",
+          "q136-gpt-4",
+          "q136-vicuna-13b-v1.2"
+        ],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "extraction"
+          ]
+        }
+      },
+      {
+        "trace_id": "q142-llama-13b",
+        "reasons": [
+          "adds variety within cluster 4 (10 traces, 12%; word, like, river); least similar to cases already picked there"
+        ],
+        "cluster": 4,
+        "represents": 6,
+        "duplicates": [
+          "q142-alpaca-13b",
+          "q142-claude-v1",
+          "q142-gpt-3.5-turbo",
+          "q142-gpt-4",
+          "q142-vicuna-13b-v1.2"
+        ],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "stem"
+          ]
+        }
+      },
+      {
+        "trace_id": "q125-alpaca-13b",
+        "reasons": [
+          "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 5,
+        "represents": 6,
+        "duplicates": [
+          "q125-claude-v1",
+          "q125-gpt-3.5-turbo",
+          "q125-gpt-4",
+          "q125-llama-13b",
+          "q125-vicuna-13b-v1.2"
+        ],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "coding"
+          ]
+        }
+      },
+      {
+        "trace_id": "q145-alpaca-13b",
+        "reasons": [
+          "adds variety within cluster 5 (7 traces, 9%; tree, binary, binary tree); least similar to cases already picked there"
+        ],
+        "cluster": 5,
+        "represents": 6,
+        "duplicates": [
+          "q145-claude-v1",
+          "q145-gpt-3.5-turbo",
+          "q145-gpt-4",
+          "q145-llama-13b",
+          "q145-vicuna-13b-v1.2"
+        ],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "stem"
+          ]
+        }
+      },
+      {
+        "trace_id": "q118-alpaca-13b",
+        "reasons": [
+          "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 6,
+        "represents": 6,
+        "duplicates": [
+          "q118-claude-v1",
+          "q118-gpt-3.5-turbo",
+          "q118-gpt-4",
+          "q118-llama-13b",
+          "q118-vicuna-13b-v1.2"
+        ],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "math"
+          ]
+        }
+      },
+      {
+        "trace_id": "q103-llama-13b",
+        "reasons": [
+          "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 7,
+        "represents": 6,
+        "duplicates": [
+          "q103-alpaca-13b",
+          "q103-claude-v1",
+          "q103-gpt-3.5-turbo",
+          "q103-gpt-4",
+          "q103-vicuna-13b-v1.2"
+        ],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "reasoning"
+          ]
+        }
+      },
+      {
+        "trace_id": "q104-vicuna-13b-v1.2",
+        "reasons": [
+          "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 7,
+        "represents": 6,
+        "duplicates": [
+          "q104-alpaca-13b",
+          "q104-claude-v1",
+          "q104-gpt-3.5-turbo",
+          "q104-gpt-4",
+          "q104-llama-13b"
+        ],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "reasoning"
+          ]
+        }
+      },
+      {
+        "trace_id": "q106-gpt-3.5-turbo",
+        "reasons": [
+          "adds variety within cluster 7 (10 traces, 12%; question, explain, father); least similar to cases already picked there"
+        ],
+        "cluster": 7,
+        "represents": 6,
+        "duplicates": [
+          "q106-alpaca-13b",
+          "q106-claude-v1",
+          "q106-gpt-4",
+          "q106-llama-13b",
+          "q106-vicuna-13b-v1.2"
+        ],
+        "failure": true,
+        "failing_in_group": 3,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "reasoning"
+          ]
+        }
+      },
+      {
+        "trace_id": "q113-alpaca-13b",
+        "reasons": [
+          "failure (negative user feedback); 62% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 8,
+        "represents": 6,
+        "duplicates": [
+          "q113-claude-v1",
+          "q113-gpt-3.5-turbo",
+          "q113-gpt-4",
+          "q113-llama-13b",
+          "q113-vicuna-13b-v1.2"
+        ],
+        "failure": true,
+        "failing_in_group": 2,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "math"
+          ]
+        }
+      },
+      {
+        "trace_id": "q159-alpaca-13b",
+        "reasons": [
+          "adds variety within cluster 8 (7 traces, 9%; color, green, car); least similar to cases already picked there"
+        ],
+        "cluster": 8,
+        "represents": 6,
+        "duplicates": [
+          "q159-claude-v1",
+          "q159-gpt-3.5-turbo",
+          "q159-gpt-4",
+          "q159-llama-13b",
+          "q159-vicuna-13b-v1.2"
+        ],
+        "failure": true,
+        "failing_in_group": 2,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "humanities"
+          ]
+        }
+      }
+    ]
+  },
+  "cases": {
+    "total": 24,
+    "by_status": {
+      "draft": 0,
+      "ready": 24,
+      "dropped": 0
+    }
+  },
+  "judge_check": {
+    "judgments_file": "examples/mt-bench/suite/judgments.jsonl",
+    "labels_file": null,
+    "labeled_cases": 0,
+    "thresholds": {
+      "min_trials": 3,
+      "min_cases": 10,
+      "max_flip_rate": 0.2,
+      "min_position_consistency": 0.8,
+      "max_toward_padded_rate": 0.1,
+      "min_kappa": 0.4,
+      "min_labeled": 20
+    },
+    "summary": [
+      {
+        "judge": "qwen2.5-7b-pointwise",
+        "mode": "pointwise",
+        "verdict": "unstable",
+        "flip_rate": 0.2917,
+        "kappa": null,
+        "accuracy": null,
+        "position_consistency": null,
+        "toward_padded": 0.0,
+        "reasons": [
+          "verdict changed across repeated trials on 29% of cases (limit 20%)"
+        ]
+      }
+    ],
+    "judges": {
+      "qwen2.5-7b-pointwise": {
+        "mode": "pointwise",
+        "verdict": "unstable",
+        "reasons": [
+          "verdict changed across repeated trials on 29% of cases (limit 20%)"
+        ],
+        "checks": {
+          "stability": "fail",
+          "position": "not run",
+          "verbosity": "pass",
+          "human_agreement": "not enough data"
+        },
+        "stability": {
+          "cases": 24,
+          "trials_per_case": [
+            5
+          ],
+          "flip_rate": {
+            "k": 7,
+            "n": 24,
+            "rate": 0.2917,
+            "ci95": [
+              0.1491,
+              0.4917
+            ]
+          },
+          "mean_self_agreement": 0.9,
+          "no_majority_cases": 0,
+          "majority_of_3_stability": 0.9375,
+          "invalid_outputs": 0,
+          "calls": 240
+        },
+        "human_agreement": null,
+        "position_probe": null,
+        "verbosity_probe": {
+          "cases": 24,
+          "changed": {
+            "k": 2,
+            "n": 24,
+            "rate": 0.0833,
+            "ci95": [
+              0.0232,
+              0.2585
+            ]
+          },
+          "toward_padded": {
+            "k": 0,
+            "n": 24,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.138
+            ]
+          },
+          "note": "padding appends an irrelevant paragraph; toward_padded = share of cases where the padded answer's verdict improved"
+        },
+        "cases": [
+          {
+            "case_id": "case-001",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-002",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-003",
+            "trials": 5,
+            "counts": {
+              "fail": 3,
+              "pass": 2
+            },
+            "majority": "fail",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-004",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-005",
+            "trials": 5,
+            "counts": {
+              "fail": 4,
+              "fail\n\nexplanation:\nthe assistant's previous": 1
+            },
+            "majority": "fail",
+            "majority_share": 0.8,
+            "flipped": true,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-006",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-007",
+            "trials": 5,
+            "counts": {
+              "fail": 3,
+              "fail\nexplanation: the assistant's reply": 1,
+              "fail\nthe assistant's calculation is incorrect": 1
+            },
+            "majority": "fail",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-008",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-009",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-010",
+            "trials": 5,
+            "counts": {
+              "fail": 3,
+              "pass": 2
+            },
+            "majority": "fail",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-011",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-012",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-013",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-014",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-015",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-016",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-017",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-018",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-019",
+            "trials": 5,
+            "counts": {
+              "fail": 3,
+              "fail\nexplanation: the calculation is incorrect": 1,
+              "fail\nthe number is 10": 1
+            },
+            "majority": "fail",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-020",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-021",
+            "trials": 5,
+            "counts": {
+              "fail": 4,
+              "fail\nexplanation: the assistant's reply": 1
+            },
+            "majority": "fail",
+            "majority_share": 0.8,
+            "flipped": true,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-022",
+            "trials": 5,
+            "counts": {
+              "fail": 3,
+              "fail\nexplanation: the reply does not": 1,
+              "fail\nthe assistant's response incorrectly states": 1
+            },
+            "majority": "fail",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-023",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-024",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          }
+        ]
+      }
+    },
+    "trustworthy": []
+  },
+  "exports": {
+    "cases": 24,
+    "formats": [
+      "promptfoo",
+      "deepeval",
+      "inspect",
+      "jsonl"
+    ],
+    "files": [
+      {
+        "path": "exports/promptfoo/promptfooconfig.yaml",
+        "sha256": "8cf28fe31810942f4b0a1f0ca036a55f73abc00a5bf4632e37a8a9bccf374155"
+      },
+      {
+        "path": "exports/deepeval/dataset.json",
+        "sha256": "9f8184fa50a284c65ad3ec2fbdb23bb252418e256a60f274a8459ce8de925a87"
+      },
+      {
+        "path": "exports/deepeval/test_eval_builder.py",
+        "sha256": "eaa505fed9db83a88c563d63fc05eca7c98f263c0522f6f109136fdd74ed38a5"
+      },
+      {
+        "path": "exports/inspect/dataset.jsonl",
+        "sha256": "a5549d41878924bdef0637fbeda4eec409cdf1760bcd40998f6a9b165de6b22a"
+      },
+      {
+        "path": "exports/inspect/task.py",
+        "sha256": "df284b6b6dedeb833e283cd9226241c17a84bed70924d097e9a6c45cba69c36e"
+      },
+      {
+        "path": "exports/jsonl/cases.jsonl",
+        "sha256": "126606d67661e353624e65b02e209e085aad6af495a6eefed8916344ed0e05e9"
+      }
+    ],
+    "judge_check": {
+      "trustworthy": [],
+      "verdicts": {
+        "qwen2.5-7b-pointwise": "unstable"
+      },
+      "thresholds": {
+        "min_trials": 3,
+        "min_cases": 10,
+        "max_flip_rate": 0.2,
+        "min_position_consistency": 0.8,
+        "max_toward_padded_rate": 0.1,
+        "min_kappa": 0.4,
+        "min_labeled": 20
+      }
+    },
+    "trusted_judge_prompts": {}
+  },
+  "judge_run": {
+    "runs": [
+      {
+        "started": "2026-10-08T12:10:12.907191+00:00",
+        "judges": {
+          "qwen2.5-7b-pointwise": {
+            "command": "python examples/judges/ollama_judge.py --model qwen2.5:7b-instruct --num-ctx 4096",
+            "requests": 240,
+            "ok": 240,
+            "errors": 0,
+            "seconds": 191.69,
+            "exit_code": 0
+          }
+        },
+        "finished": "2026-10-08T12:13:24.606460+00:00",
+        "judges_without_command": []
+      }
+    ]
+  },
+  "limits": [
+    "Selection is lexical (TF-IDF over the user input). Two inputs that mean the same thing in different words can land in different clusters, and near-duplicate detection only catches close textual matches.",
+    "Redaction is pattern-based (emails, common API key formats, Luhn-valid card numbers, US-style phone numbers, SSN-shaped numbers). Names, addresses and free-form secrets are not detected. Review traces before sharing them.",
+    "eval-builder does not write expected behavior. Cases are only as good as what the agent and user put in cases.yaml.",
+    "Judge verdicts depend on the thresholds shown and on how many cases, trials and human labels were provided. Small samples give wide intervals; read the intervals, not just the point estimates.",
+    "The bias probes cover answer order and irrelevant padding only. They do not detect self-preference, style bias or rubric misreadings.",
+    "No human labels were provided, so no judge can be marked trustworthy."
+  ]
+}

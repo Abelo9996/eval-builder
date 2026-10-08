@@ -1,0 +1,389 @@
+{
+  "judgments_file": "examples/mt-bench/suite/judgments.jsonl",
+  "labels_file": null,
+  "labeled_cases": 0,
+  "thresholds": {
+    "min_trials": 3,
+    "min_cases": 10,
+    "max_flip_rate": 0.2,
+    "min_position_consistency": 0.8,
+    "max_toward_padded_rate": 0.1,
+    "min_kappa": 0.4,
+    "min_labeled": 20
+  },
+  "summary": [
+    {
+      "judge": "qwen2.5-7b-pointwise",
+      "mode": "pointwise",
+      "verdict": "unstable",
+      "flip_rate": 0.2917,
+      "kappa": null,
+      "accuracy": null,
+      "position_consistency": null,
+      "toward_padded": 0.0,
+      "reasons": [
+        "verdict changed across repeated trials on 29% of cases (limit 20%)"
+      ]
+    }
+  ],
+  "judges": {
+    "qwen2.5-7b-pointwise": {
+      "mode": "pointwise",
+      "verdict": "unstable",
+      "reasons": [
+        "verdict changed across repeated trials on 29% of cases (limit 20%)"
+      ],
+      "checks": {
+        "stability": "fail",
+        "position": "not run",
+        "verbosity": "pass",
+        "human_agreement": "not enough data"
+      },
+      "stability": {
+        "cases": 24,
+        "trials_per_case": [
+          5
+        ],
+        "flip_rate": {
+          "k": 7,
+          "n": 24,
+          "rate": 0.2917,
+          "ci95": [
+            0.1491,
+            0.4917
+          ]
+        },
+        "mean_self_agreement": 0.9,
+        "no_majority_cases": 0,
+        "majority_of_3_stability": 0.9375,
+        "invalid_outputs": 0,
+        "calls": 240
+      },
+      "human_agreement": null,
+      "position_probe": null,
+      "verbosity_probe": {
+        "cases": 24,
+        "changed": {
+          "k": 2,
+          "n": 24,
+          "rate": 0.0833,
+          "ci95": [
+            0.0232,
+            0.2585
+          ]
+        },
+        "toward_padded": {
+          "k": 0,
+          "n": 24,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.138
+          ]
+        },
+        "note": "padding appends an irrelevant paragraph; toward_padded = share of cases where the padded answer's verdict improved"
+      },
+      "cases": [
+        {
+          "case_id": "case-001",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-002",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-003",
+          "trials": 5,
+          "counts": {
+            "fail": 3,
+            "pass": 2
+          },
+          "majority": "fail",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-004",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-005",
+          "trials": 5,
+          "counts": {
+            "fail": 4,
+            "fail\n\nexplanation:\nthe assistant's previous": 1
+          },
+          "majority": "fail",
+          "majority_share": 0.8,
+          "flipped": true,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-006",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-007",
+          "trials": 5,
+          "counts": {
+            "fail": 3,
+            "fail\nexplanation: the assistant's reply": 1,
+            "fail\nthe assistant's calculation is incorrect": 1
+          },
+          "majority": "fail",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-008",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-009",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-010",
+          "trials": 5,
+          "counts": {
+            "fail": 3,
+            "pass": 2
+          },
+          "majority": "fail",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-011",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-012",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-013",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-014",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-015",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-016",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-017",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-018",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-019",
+          "trials": 5,
+          "counts": {
+            "fail": 3,
+            "fail\nexplanation: the calculation is incorrect": 1,
+            "fail\nthe number is 10": 1
+          },
+          "majority": "fail",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-020",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-021",
+          "trials": 5,
+          "counts": {
+            "fail": 4,
+            "fail\nexplanation: the assistant's reply": 1
+          },
+          "majority": "fail",
+          "majority_share": 0.8,
+          "flipped": true,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-022",
+          "trials": 5,
+          "counts": {
+            "fail": 3,
+            "fail\nexplanation: the reply does not": 1,
+            "fail\nthe assistant's response incorrectly states": 1
+          },
+          "majority": "fail",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-023",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-024",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        }
+      ]
+    }
+  },
+  "trustworthy": []
+}

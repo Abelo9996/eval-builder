@@ -1,0 +1,48 @@
+# eval-builder rubric. Define the criteria your cases reference and the judges
+# you plan to check. A judge prompt may use {input}, {context} (earlier turns), {output},
+# {answer_a}, {answer_b}, {expected_behavior} and {criteria}; judge-plan renders it per
+# request.
+version: 1
+criteria:
+- id: correct
+  description: Facts, numbers and code are correct.
+  scale: pass_fail
+- id: follows-instructions
+  description: Does what the latest user turn asks, including format constraints.
+  scale: pass_fail
+- id: uses-context
+  description: Builds on the earlier turns instead of ignoring or contradicting them.
+  scale: pass_fail
+- id: complete
+  description: Covers what was asked in enough detail to be useful.
+  scale: pass_fail
+judges:
+- id: qwen2.5-7b-pointwise
+  mode: pointwise
+  criteria:
+  - correct
+  - follows-instructions
+  - uses-context
+  - complete
+  labels:
+  - pass
+  - fail
+  prompt: |
+    You are grading one reply from an AI assistant.
+
+    Earlier conversation:
+    {context}
+
+    Latest user message:
+    {input}
+
+    Assistant reply:
+    {output}
+
+    What a good reply does:
+    {expected_behavior}
+
+    Criteria:
+    {criteria}
+
+    Does the reply meet the expected behavior and the criteria? Answer with one word: pass or fail.

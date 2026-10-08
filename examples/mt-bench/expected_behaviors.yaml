@@ -1,0 +1,100 @@
+# Expected behavior for the 24 cases eval-builder selected from the MT-Bench logs.
+# Written by Claude Code acting as the host agent (the step a user and their agent do
+# together). Not reviewed by a human expert. Keyed by trace id so a rerun of the
+# pipeline applies them to the same conversations.
+q81-alpaca-13b:
+  criteria: [follows-instructions, uses-context]
+  expected_behavior: Rewrites the earlier Hawaii travel post so that every sentence starts with
+    the letter A, keeping the cultural experiences and attractions from the original.
+q82-alpaca-13b:
+  criteria: [follows-instructions, uses-context]
+  expected_behavior: Critiques its own email with at least one concrete weakness and a specific
+    improvement, not only praise.
+q144-alpaca-13b:
+  criteria: [correct, uses-context]
+  expected_behavior: Names one specific claim from its earlier answer about the central dogma
+    and replaces it with the correct fact (for example that Francis Crick named it, in 1958).
+q111-alpaca-13b:
+  criteria: [correct]
+  expected_behavior: The triangle has a right angle at the origin, so the circumscribed circle
+    has the hypotenuse (length sqrt(20)) as diameter, radius sqrt(5), and area 5*pi (about 15.7).
+q116-alpaca-13b:
+  criteria: [correct, uses-context]
+  expected_behavior: From x+y=4z and xy=4z^2 it follows that x=y=2z, so z-x = -z = -y/2.
+q119-alpaca-13b:
+  criteria: [correct, uses-context]
+  expected_behavior: The purchase cost was 5*20 + 3*30 + 2*45 = 280 dollars; with a 25% markup
+    the total revenue is 350 dollars.
+q134-alpaca-13b:
+  criteria: [correct, uses-context]
+  expected_behavior: Computes profit/revenue for the six listed companies only (X 10%, Y 10%,
+    Z 35%, W 7%, V 12.5%, U about 11.1%) and names Company Z (CEO Sarah Johnson) as highest.
+    Does not invent companies.
+q126-alpaca-13b:
+  criteria: [correct, complete]
+  expected_behavior: Says yes and describes the binary search partition method that runs in
+    O(log(min(m, n))) time with O(1) extra space. Does not suggest sorting, which is slower.
+q129-llama-13b:
+  criteria: [correct, complete]
+  expected_behavior: Says yes and implements a binary search approach (O(log k) or
+    O(log(m+n))) for the kth smallest element. Merge sort is not an improvement.
+q130-llama-13b:
+  criteria: [follows-instructions, correct]
+  expected_behavior: Gives an implementation that uses a hash set to find common elements in
+    O(n + m) time, now that extra data structures are allowed.
+q95-alpaca-13b:
+  criteria: [follows-instructions, correct]
+  expected_behavior: Recognizes German and renders the idiom by meaning ("It's all Greek to
+    me" or "I don't understand a thing"), not word for word, and gives only the polished text.
+q146-llama-13b:
+  criteria: [correct, complete]
+  expected_behavior: Says yes and names one concrete process with both an exothermic and an
+    endothermic step, saying which step is which.
+q156-alpaca-13b:
+  criteria: [follows-instructions, uses-context, complete]
+  expected_behavior: Gives a detailed, structured campaign plan (goals, audience, messages,
+    channels, timeline) built on the first example from its earlier answer.
+q87-llama-13b:
+  criteria: [follows-instructions, uses-context]
+  expected_behavior: Retells the abandoned-house story using only four-word sentences.
+q136-llama-13b:
+  criteria: [correct, follows-instructions, uses-context]
+  expected_behavior: 'Counts whole-word, case-insensitive occurrences in the same paragraph and
+    lists them in "word, number" lines sorted by count: the, 17; and, 5; to, 4.'
+q142-llama-13b:
+  criteria: [correct, complete]
+  expected_behavior: Lists real edge cases of the orbit analysis (for example a large speed
+    drop that makes the orbit elliptical or decay into the atmosphere, drag, escape speed)
+    and says how each changes the answer. Does not repeat itself.
+q125-alpaca-13b:
+  criteria: [correct, uses-context]
+  expected_behavior: Explains how to generalize the ancestor search to a tree where nodes have
+    any number of children (recurse over all children) and gives code or clear steps.
+q145-alpaca-13b:
+  criteria: [correct]
+  expected_behavior: Explains that the reaction is not simply run backward and gives a correct
+    route back to calcium carbonate, for example CaCl2 + Na2CO3 -> CaCO3 + 2 NaCl.
+q118-alpaca-13b:
+  criteria: [correct, uses-context]
+  expected_behavior: The number is 10k + 4, so twice it is 20k + 8, which leaves remainder 3
+    when divided by 5.
+q103-llama-13b:
+  criteria: [complete, uses-context]
+  expected_behavior: Explains that the question is a puzzle with an apparent contradiction
+    (healthy, yet in hospital daily) that invites lateral thinking about non-medical reasons.
+q104-vicuna-13b-v1.2:
+  criteria: [correct]
+  expected_behavior: If each sister has two brothers, those are David and one other boy, so
+    David has one brother.
+q106-gpt-3.5-turbo:
+  criteria: [correct]
+  expected_behavior: Says the first statement is uncertain, because bananas costing more than
+    both fruits says nothing about how oranges compare with apples.
+q113-alpaca-13b:
+  criteria: [correct, uses-context]
+  expected_behavior: The probability is 0, because a student who likes green cannot dislike
+    both colors.
+q159-alpaca-13b:
+  criteria: [follows-instructions, uses-context]
+  expected_behavior: Writes a video script (scenes or narration) for car wash staff in Japan
+    that covers the etiquette norms from its earlier answer.
