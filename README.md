@@ -8,6 +8,10 @@ uvx eval-builder select -n 40 && uvx eval-builder draft
 uvx eval-builder judge-check                   # after your agent has run each judge a few times
 ```
 
+> Not on PyPI yet. Until the first release, run it straight from GitHub by replacing `uvx eval-builder` with
+> `uvx --from git+https://github.com/Abelo9996/eval-builder eval-builder`. `setup` registers `uvx eval-builder mcp`, so it works once the
+> package is on PyPI.
+
 eval-builder is not another eval platform. It builds the suite and checks the judges,
 then exports to the tools you already run: promptfoo, DeepEval, Inspect AI, or plain
 JSONL. It never calls a model. Your coding agent (Claude Code, Codex, Cursor) does the
