@@ -10,18 +10,26 @@ uvx eval-builder ingest sample_logs.jsonl     # or your own logs: OpenAI, Anthro
 uvx eval-builder select -n 10 --stratify category && uvx eval-builder draft
 ```
 
-What you get (real output, eval-builder 0.1.1 on the sample file):
+![The quickstart running against eval-builder 0.1.1 from PyPI](docs/demo.gif)
+
+What you get (real output of the commands above, eval-builder 0.1.1 from PyPI; the
+curl and the three uvx calls took 35 s in total here; the very first uvx run also
+downloads about 38 MiB, mostly numpy, scipy and scikit-learn, which took 6 s here):
 
 ```
 ingested 48 traces into evalset/traces.jsonl
   sample_logs.jsonl: format=openai records=48 traces=48 skipped=0 sha256=2d5dd2295784988b
 redactions: 0 {}
+next: eval-builder select -n 30 (add --stratify <metadata keys> to cover them)
 48 traces -> 16 unique (32 exact dupes, 0 near dupes) -> selected 10 (8 failures) across 4 clusters
   q121-llama-13b: failure (negative user feedback); 69% of unique traces are failures and at least 30% of picks are reserved for them
+  q81-alpaca-13b: failure (negative user feedback); 69% of unique traces are failures and at least 30% of picks are reserved for them
   q102-alpaca-13b: covers category=reasoning (2 unique traces, 12%)
   q111-alpaca-13b: adds variety within cluster 1 (8 traces, 50%; triangle, response, person); least similar to cases already picked there
-  ...
+  ... (6 more picks)
+next: run draft to turn the selection into cases.yaml
 10 case(s) added, 10 total in evalset/cases.yaml
+next: read the cases (list_cases, or cases.yaml), define criteria and judges (set_rubric, or rubric.yaml), fill expected_behavior and criteria per case and set status: ready (update_case), then run validate
 ```
 
 `evalset/cases.yaml` now holds 10 real conversations with a TODO where the expected
