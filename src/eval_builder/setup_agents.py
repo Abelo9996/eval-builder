@@ -133,13 +133,17 @@ def _cursor_action(home: Path, server: list[str], path_env: str | None) -> Actio
     return Action("Cursor", "edit", str(cfg), f"set mcpServers.{NAME} = {json.dumps(entry)}", run)
 
 
-def _skill_actions(home: Path) -> list[Action]:
+def _skill_actions(home: Path, path_env: str | None = None) -> list[Action]:
     text = skill_text()
     out = []
-    for agent, base in (("Claude Code", home / ".claude"), ("Codex", home / ".codex")):
+    for agent, base, exe in (
+        ("Claude Code", home / ".claude", "claude"),
+        ("Codex", home / ".codex", "codex"),
+    ):
         dest = base / "skills" / NAME / "SKILL.md"
-        if not base.exists():
-            out.append(Action(agent, "skip", str(dest), f"{base} not found"))
+        # installed but never run yet: the CLI is on PATH and its config dir does not exist
+        if not base.exists() and not shutil.which(exe, path=path_env):
+            out.append(Action(agent, "skip", str(dest), f"{agent} not detected ({base} not found)"))
             continue
         if dest.exists() and dest.read_text("utf-8") == text:
             out.append(Action(agent, "skip", str(dest), "skill already up to date"))
@@ -164,7 +168,7 @@ def plan(
         _claude_action(server, path_env),
         _codex_action(home, server, path_env),
         _cursor_action(home, server, path_env),
-        *_skill_actions(home),
+        *_skill_actions(home, path_env),
     ]
 
 
@@ -187,4 +191,9 @@ def setup(
         except Exception as e:  # report and continue with the other agents
             d["result"] = f"failed: {e}"
     result["applied"] = True
+    result["next"] = (
+        "restart Claude Code, Codex or Cursor (or start a new session) so it loads the "
+        "eval-builder MCP server, then ask it: build an eval suite from the logs in <folder> "
+        "and tell me which judge I can trust"
+    )
     return result

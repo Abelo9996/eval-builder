@@ -65,3 +65,21 @@ def test_apply_backup_and_idempotent(tmp_path: Path) -> None:
 def test_default_home_is_the_temp_home(tmp_path: Path) -> None:
     # conftest points HOME at a temp dir for every test, so setup() without home= is safe
     assert Path.home() != Path("/Users") and "pytest" in str(Path.home())
+
+
+def test_codex_on_path_without_config_dir_is_set_up_in_one_run(tmp_path: Path) -> None:
+    # Codex installed but never run: ~/.codex does not exist yet
+    home = tmp_path / "home"
+    home.mkdir()
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    codex = bin_dir / "codex"
+    codex.write_text("#!/bin/sh\nexit 0\n")
+    codex.chmod(codex.stat().st_mode | stat.S_IEXEC)
+    r = setup(yes=True, home=home, path_env=str(bin_dir))
+    assert (home / ".codex" / "config.toml").exists()
+    assert (home / ".codex" / "skills" / "eval-builder" / "SKILL.md").exists()
+    assert "restart" in r["next"]
+    r2 = setup(yes=True, home=home, path_env=str(bin_dir))
+    codex_actions = [a for a in r2["actions"] if a["agent"] == "Codex"]
+    assert all(a["kind"] == "skip" for a in codex_actions), codex_actions
