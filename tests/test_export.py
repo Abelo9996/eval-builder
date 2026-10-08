@@ -29,7 +29,8 @@ def test_export_all_formats(ready_workspace: Path) -> None:
 
     # promptfoo: valid YAML with one llm-rubric test per case
     cfg = yaml.safe_load((out / "promptfoo" / "promptfooconfig.yaml").read_text())
-    assert cfg["prompts"] == ["{{input}}"] and cfg["providers"] == ["echo"]
+    assert cfg["prompts"] == ["{{ messages | dump }}"] and cfg["providers"] == ["echo"]
+    assert "defaultTest" not in cfg  # no judge passed, so no grader is wired in
     assert len(cfg["tests"]) == n
     t0 = cfg["tests"][0]
     assert t0["assert"][0]["type"] == "llm-rubric" and "Criteria:" in t0["assert"][0]["value"]
@@ -83,7 +84,74 @@ def test_inspect_multi_turn_input_is_message_list(ready_workspace: Path) -> None
     cfg = yaml.safe_load(
         (ready_workspace / "exports" / "promptfoo" / "promptfooconfig.yaml").read_text()
     )
-    assert json.loads(cfg["tests"][0]["vars"]["context"])[0]["content"] == "first"
+    # the app gets the whole conversation, not only the last user turn
+    v = cfg["tests"][0]["vars"]
+    assert [m["role"] for m in v["messages"]] == ["user", "assistant", "user"]
+    assert v["messages"][0]["content"] == "first" and v["messages"][-1]["content"] == v["input"]
+    assert v["context"] == "user: first\n\nassistant: reply"
+
+
+def _trust(ws: Path, judge: str) -> None:
+    """Write a judge_check.json that marks `judge` trustworthy (export only reads verdicts)."""
+    (ws / "judge_check.json").write_text(
+        json.dumps(
+            {
+                "summary": [{"judge": judge, "verdict": "trustworthy"}],
+                "trustworthy": [judge],
+                "thresholds": {},
+            }
+        )
+    )
+
+
+def _set_judge(ws: Path, **fields: object) -> None:
+    from eval_builder.draft import load_rubric, write_rubric
+
+    rubric = load_rubric(ws)
+    rubric["judges"][0].update(fields)
+    write_rubric(ws, {k: v for k, v in rubric.items() if k != "version"})
+
+
+def test_promptfoo_wires_trusted_judge_as_grader(ready_workspace: Path) -> None:
+    prompt = (
+        "Conversation: {context}\nUser: {input}\nReply: {output}\nGood reply: "
+        '{expected_behavior}\n{criteria}\nAnswer JSON: {"pass": true|false, "reason": "..."}'
+    )
+    _set_judge(ready_workspace, provider="ollama:chat:qwen2.5:7b-instruct", prompt=prompt)
+    _trust(ready_workspace, "j1")
+    r = export(ready_workspace, ["promptfoo"])
+    assert r["promptfoo_grader"] == {
+        "judge": "j1",
+        "provider": "ollama:chat:qwen2.5:7b-instruct",
+        "verdict": "trustworthy",
+    }
+    assert r["notes"] == []
+    cfg = yaml.safe_load(
+        (ready_workspace / "exports" / "promptfoo" / "promptfooconfig.yaml").read_text()
+    )
+    opts = cfg["defaultTest"]["options"]
+    assert opts["provider"] == "ollama:chat:qwen2.5:7b-instruct"
+    rp = opts["rubricPrompt"]
+    # placeholders become promptfoo vars, literal braces stay inside raw blocks
+    for var in ("context", "input", "output", "expected_behavior", "criteria"):
+        assert "{{ " + var + " }}" in rp
+    assert '{% raw %}\nAnswer JSON: {"pass": true|false, "reason": "..."}{% endraw %}' in rp
+    assert set(cfg["tests"][0]["vars"]) >= {"expected_behavior", "criteria", "context"}
+
+
+def test_promptfoo_grader_notes(ready_workspace: Path) -> None:
+    # trusted but no provider: not wired, and the note says how to fix it
+    _trust(ready_workspace, "j1")
+    r = export(ready_workspace, ["promptfoo"])
+    assert r["promptfoo_grader"] is None
+    assert any("no `provider`" in n for n in r["notes"])
+    # forced judge that did not pass and answers with a bare word: wired, with two warnings
+    _set_judge(ready_workspace, provider="openai:gpt-4.1-mini")
+    (ready_workspace / "judge_check.json").unlink()
+    r = export(ready_workspace, ["promptfoo"], judge="j1")
+    assert r["promptfoo_grader"]["verdict"] is None
+    assert any("not checked" in n for n in r["notes"])
+    assert any("does not ask for JSON" in n for n in r["notes"])
 
 
 def test_export_unknown_format(ready_workspace: Path) -> None:
