@@ -1,6 +1,6 @@
 [project]
 name = "eval-builder"
-version = "0.1.0"
+version = "0.1.1"
 description = "Turn real LLM app logs into an eval suite and measure which LLM judges you can trust."
 readme = "README.md"
 license = "MIT"

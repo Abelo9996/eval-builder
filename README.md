@@ -2,17 +2,81 @@
 
 Your agent turns your app's real logs into an eval suite, and tells you which of its judges you can actually trust.
 
+Try it on 48 sample conversations (no account, no API key, no model needed for these steps):
+
 ```sh
-uvx eval-builder ingest ./logs                 # OpenAI, Anthropic, Langfuse, OpenTelemetry or JSONL
-uvx eval-builder select -n 40 && uvx eval-builder draft
-uvx eval-builder judge-check                   # after your agent has run each judge a few times
+curl -sLO https://raw.githubusercontent.com/Abelo9996/eval-builder/main/examples/sample_logs.jsonl
+uvx eval-builder ingest sample_logs.jsonl     # or your own logs: OpenAI, Anthropic, Langfuse, OpenTelemetry, JSONL
+uvx eval-builder select -n 10 --stratify category && uvx eval-builder draft
 ```
+
+What you get (real output, eval-builder 0.1.1 on the sample file):
+
+```
+ingested 48 traces into evalset/traces.jsonl
+  sample_logs.jsonl: format=openai records=48 traces=48 skipped=0 sha256=2d5dd2295784988b
+redactions: 0 {}
+48 traces -> 16 unique (32 exact dupes, 0 near dupes) -> selected 10 (8 failures) across 4 clusters
+  q121-llama-13b: failure (negative user feedback); 69% of unique traces are failures and at least 30% of picks are reserved for them
+  q102-alpaca-13b: covers category=reasoning (2 unique traces, 12%)
+  q111-alpaca-13b: adds variety within cluster 1 (8 traces, 50%; triangle, response, person); least similar to cases already picked there
+  ...
+10 case(s) added, 10 total in evalset/cases.yaml
+```
+
+`evalset/cases.yaml` now holds 10 real conversations with a TODO where the expected
+behavior goes. Writing that, running judges and reading the statistics is the part your
+coding agent does, through the MCP server (next section).
 
 eval-builder is not another eval platform. It builds the suite and checks the judges,
 then exports to the tools you already run: promptfoo, DeepEval, Inspect AI, or plain
 JSONL. It never calls a model. Your coding agent (Claude Code, Codex, Cursor) does the
-thinking through the MCP server; eval-builder does the selection, the bookkeeping and
-the statistics, and writes down the evidence.
+thinking; eval-builder does the selection, the bookkeeping and the statistics, and
+writes down the evidence.
+
+## Use it with your agent
+
+```sh
+uvx eval-builder setup --yes    # registers the MCP server and the skill, then restart your agent
+```
+
+Then type something like this into Claude Code, from the folder that has your logs:
+
+> Our assistant's chat logs from last month are in ./logs. Build a small eval suite from
+> them (about 10 cases) that I can run in promptfoo, and tell me whether I can trust a
+> local judge for grading it. I have Ollama running with qwen2.5:7b-instruct and
+> llama3.2:3b. Keep the judge runs small.
+
+This is from a real headless Claude Code session (October 2026, Claude Code 2.1.293)
+given exactly that prompt and 48 conversations from [`examples/sample_logs.jsonl`](examples/sample_logs.jsonl).
+It ran ingest, select, draft, list_cases, set_rubric, ten update_case calls, validate,
+judge_plan, 140 judge calls to Ollama through a short script it wrote, judge_check,
+export and report in 32 turns and about 10 minutes. From its final answer:
+
+> I built a 10-case promptfoo suite, but **you can't trust either local judge yet.**
+> Neither one has been checked against human labels, and each confidently got an
+> obvious case wrong.
+>
+> | judge | flip rate | padding helped | verdict |
+> |---|---|---|---|
+> | qwen2.5:7b-instruct | 10% [2%, 40%] (n=10) | 0% [0%, 28%] | not_enough_data |
+> | llama3.2:3b | 20% [6%, 51%] (n=10) | 0% [0%, 28%] | not_enough_data |
+>
+> **qwen7b failed a clear case.** It passed the Hawaii rewrite 5 out of 5 times, though
+> only the first sentence starts with "A".
+>
+> **No grader is wired in.** Because no judge passed, the `llm-rubric` checks fall back to
+> promptfoo's default grader, which needs an OpenAI key. To grade locally anyway, export
+> again with the judge set explicitly (the `export` tool's `judge` option, e.g. `qwen7b`).
+> Its verdicts will be unverified.
+
+It wrote every expected behavior itself because nobody was there to confirm them, and
+said so on each case. It did not invent human labels; it asked for them.
+
+An earlier session against 0.1.0 is where the promptfoo context bug fixed in 0.1.1 came
+from. The agent read the export and told the user: "Right now it only sends the final
+question (`{{input}}`), so your app won't see what "it" refers to in "Can you
+parallelize it?"."
 
 ## Example: real output
 
@@ -77,7 +141,7 @@ cases (29%, interval 15% to 49%).
 | `judge-plan` | Lists every judge call to make: each case N times, plus probes that swap the answer order (pairwise judges) and pad an answer with an irrelevant paragraph. | |
 | `judge-run` | Optional and off by default. Sends each request as a JSON line to a command you name (your script, your provider, your keys) and records the verdicts. eval-builder ships no API keys and no provider code. | your command |
 | `judge-check` | Per judge: flip rate across repeated calls (with a Wilson interval), self-agreement, majority-of-3 vote stability, accuracy and Cohen's kappa against your human labels (with intervals), position consistency and first-shown preference, and how often padding moved the verdict toward the padded answer. Verdict: `trustworthy`, `unstable`, `biased`, `misaligned`, or `not_enough_data`, with the numbers behind it. | |
-| `export` | promptfoo `promptfooconfig.yaml` (llm-rubric asserts), DeepEval dataset plus a `deepeval test run` file, Inspect AI dataset plus `task.py`, plain JSONL. The manifest lists file hashes and which judges passed. | |
+| `export` | promptfoo `promptfooconfig.yaml` (the full conversation as chat messages, llm-rubric asserts, and a judge that passed judge-check wired in as the grader when its rubric entry names a promptfoo `provider`), DeepEval dataset plus a `deepeval test run` file, Inspect AI dataset plus `task.py`, plain JSONL. The manifest lists file hashes and which judges passed. | |
 | `report` | `report.md` and `report.json`: sources with sha256, counts, redactions, selection reasons, the judge table, and the limits. | |
 
 The verdict thresholds are explicit flags with defaults: flip rate at most 20% of cases,
@@ -89,7 +153,7 @@ trustworthy.
 
 ```sh
 uvx eval-builder setup          # shows what it would change
-uvx eval-builder setup --yes    # applies it
+uvx eval-builder setup --yes    # applies it; restart your agent afterwards
 ```
 
 `setup` registers the MCP server (`uvx eval-builder mcp`) with Claude Code (`claude mcp
@@ -116,8 +180,13 @@ is CLI only, because it executes a command.
 - The bias probes cover answer order and irrelevant length only. Self-preference,
   style bias and rubric misreadings are not measured.
 - Small samples give wide intervals. The report prints them; read them.
-- It does not run your app or your eval. The exported files do that in promptfoo,
+- It does not run your app, your judges or your eval. The agent (or a script you name
+  with `judge-run`) calls the judge model; the exported files run the eval in promptfoo,
   DeepEval or Inspect AI.
+- Only the promptfoo export wires a checked judge in as the grader, and only a
+  pointwise judge whose prompt answers in JSON (`{"pass": ..., "reason": ...}`), because
+  promptfoo's llm-rubric cannot parse a bare "pass". DeepEval and Inspect exports use
+  their own default graders.
 
 ## Privacy and safety
 
