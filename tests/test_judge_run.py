@@ -98,6 +98,8 @@ def test_run_with_command_and_resume(ready_workspace: Path, tmp_path: Path) -> N
     assert all(r["tokens"] == 3 and "prompt" not in r for r in rows)
     log = judge_run(ready_workspace, {"j1": cmd}, enable=True)  # resume: nothing left
     assert log["judges"]["j1"]["requests"] == 0
+    runs = json.loads((ready_workspace / "judge_run_log.json").read_text())["runs"]
+    assert [r["judges"]["j1"]["requests"] for r in runs] == [10, 0]
 
 
 def test_run_reports_crashing_command(ready_workspace: Path, tmp_path: Path) -> None:

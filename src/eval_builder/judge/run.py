@@ -26,7 +26,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from ..io import read_jsonl, write_json
+from ..io import read_json, read_jsonl, write_json
 from ..workspace import Workspace
 
 ENV_FLAG = "EVAL_BUILDER_ENABLE_JUDGE_PLUGIN"
@@ -143,5 +143,7 @@ def judge_run(
     missing = sorted({r["judge"] for r in requests} - set(commands))
     log["finished"] = datetime.now(UTC).isoformat()
     log["judges_without_command"] = missing
-    write_json(ws.root / "judge_run_log.json", log)
+    log_path = ws.root / "judge_run_log.json"
+    runs = read_json(log_path).get("runs", []) if log_path.exists() else []
+    write_json(log_path, {"runs": [*runs, log]})
     return log

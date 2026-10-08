@@ -236,12 +236,15 @@ def render_markdown(d: dict[str, Any], title: str | None = None) -> str:
         L.append("")
     run = d.get("judge_run")
     if run:
-        L += ["Judge calls were made through the opt-in judge plugin:", ""]
-        for jid, e in run["judges"].items():
-            L.append(
-                f"- {jid}: `{_md_escape(e['command'])}`, {e['ok']} ok, {e['errors']} "
-                f"errors, {e['seconds']} s"
-            )
+        L += ["Judge calls made through the opt-in judge plugin (`judge-run`):", ""]
+        for i, rr in enumerate(run.get("runs", [run]), 1):
+            for jid, e in rr["judges"].items():
+                if not e["requests"]:
+                    continue
+                L.append(
+                    f"- run {i}, {jid}: `{_md_escape(e['command'])}`, {e['ok']} ok, "
+                    f"{e['errors']} errors, {e['seconds']} s"
+                )
         L.append("")
     ex = d.get("exports")
     if ex:
