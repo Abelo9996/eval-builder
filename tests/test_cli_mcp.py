@@ -75,3 +75,24 @@ def test_mcp_tool_call_roundtrip(tmp_path: Path, fixtures: Path) -> None:
     asyncio.run(server.call_tool("ingest", {"paths": [str(fixtures)], "workspace": ws}))
     asyncio.run(server.call_tool("select", {"workspace": ws, "n": 3}))
     assert (tmp_path / "ws" / "selection.json").exists()
+
+
+def test_mcp_judge_check_include_cases(ready_workspace: Path) -> None:
+    from eval_builder.judge.plan import judge_plan
+    from eval_builder.mcp_server import build_server
+
+    judge_plan(ready_workspace, trials=3)
+    reqs = [json.loads(x) for x in (ready_workspace / "judge_requests.jsonl").open()]
+    (ready_workspace / "judgments.jsonl").write_text(
+        "".join(
+            json.dumps({"request_id": r["request_id"], "verdict": '{"pass": true}'}) + "\n"
+            for r in reqs
+        )
+    )
+    server = build_server()
+    res = asyncio.run(
+        server.call_tool("judge_check", {"workspace": str(ready_workspace), "include_cases": True})
+    )
+    text = json.dumps(res, default=str)
+    assert '\\"majority\\": \\"pass\\"' in text or '"majority": "pass"' in text
+    assert "flip_rate_ci95" in text

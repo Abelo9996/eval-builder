@@ -165,12 +165,14 @@ def build_server() -> Any:
         min_kappa: float = 0.4,
         min_labeled: int = 20,
         min_cases: int = 10,
+        include_cases: bool = False,
     ) -> dict[str, Any]:
         """Step 6. Read judgments.jsonl (and labels.jsonl, human labels as {"case_id",
         "label"}) and give each judge a verdict: trustworthy, unstable (flips across
         repeats), biased (answer order or padding moves it), misaligned (low kappa with
         humans) or not_enough_data. Summary rows carry 95% intervals and sample sizes;
-        quote those. `next` says what to do next."""
+        quote those. `next` says what to do next. include_cases adds each judge's per-case
+        verdict counts and majorities (with the human label when there is one)."""
         th = Thresholds(
             max_flip_rate=max_flip_rate,
             min_kappa=min_kappa,
@@ -178,8 +180,15 @@ def build_server() -> Any:
             min_cases=min_cases,
         )
         r = judge_check_fn(workspace, judgments, labels, th)
-        # per-case detail stays in judge_check_file; the summary has the numbers to quote
-        return {k: v for k, v in r.items() if k != "judges"}
+        # full per-case detail stays in judge_check_file; the summary has the numbers to quote
+        out = {k: v for k, v in r.items() if k != "judges"}
+        if include_cases:
+            keep = ("case_id", "counts", "majority", "pad_majority", "swap_majority", "human")
+            out["cases"] = {
+                jid: [{k: c[k] for k in keep if k in c} for c in j["cases"]]
+                for jid, j in r["judges"].items()
+            }
+        return out
 
     @mcp.tool()
     def export(
