@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import math
 from collections import Counter
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 
 Z95 = 1.959963984540054
 
@@ -53,3 +53,24 @@ def majority(labels: Sequence[str]) -> tuple[str | None, float]:
     if len(counts) > 1 and counts[1][1] == cnt:
         return None, cnt / len(labels)
     return top, cnt / len(labels)
+
+
+def majority_vote_stability(counts: Mapping[str, int], k: int = 3) -> float | None:
+    """Chance that a majority vote over k calls (drawn without replacement from the
+    observed trials) returns the same label as the majority over all trials.
+
+    Exact hypergeometric probability that the full-majority label gets more than half
+    of the k draws. None when there are fewer than k + 2 trials (too few to say
+    anything beyond the full vote) or no strict majority.
+    """
+    n = sum(counts.values())
+    if n < k + 2 or not counts:
+        return None
+    ordered = sorted(counts.values(), reverse=True)
+    if len(ordered) > 1 and ordered[0] == ordered[1]:
+        return None
+    big = ordered[0]
+    need = k // 2 + 1
+    total = math.comb(n, k)
+    hits = sum(math.comb(big, x) * math.comb(n - big, k - x) for x in range(need, k + 1))
+    return hits / total

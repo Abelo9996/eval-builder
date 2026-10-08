@@ -201,13 +201,16 @@ def render_markdown(d: dict[str, Any], title: str | None = None) -> str:
             f"consistency >= {th['min_position_consistency']:.0%}, padding moves verdict "
             f"toward padded answer <= {th['max_toward_padded_rate']:.0%}, Cohen's kappa "
             f">= {th['min_kappa']} on >= {th['min_labeled']} human-labeled cases. Intervals "
-            f"are 95% (Wilson for rates, Cohen's large-sample SE for kappa)."
+            f"are 95% (Wilson for rates, Cohen's large-sample SE for kappa). Self-agreement is "
+            "the chance one call matches the judge's own majority; majority-of-3 stable is "
+            "the chance a 3-call majority vote matches it (exact, needs >= 5 trials)."
         )
         L += [
             "",
-            "| judge | mode | verdict | flip rate | self-agreement | accuracy vs humans | "
-            "kappa | position consistency | first-shown picked | padding helped |",
-            "|---|---|---|---|---|---|---|---|---|---|",
+            "| judge | mode | verdict | flip rate | self-agreement | majority-of-3 stable | "
+            "accuracy vs humans | kappa | position consistency | first-shown picked | "
+            "padding helped |",
+            "|---|---|---|---|---|---|---|---|---|---|---|",
         ]
         for jid, r in jc["judges"].items():
             st, ag = r["stability"], r["human_agreement"] or {}
@@ -220,6 +223,7 @@ def render_markdown(d: dict[str, Any], title: str | None = None) -> str:
             L.append(
                 f"| {_md_escape(jid)} | {r['mode']} | **{r['verdict']}** | "
                 f"{_ci(st['flip_rate'])} | {_pct(st['mean_self_agreement'])} | "
+                f"{_pct(st.get('majority_of_3_stability'))} | "
                 f"{_ci(ag.get('accuracy'))} | {kappa} | {_ci(pos.get('consistency'))} | "
                 f"{_ci(pos.get('first_position_rate'))} | {_ci(verb.get('toward_padded'))} |"
             )

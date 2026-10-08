@@ -17,7 +17,7 @@ from typing import Any
 
 from ..io import read_jsonl, write_json
 from ..workspace import Workspace
-from .stats import cohen_kappa, kappa_interval, majority, wilson
+from .stats import cohen_kappa, kappa_interval, majority, majority_vote_stability, wilson
 
 NO_MAJORITY = "(no majority)"
 POSITIVE = {"pass", "yes", "true", "good", "correct", "acceptable", "1"}
@@ -91,6 +91,10 @@ def _favorable(label: str | None, other: str | None, mode: str, pad_side: str | 
         return other is not None and float(label) > float(other)
     except ValueError:
         return label in POSITIVE and (other not in POSITIVE)
+
+
+def _mean(xs: list[float]) -> float | None:
+    return round(sum(xs) / len(xs), 4) if xs else None
 
 
 def _rate(k: int, n: int) -> dict[str, Any]:
@@ -169,6 +173,7 @@ def check_judge(
             "majority": maj,
             "majority_share": round(share, 4),
             "flipped": len(set(labs)) > 1,
+            "majority_of_3_stability": majority_vote_stability(Counter(labs), 3),
         }
     eligible = [c for c in per_case.values() if c["trials"] >= th.min_trials]
     flipped = sum(1 for c in eligible if c["flipped"])
@@ -180,6 +185,13 @@ def check_judge(
         if eligible
         else None,
         "no_majority_cases": sum(1 for c in eligible if c["majority"] is None),
+        "majority_of_3_stability": _mean(
+            [
+                c["majority_of_3_stability"]
+                for c in eligible
+                if c["majority_of_3_stability"] is not None
+            ]
+        ),
         "invalid_outputs": invalid,
         "calls": len(rows),
     }

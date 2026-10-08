@@ -49,3 +49,15 @@ def test_majority() -> None:
     assert majority(["A", "A", "B"]) == ("A", pytest.approx(2 / 3))
     assert majority(["A", "B"]) == (None, 0.5)
     assert majority([]) == (None, 0.0)
+
+
+def test_majority_vote_stability_hypergeometric() -> None:
+    from eval_builder.judge.stats import majority_vote_stability
+
+    # 4 A, 1 B, draw 3 of 5: P(>=2 A) = [C(4,2)C(1,1) + C(4,3)C(1,0)] / C(5,3) = (6+4)/10
+    assert majority_vote_stability({"A": 4, "B": 1}) == pytest.approx(1.0)
+    # 3 A, 2 B: [C(3,2)C(2,1) + C(3,3)] / 10 = (6 + 1) / 10
+    assert majority_vote_stability({"A": 3, "B": 2}) == pytest.approx(0.7)
+    assert majority_vote_stability({"A": 5}) == pytest.approx(1.0)
+    assert majority_vote_stability({"A": 2, "B": 1}) is None  # fewer than k + 2 trials
+    assert majority_vote_stability({"A": 3, "B": 3}) is None  # no strict majority
