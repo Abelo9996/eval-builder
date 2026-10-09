@@ -35,6 +35,8 @@ class Thresholds:
     max_toward_padded_rate: float = 0.1
     min_kappa: float = 0.4
     min_labeled: int = 20
+    # A judge must be more accurate than always giving the most common human label.
+    beat_majority_baseline: bool = True
 
 
 _FENCE = re.compile(r"^```(?:json)?|```$", re.I | re.M)
@@ -370,6 +372,17 @@ def _verdict(
                 f"{'undefined' if k is None else f'{k:.2f}'} (need {th.min_kappa}), "
                 f"accuracy {agreement['accuracy']['rate']:.0%}"
             )
+        elif th.beat_majority_baseline and (
+            agreement["accuracy"]["rate"] <= agreement["majority_baseline"]
+        ):
+            misaligned = True
+            checks["human_agreement"] = "fail"
+            top = max(agreement["human_label_counts"], key=agreement["human_label_counts"].get)
+            reasons.append(
+                f"accuracy {agreement['accuracy']['rate']:.0%} is no better than always answering "
+                f"{top!r} ({agreement['majority_baseline']:.0%} on these labels), so kappa "
+                f"{k:.2f} alone doesn't show the judge adds anything"
+            )
         else:
             checks["human_agreement"] = "pass"
     else:
@@ -472,8 +485,8 @@ def _balance_warnings(used: dict[str, str], judges: dict[str, dict[str, Any]]) -
             out.append(
                 f"judge {jid}'s accuracy ({acc:.0%}) is no better than always answering "
                 f"{common!r} ({base:.0%}) on these {ag['cases']} labeled cases (the judge said "
-                f"{proportions(jc)}); kappa {kappa} is the number that corrects for this. "
-                "Look at the cases it got wrong before relying on it"
+                f"{proportions(jc)}; kappa {kappa}). A judge has to beat that baseline to be "
+                "called trustworthy; look at the cases it got wrong"
             )
         if len(jc) == 1:
             ((top, n),) = jc.items()

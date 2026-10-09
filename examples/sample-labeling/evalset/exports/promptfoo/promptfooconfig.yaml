@@ -4,39 +4,14 @@
 # The prompt is the whole conversation as a JSON list of chat messages (vars.messages), which
 # chat providers such as openai:chat or ollama:chat accept as is. If your provider takes plain
 # text, use {{input}} (the latest user message) and {{context}} (the earlier turns) instead.
-# Grader: judge qwen2.5-7b from rubric.yaml (judge-check verdict: trustworthy),
-# with its exact prompt and model. promptfoo's llm-rubric needs the grader to answer in JSON,
-# {"pass": true|false, "reason": "..."}; a judge that answers with a bare word fails with
-# "Could not extract JSON".
+# No grader is wired in: llm-rubric uses promptfoo's default grader, which
+# sees only the output and the rubric. To grade with a judge you checked, give it a `provider`
+# in rubric.yaml (a promptfoo provider id) and export again.
 description: MT-Bench sample, labeling example
 prompts:
 - '{{ messages | dump }}'
 providers:
 - echo
-defaultTest:
-  options:
-    provider: ollama:chat:qwen2.5:7b-instruct
-    rubricPrompt: |-
-      {% raw %}You are grading one reply from an AI assistant.
-
-      Earlier conversation:
-      {% endraw %}{{ context }}{% raw %}
-
-      Latest user message:
-      {% endraw %}{{ input }}{% raw %}
-
-      Assistant reply to grade:
-      {% endraw %}{{ output }}{% raw %}
-
-      What a good reply does:
-      {% endraw %}{{ expected_behavior }}{% raw %}
-
-      Criteria:
-      {% endraw %}{{ criteria }}{% raw %}
-
-      Does the reply do what a good reply does and meet the criteria? Answer with JSON only:
-      {"pass": true or false, "reason": "<one short sentence>"}
-      {% endraw %}
 tests:
 - description: 'case-001: How do you like dancing? Can you teach me?'
   vars:

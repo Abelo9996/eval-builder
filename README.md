@@ -154,8 +154,8 @@ uvx eval-builder judge-check
 
 Run on the 48 sample conversations with every model's answer kept as a case (47
 cases), three local judges (1,128 calls, 0 errors), and 24 labels entered through the
-sheet in headless Chrome. The labels were made by the developer (Claude Code reading
-each case for him), not by an independent annotator, so read this as a demonstration
+sheet in headless Chrome. The labels were made on the developer's side (Claude Code
+reading each case), not by an independent annotator, so read this as a demonstration
 of the flow. Details and every file: [`examples/sample-labeling/`](examples/sample-labeling/).
 
 - `label` split the 24 picks 12/12 between cases the judges called pass and fail; 15
@@ -166,17 +166,19 @@ of the flow. Details and every file: [`examples/sample-labeling/`](examples/samp
 
 | judge | verdict | flip rate | accuracy vs labels | kappa |
 |---|---|---|---|---|
-| qwen2.5:7b-instruct, temp 0 | trustworthy | 0% [0%, 8%] | 75% [55%, 88%] | 0.50 [0.15, 0.85] |
-| qwen2.5:7b-instruct, temp 0.8 | trustworthy | 9% [3%, 20%] | 71% [51%, 85%] | 0.44 [0.09, 0.79] |
+| qwen2.5:7b-instruct, temp 0 | misaligned | 0% [0%, 8%] | 75% [55%, 88%] | 0.50 [0.15, 0.85] |
+| qwen2.5:7b-instruct, temp 0.8 | misaligned | 9% [3%, 20%] | 71% [51%, 85%] | 0.44 [0.09, 0.79] |
 | llama3.2:3b | unstable | 47% [33%, 61%] | 54% [35%, 72%] | 0.12 [-0.26, 0.50] |
 
-The qwen judges pass the default thresholds, but judge-check also warns that their
-accuracy is no better than always answering "fail" (75% of the labels), and every
-miss went the same way: both passed a reply that said "Here is an allegorical poem"
-and then wrote no poem. With 24 labels the kappa interval runs from about 0.1 to 0.8.
-The DeepEval export wired the 0.8-temperature qwen judge in with its exact prompt;
-DeepEval 4.2.8 ran three logged cases through it and it made the same call on the
-missing poem.
+The qwen judges clear the kappa threshold (0.4), but their accuracy is no better than
+always answering "fail" (75% of the labels), so since 0.1.3 judge-check calls them
+`misaligned` instead of trustworthy (0.1.2 called them trustworthy; that was the bug).
+Every miss went the same way: both passed a reply that said "Here is an allegorical
+poem" and then wrote no poem. With 24 labels the kappa interval runs from about 0.1
+to 0.8. Under 0.1.2 the DeepEval export wired the 0.8-temperature qwen judge in with
+its exact prompt; DeepEval 4.2.8 ran three logged cases through it and it made the
+same call on the missing poem. Now no judge is wired in unless you force one with
+`export --judge <id>`, which warns.
 
 ## How it works
 

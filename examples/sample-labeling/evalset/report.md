@@ -1,6 +1,6 @@
 # Labeling example on the 48-conversation sample
 
-Generated 2026-10-09T08:21:43+00:00 by eval-builder 0.1.2.
+Generated 2026-10-09T08:26:01+00:00 by eval-builder 0.1.2.
 
 ## Sources
 
@@ -106,18 +106,18 @@ Thresholds: flip rate <= 20% (cases with >= 3 trials, >= 10 cases), position con
 | judge | mode | verdict | flip rate | self-agreement | majority-of-3 stable | accuracy vs humans | kappa | position consistency | first-shown picked | padding helped |
 |---|---|---|---|---|---|---|---|---|---|---|
 | llama3.2-3b | pointwise | **unstable** | 47% [33%, 61%] (n=47) | 83% | 88% | 54% [35%, 72%] (n=24) | 0.12 [-0.26, 0.50] | n/a | n/a | 4% [1%, 14%] (n=47) |
-| qwen2.5-7b | pointwise | **trustworthy** | 9% [3%, 20%] (n=47) | 97% | 97% | 71% [51%, 85%] (n=24) | 0.44 [0.09, 0.79] | n/a | n/a | 0% [0%, 8%] (n=47) |
-| qwen2.5-7b-temp0 | pointwise | **trustworthy** | 0% [0%, 8%] (n=47) | 100% | 100% | 75% [55%, 88%] (n=24) | 0.50 [0.15, 0.85] | n/a | n/a | 0% [0%, 8%] (n=47) |
+| qwen2.5-7b | pointwise | **misaligned** | 9% [3%, 20%] (n=47) | 97% | 97% | 71% [51%, 85%] (n=24) | 0.44 [0.09, 0.79] | n/a | n/a | 0% [0%, 8%] (n=47) |
+| qwen2.5-7b-temp0 | pointwise | **misaligned** | 0% [0%, 8%] (n=47) | 100% | 100% | 75% [55%, 88%] (n=24) | 0.50 [0.15, 0.85] | n/a | n/a | 0% [0%, 8%] (n=47) |
 
 - **llama3.2-3b** (unstable): verdict changed across repeated trials on 47% of cases (limit 20%). agreement with human labels is low: kappa 0.12 (need 0.4), accuracy 54%.
-- **qwen2.5-7b** (trustworthy): stable (flip rate 9%), kappa 0.44 with humans.
-- **qwen2.5-7b-temp0** (trustworthy): stable (flip rate 0%), kappa 0.50 with humans.
+- **qwen2.5-7b** (misaligned): accuracy 71% is no better than always answering 'fail' (75% on these labels), so kappa 0.44 alone doesn't show the judge adds anything.
+- **qwen2.5-7b-temp0** (misaligned): accuracy 75% is no better than always answering 'fail' (75% on these labels), so kappa 0.50 alone doesn't show the judge adds anything.
 
 Human labels on judged cases: fail 18 of 24 (75%), pass 6 (25%). A judge that always gave the most common label would score 75% accuracy, which is the bar accuracy has to clear; kappa already corrects for it.
 
-- Warning: judge llama3.2-3b's accuracy (54%) is no better than always answering 'fail' (75%) on these 24 labeled cases (the judge said pass 13 of 24 (54%), fail 11 (46%)); kappa 0.12 [-0.26, 0.50] is the number that corrects for this. Look at the cases it got wrong before relying on it
-- Warning: judge qwen2.5-7b's accuracy (71%) is no better than always answering 'fail' (75%) on these 24 labeled cases (the judge said pass 13 of 24 (54%), fail 11 (46%)); kappa 0.44 [0.09, 0.79] is the number that corrects for this. Look at the cases it got wrong before relying on it
-- Warning: judge qwen2.5-7b-temp0's accuracy (75%) is no better than always answering 'fail' (75%) on these 24 labeled cases (the judge said fail 12 of 24 (50%), pass 12 (50%)); kappa 0.50 [0.15, 0.85] is the number that corrects for this. Look at the cases it got wrong before relying on it
+- Warning: judge llama3.2-3b's accuracy (54%) is no better than always answering 'fail' (75%) on these 24 labeled cases (the judge said pass 13 of 24 (54%), fail 11 (46%); kappa 0.12 [-0.26, 0.50]). A judge has to beat that baseline to be called trustworthy; look at the cases it got wrong
+- Warning: judge qwen2.5-7b's accuracy (71%) is no better than always answering 'fail' (75%) on these 24 labeled cases (the judge said pass 13 of 24 (54%), fail 11 (46%); kappa 0.44 [0.09, 0.79]). A judge has to beat that baseline to be called trustworthy; look at the cases it got wrong
+- Warning: judge qwen2.5-7b-temp0's accuracy (75%) is no better than always answering 'fail' (75%) on these 24 labeled cases (the judge said fail 12 of 24 (50%), pass 12 (50%); kappa 0.50 [0.15, 0.85]). A judge has to beat that baseline to be called trustworthy; look at the cases it got wrong
 
 Judge calls made through the opt-in judge plugin (`judge-run`):
 
@@ -131,10 +131,9 @@ Judge calls made through the opt-in judge plugin (`judge-run`):
 
 | file | sha256 |
 |---|---|
-| exports/promptfoo/promptfooconfig.yaml | `23c43efb656ee17c` |
+| exports/promptfoo/promptfooconfig.yaml | `07a874ff9a934316` |
 | exports/deepeval/dataset.json | `f6cf982eeef58e13` |
 | exports/deepeval/test_eval_builder.py | `05f445309c2983af` |
-| exports/deepeval/judge.json | `dd632220790c10ab` |
 | exports/inspect/dataset.jsonl | `63fb2547e1e81007` |
 | exports/inspect/task.py | `df284b6b6dedeb83` |
 | exports/jsonl/cases.jsonl | `d10eff47dcc67a11` |

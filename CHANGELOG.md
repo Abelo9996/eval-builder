@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.3
+
+### Fixed
+
+- `judge-check` no longer calls a judge `trustworthy` when its accuracy against the human labels is no better than always giving the most common label. Kappa alone let a lenient judge pass: on the labeling example (18 of 24 labels "fail") both qwen2.5 judges cleared kappa 0.4 at 71% and 75% accuracy, the same as always answering "fail". They are now `misaligned`, with the baseline in the reason. Set `Thresholds(beat_majority_baseline=False)` to get the old behavior.
+- Because no judge passes on that example any more, `export` no longer wires one into promptfoo or DeepEval there; the example README says what changed.
+
 ## 0.1.2 (2026-10-08)
 
 Human labels. No judge can be called trustworthy without them, and both real agent

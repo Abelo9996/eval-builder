@@ -212,3 +212,26 @@ def test_judge_check_files_and_request_join(tmp_path: Path) -> None:
 def test_judge_check_missing_judgments_says_how(tmp_path: Path) -> None:
     with pytest.raises(FileNotFoundError, match="run judge_plan first"):
         judge_check(tmp_path)
+
+
+def test_judge_no_better_than_majority_label_is_not_trustworthy():
+    from eval_builder.judge.check import Thresholds, _verdict
+
+    stability = {"cases": 24, "flip_rate": {"rate": 0.0}}
+    # kappa clears 0.4, but 75% accuracy only matches always answering "fail" (18 of 24)
+    agreement = {
+        "cases": 24,
+        "kappa": 0.5,
+        "accuracy": {"rate": 0.75},
+        "majority_baseline": 0.75,
+        "human_label_counts": {"fail": 18, "pass": 6},
+    }
+    verdict, reasons, checks = _verdict(stability, agreement, None, None, Thresholds())
+    assert verdict == "misaligned"
+    assert checks["human_agreement"] == "fail"
+    assert "no better than always answering 'fail'" in reasons[-1]
+
+    better = dict(agreement, accuracy={"rate": 0.875})
+    assert _verdict(stability, better, None, None, Thresholds())[0] == "trustworthy"
+    off = Thresholds(beat_majority_baseline=False)
+    assert _verdict(stability, agreement, None, None, off)[0] == "trustworthy"

@@ -8,9 +8,9 @@
     "pass": 6
   },
   "warnings": [
-    "judge llama3.2-3b's accuracy (54%) is no better than always answering 'fail' (75%) on these 24 labeled cases (the judge said pass 13 of 24 (54%), fail 11 (46%)); kappa 0.12 [-0.26, 0.50] is the number that corrects for this. Look at the cases it got wrong before relying on it",
-    "judge qwen2.5-7b's accuracy (71%) is no better than always answering 'fail' (75%) on these 24 labeled cases (the judge said pass 13 of 24 (54%), fail 11 (46%)); kappa 0.44 [0.09, 0.79] is the number that corrects for this. Look at the cases it got wrong before relying on it",
-    "judge qwen2.5-7b-temp0's accuracy (75%) is no better than always answering 'fail' (75%) on these 24 labeled cases (the judge said fail 12 of 24 (50%), pass 12 (50%)); kappa 0.50 [0.15, 0.85] is the number that corrects for this. Look at the cases it got wrong before relying on it"
+    "judge llama3.2-3b's accuracy (54%) is no better than always answering 'fail' (75%) on these 24 labeled cases (the judge said pass 13 of 24 (54%), fail 11 (46%); kappa 0.12 [-0.26, 0.50]). A judge has to beat that baseline to be called trustworthy; look at the cases it got wrong",
+    "judge qwen2.5-7b's accuracy (71%) is no better than always answering 'fail' (75%) on these 24 labeled cases (the judge said pass 13 of 24 (54%), fail 11 (46%); kappa 0.44 [0.09, 0.79]). A judge has to beat that baseline to be called trustworthy; look at the cases it got wrong",
+    "judge qwen2.5-7b-temp0's accuracy (75%) is no better than always answering 'fail' (75%) on these 24 labeled cases (the judge said fail 12 of 24 (50%), pass 12 (50%); kappa 0.50 [0.15, 0.85]). A judge has to beat that baseline to be called trustworthy; look at the cases it got wrong"
   ],
   "thresholds": {
     "min_trials": 3,
@@ -19,7 +19,8 @@
     "min_position_consistency": 0.8,
     "max_toward_padded_rate": 0.1,
     "min_kappa": 0.4,
-    "min_labeled": 20
+    "min_labeled": 20,
+    "beat_majority_baseline": true
   },
   "summary": [
     {
@@ -61,7 +62,7 @@
     {
       "judge": "qwen2.5-7b",
       "mode": "pointwise",
-      "verdict": "trustworthy",
+      "verdict": "misaligned",
       "cases": 47,
       "calls": 376,
       "invalid_outputs": 0,
@@ -90,13 +91,13 @@
         0.0756
       ],
       "reasons": [
-        "stable (flip rate 9%), kappa 0.44 with humans"
+        "accuracy 71% is no better than always answering 'fail' (75% on these labels), so kappa 0.44 alone doesn't show the judge adds anything"
       ]
     },
     {
       "judge": "qwen2.5-7b-temp0",
       "mode": "pointwise",
-      "verdict": "trustworthy",
+      "verdict": "misaligned",
       "cases": 47,
       "calls": 376,
       "invalid_outputs": 0,
@@ -125,7 +126,7 @@
         0.0756
       ],
       "reasons": [
-        "stable (flip rate 0%), kappa 0.50 with humans"
+        "accuracy 75% is no better than always answering 'fail' (75% on these labels), so kappa 0.50 alone doesn't show the judge adds anything"
       ]
     }
   ],
@@ -829,15 +830,15 @@
     },
     "qwen2.5-7b": {
       "mode": "pointwise",
-      "verdict": "trustworthy",
+      "verdict": "misaligned",
       "reasons": [
-        "stable (flip rate 9%), kappa 0.44 with humans"
+        "accuracy 71% is no better than always answering 'fail' (75% on these labels), so kappa 0.44 alone doesn't show the judge adds anything"
       ],
       "checks": {
         "stability": "pass",
         "position": "not run",
         "verbosity": "pass",
-        "human_agreement": "pass"
+        "human_agreement": "fail"
       },
       "stability": {
         "cases": 47,
@@ -1507,15 +1508,15 @@
     },
     "qwen2.5-7b-temp0": {
       "mode": "pointwise",
-      "verdict": "trustworthy",
+      "verdict": "misaligned",
       "reasons": [
-        "stable (flip rate 0%), kappa 0.50 with humans"
+        "accuracy 75% is no better than always answering 'fail' (75% on these labels), so kappa 0.50 alone doesn't show the judge adds anything"
       ],
       "checks": {
         "stability": "pass",
         "position": "not run",
         "verbosity": "pass",
-        "human_agreement": "pass"
+        "human_agreement": "fail"
       },
       "stability": {
         "cases": 47,
@@ -2180,9 +2181,6 @@
       ]
     }
   },
-  "trustworthy": [
-    "qwen2.5-7b",
-    "qwen2.5-7b-temp0"
-  ],
-  "next": "export: judges ['qwen2.5-7b', 'qwen2.5-7b-temp0'] passed; export wires a passing pointwise judge into promptfoo when its rubric.yaml entry has a `provider`"
+  "trustworthy": [],
+  "next": "no judge passed; read each judge's reasons. Typical fixes: majority vote over 3 calls, run both answer orders and keep agreements, tighten the rubric wording, or try a stronger judge model, then run judge_plan and judge_check again"
 }

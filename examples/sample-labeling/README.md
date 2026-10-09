@@ -42,8 +42,8 @@ numbers below as a demonstration of the flow, not as ground truth about these ju
 
 | judge | verdict | flip rate | accuracy vs labels | kappa | padding helped |
 |---|---|---|---|---|---|
-| qwen2.5:7b-instruct, temp 0 | trustworthy | 0% [0%, 8%] | 75% [55%, 88%] | 0.50 [0.15, 0.85] | 0% [0%, 8%] |
-| qwen2.5:7b-instruct, temp 0.8 | trustworthy | 9% [3%, 20%] | 71% [51%, 85%] | 0.44 [0.09, 0.79] | 0% [0%, 8%] |
+| qwen2.5:7b-instruct, temp 0 | misaligned | 0% [0%, 8%] | 75% [55%, 88%] | 0.50 [0.15, 0.85] | 0% [0%, 8%] |
+| qwen2.5:7b-instruct, temp 0.8 | misaligned | 9% [3%, 20%] | 71% [51%, 85%] | 0.44 [0.09, 0.79] | 0% [0%, 8%] |
 | llama3.2:3b | unstable | 47% [33%, 61%] | 54% [35%, 72%] | 0.12 [-0.26, 0.50] | 4% [1%, 14%] |
 
 n = 47 cases for flip rate and padding, 24 labeled cases for accuracy and kappa;
@@ -51,12 +51,12 @@ brackets are 95% intervals.
 
 ## What it shows, read plainly
 
-- Both qwen judges clear the default thresholds (kappa at least 0.4 on at least 20
-  labels), so the export wires `qwen2.5-7b` (the first that passed) into promptfoo and
-  DeepEval. The kappa intervals are wide, from about 0.1 to 0.8: 24 labels cannot pin
-  the agreement down.
-- Their accuracy (71% and 75%) is no better than always answering "fail" (75% of the
-  labels are fail), and judge-check now says so in a warning. Every miss went the same
+- Both qwen judges clear the kappa threshold (at least 0.4 on at least 20 labels), but
+  their accuracy (71% and 75%) is no better than always answering "fail" (75% of the
+  labels are fail). eval-builder 0.1.2 still called them trustworthy and wired
+  `qwen2.5-7b` into promptfoo and DeepEval; 0.1.3 requires a judge to beat that
+  baseline, so both are now `misaligned` and no judge is wired in. The kappa intervals
+  are wide, from about 0.1 to 0.8: 24 labels cannot pin the agreement down. Every miss went the same
   way: the judge passed a reply the labels failed. Both qwen judges passed case-018
   (llama-13b answered "Here is an allegorical poem that illustrates the above:" and
   no poem) and case-019 (alpaca-13b's rewrite in which most sentences do not start with
@@ -65,15 +65,17 @@ brackets are 95% intervals.
   the judges' consensus: the judges said pass far more often than the labels did.
 - llama3.2:3b changes its verdict on almost half the cases between identical calls.
 
-## DeepEval with the checked judge
+## DeepEval with the checked judge (run under 0.1.2)
 
-`export` wrote `evalset/exports/deepeval/judge.json` (judge `qwen2.5-7b`, its exact
+Under 0.1.2, `export` wrote `evalset/exports/deepeval/judge.json` (removed by the 0.1.3 re-export) (judge `qwen2.5-7b`, its exact
 prompt, provider `ollama:chat:qwen2.5:7b-instruct` at temperature 0.8). DeepEval 4.2.8
 ran three of the cases on the logged outputs
 (`EVAL_BUILDER_USE_OBSERVED=1 pytest test_eval_builder.py -k "case-018 or case-020 or case-040"`):
 case-020 passed, case-040 failed with the judge's reason
 `{"pass": false, "reason": "Incorrect circumradius calculation."}`, and case-018 (the
-missing poem) passed, the same mistake judge-check found.
+missing poem) passed, the same mistake judge-check found. With 0.1.3 the same export
+falls back to GEval unless you pass `export --judge qwen2.5-7b`, which warns that the
+judge did not pass.
 
 `evalset/judge_requests.jsonl` (4.7 MB of rendered prompts) is not committed; `judge-plan`
 rebuilds it from `cases.yaml` and `rubric.yaml`.
