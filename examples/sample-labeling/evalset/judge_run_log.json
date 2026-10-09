@@ -1,0 +1,35 @@
+{
+  "runs": [
+    {
+      "started": "2026-10-08T20:49:18.739323+00:00",
+      "judges": {
+        "qwen2.5-7b": {
+          "command": "python examples/judges/ollama_judge.py --model qwen2.5:7b-instruct --num-predict 80",
+          "requests": 376,
+          "ok": 376,
+          "errors": 0,
+          "seconds": 1114.1,
+          "exit_code": 0
+        },
+        "qwen2.5-7b-temp0": {
+          "command": "python examples/judges/ollama_judge.py --model qwen2.5:7b-instruct --num-predict 80 --temperature 0",
+          "requests": 376,
+          "ok": 376,
+          "errors": 0,
+          "seconds": 1129.93,
+          "exit_code": 0
+        },
+        "llama3.2-3b": {
+          "command": "python examples/judges/ollama_judge.py --model llama3.2:3b --num-predict 80",
+          "requests": 376,
+          "ok": 376,
+          "errors": 0,
+          "seconds": 589.09,
+          "exit_code": 0
+        }
+      },
+      "finished": "2026-10-08T22:19:15.672820+00:00",
+      "judges_without_command": []
+    }
+  ]
+}

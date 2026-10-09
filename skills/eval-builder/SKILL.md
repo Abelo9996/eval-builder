@@ -11,8 +11,8 @@ user's own provider, and eval-builder does the bookkeeping, the selection and th
 statistics, and records evidence for every step.
 
 Use the MCP tools when they are available (`ingest`, `select`, `draft`, `list_cases`,
-`update_case`, `set_rubric`, `validate`, `judge_plan`, `judge_check`, `export`,
-`report`, `status`). Otherwise use the CLI with `--json`. All steps share one
+`update_case`, `set_rubric`, `validate`, `judge_plan`, `label`, `label_import`,
+`judge_check`, `export`, `report`, `status`). Otherwise use the CLI with `--json`. All steps share one
 workspace directory (default `./evalset`).
 
 ## Workflow
@@ -26,7 +26,9 @@ workspace directory (default `./evalset`).
 2. **Select.** Run `select` with `n` around 30 to 50. Pass `stratify` with the
    metadata keys that matter to the user (route, feature, customer tier, model).
    Failures (error flags, negative feedback) are oversampled. Show the user the
-   clusters and a few of the reasons cases were picked.
+   clusters and a few of the reasons cases were picked. If the result has `warnings`
+   (for example most picks are logged failures), pass them on: a judge checked on a
+   one-sided set can look accurate by always giving the common answer.
 
 3. **Draft and fill cases with the user.** Run `draft`, then `list_cases` to read the
    cases (input, earlier turns in `context`, logged `observed_output`). For each case, propose an
@@ -60,25 +62,38 @@ workspace directory (default `./evalset`).
      The plugin is off by default and eval-builder ships no API keys.
    Do not change the prompt between trials. Repeated trials are the point.
 
-7. **Human labels.** Ask the user to label at least 20 cases (more is better) in
-   `labels.jsonl` as `{"case_id": ..., "label": ...}`. **Never write human labels
-   yourself and never present your own judgment as a human label.** Without labels,
-   no judge can be called trustworthy, and the report says so.
+7. **Human labels.** No judge can be called trustworthy without them. Run `label`
+   (default 24 cases; judge_check needs at least 20). It picks the cases worth a
+   person's time: both outcomes covered, and aimed at cases where the judges disagree
+   or flip. It writes `label_sheet.html`, an offline page that shows one case per
+   screen with pass/fail (or A/B) buttons, keyboard shortcuts and a note box, with the
+   judges' verdicts hidden, plus `label_sheet.csv` for people who prefer a
+   spreadsheet. Give the user the path, ask them to label every case and click
+   Export (it downloads `labels.jsonl`), then run `label_import` with that file.
+   Report what it returns: counts, rejected rows and any warning that the labels are
+   mostly one outcome. If the user cannot label now, you can still run judge_check
+   (it measures stability and bias) and export, but say plainly that no judge has been
+   checked against people. **Never fill in the sheet, write labels.jsonl or present your own
+   judgment as a human label.**
 
 8. **Check the judges.** Run `judge_check`. Each judge gets one verdict:
    `trustworthy`, `unstable` (verdict flips across repeated calls), `biased` (answer
    order or irrelevant padding changes the verdict), `misaligned` (low kappa with
    human labels) or `not_enough_data`. Read the intervals, not only the point
-   estimates. Keep only trustworthy judges. For the others, report the reasons and
-   suggest concrete fixes: majority vote over several calls, running both answer
-   orders and only counting agreements, tighter rubric wording, a stronger judge model.
+   estimates, and repeat any `warnings` (labels mostly one outcome, a judge that gave
+   the same verdict on every labeled case). Keep only trustworthy judges. For the
+   others, report the reasons and suggest concrete fixes: majority vote over several
+   calls, running both answer orders and only counting agreements, tighter rubric
+   wording, a stronger judge model.
 
 9. **Export.** Run `export` with the user's tool (`promptfoo`, `deepeval`, `inspect`,
    `jsonl`). The manifest lists file hashes and which judges passed. In promptfoo the
    app receives the whole conversation as chat messages, and a pointwise judge that
-   passed judge_check and has a `provider` becomes the llm-rubric grader. Read the
-   `notes` in the result and pass them on (for example "judge X passed but has no
-   provider"). The DeepEval and Inspect exports do not wire a judge in.
+   passed judge_check and has a `provider` becomes the llm-rubric grader. In DeepEval
+   the same judge becomes a custom metric with its exact prompt (`judge.json`; Ollama
+   providers are called directly, others need `call_judge` filled in). Inspect keeps
+   its default `model_graded_qa` grader. Read the `notes` in the result and pass them
+   on (for example "judge X passed but has no provider").
 
 10. **Report.** Run `report` and give the user `report.md`. Quote numbers from it
     exactly, with their intervals and sample sizes, and repeat its limits section.

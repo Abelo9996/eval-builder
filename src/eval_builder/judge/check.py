@@ -462,6 +462,19 @@ def _balance_warnings(used: dict[str, str], judges: dict[str, dict[str, Any]]) -
         if not ag or ag["cases"] < 5:
             continue
         jc = {k: v for k, v in ag["judge_label_counts"].items() if v}
+        acc, base = ag["accuracy"]["rate"], ag["majority_baseline"]
+        if len(jc) > 1 and acc is not None and acc <= base:
+            common = max(ag["human_label_counts"].items(), key=lambda kv: kv[1])[0]
+            kci = ag["kappa_ci95"]
+            kappa = "undefined" if ag["kappa"] is None else f"{ag['kappa']:.2f}"
+            if kci:
+                kappa += f" [{kci[0]:.2f}, {kci[1]:.2f}]"
+            out.append(
+                f"judge {jid}'s accuracy ({acc:.0%}) is no better than always answering "
+                f"{common!r} ({base:.0%}) on these {ag['cases']} labeled cases (the judge said "
+                f"{proportions(jc)}); kappa {kappa} is the number that corrects for this. "
+                "Look at the cases it got wrong before relying on it"
+            )
         if len(jc) == 1:
             ((top, n),) = jc.items()
             out.append(

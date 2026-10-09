@@ -79,7 +79,10 @@ export and report in 32 turns and about 10 minutes. From its final answer:
 > Its verdicts will be unverified.
 
 It wrote every expected behavior itself because nobody was there to confirm them, and
-said so on each case. It did not invent human labels; it asked for them.
+said so on each case. It did not invent human labels; it asked for them. That is where
+this session and the earlier one both stopped, so 0.1.2 adds the missing step: `label`
+writes a sheet the person labels in their browser, and `label import` brings the
+labels back for judge-check ([Human labels, end to end](#human-labels-end-to-end)).
 
 An earlier session against 0.1.0 is where the promptfoo context bug fixed in 0.1.1 came
 from. The agent read the export and told the user: "Right now it only sends the final
@@ -139,6 +142,42 @@ The same check on the suite's own pass/fail judge (qwen2.5 7B, 24 cases, no huma
 labels) gives `unstable`: its verdict changed across 5 identical calls on 7 of 24
 cases (29%, interval 15% to 49%).
 
+### Human labels, end to end
+
+```sh
+uvx eval-builder label                                   # picks 24 cases, writes label_sheet.html
+uvx eval-builder label import ~/Downloads/labels.jsonl   # what the sheet's Export button saved
+uvx eval-builder judge-check
+```
+
+![The labeling sheet: one case per screen, pass and fail buttons with keyboard shortcuts](docs/label-sheet.png)
+
+Run on the 48 sample conversations with every model's answer kept as a case (47
+cases), three local judges (1,128 calls, 0 errors), and 24 labels entered through the
+sheet in headless Chrome. The labels were made by the developer (Claude Code reading
+each case for him), not by an independent annotator, so read this as a demonstration
+of the flow. Details and every file: [`examples/sample-labeling/`](examples/sample-labeling/).
+
+- `label` split the 24 picks 12/12 between cases the judges called pass and fail; 15
+  are cases where the judges disagree, flip or move under padding.
+- The sheet made no network requests, survived a reload mid-way, and its download was
+  byte-identical to the copy box. `label import` took 24 rows, rejected 0.
+- `judge-check` against those labels (fail 18, pass 6):
+
+| judge | verdict | flip rate | accuracy vs labels | kappa |
+|---|---|---|---|---|
+| qwen2.5:7b-instruct, temp 0 | trustworthy | 0% [0%, 8%] | 75% [55%, 88%] | 0.50 [0.15, 0.85] |
+| qwen2.5:7b-instruct, temp 0.8 | trustworthy | 9% [3%, 20%] | 71% [51%, 85%] | 0.44 [0.09, 0.79] |
+| llama3.2:3b | unstable | 47% [33%, 61%] | 54% [35%, 72%] | 0.12 [-0.26, 0.50] |
+
+The qwen judges pass the default thresholds, but judge-check also warns that their
+accuracy is no better than always answering "fail" (75% of the labels), and every
+miss went the same way: both passed a reply that said "Here is an allegorical poem"
+and then wrote no poem. With 24 labels the kappa interval runs from about 0.1 to 0.8.
+The DeepEval export wired the 0.8-temperature qwen judge in with its exact prompt;
+DeepEval 4.2.8 ran three logged cases through it and it made the same call on the
+missing poem.
+
 ## How it works
 
 | step | what it does | what it uses |
@@ -148,14 +187,17 @@ cases (29%, interval 15% to 49%).
 | `draft`, `validate` | Writes `cases.yaml` and `rubric.yaml` with TODO markers. The agent fills in expected behavior and criteria with you. Validation refuses ready cases that still contain TODO or reference unknown criteria. | PyYAML |
 | `judge-plan` | Lists every judge call to make: each case N times, plus probes that swap the answer order (pairwise judges) and pad an answer with an irrelevant paragraph. | |
 | `judge-run` | Optional and off by default. Sends each request as a JSON line to a command you name (your script, your provider, your keys) and records the verdicts. eval-builder ships no API keys and no provider code. | your command |
+| `label`, `label import` | Picks the ready cases a person should label (default 24): the budget is split across outcomes (the judges' consensus, or the logged failure flag before judges ran) and up to half of each share goes to cases where judges disagree, flip across repeats or move under padding. Writes `label_sheet.html`, one offline file (one case per screen, pass/fail or A/B buttons, a note, keyboard shortcuts, judge verdicts hidden, progress kept in the browser) whose Export button downloads `labels.jsonl` in the format judge-check reads, and `label_sheet.csv` for spreadsheet users. `label import` checks the file against `cases.yaml` and merges it into the workspace. | Python standard library; the sheet is plain HTML and JavaScript |
 | `judge-check` | Per judge: flip rate across repeated calls (with a Wilson interval), self-agreement, majority-of-3 vote stability, accuracy and Cohen's kappa against your human labels (with intervals), position consistency and first-shown preference, and how often padding moved the verdict toward the padded answer. Verdict: `trustworthy`, `unstable`, `biased`, `misaligned`, or `not_enough_data`, with the numbers behind it. | |
-| `export` | promptfoo `promptfooconfig.yaml` (the full conversation as chat messages, llm-rubric asserts, and a judge that passed judge-check wired in as the grader when its rubric entry names a promptfoo `provider`), DeepEval dataset plus a `deepeval test run` file, Inspect AI dataset plus `task.py`, plain JSONL. The manifest lists file hashes and which judges passed. | |
+| `export` | promptfoo `promptfooconfig.yaml` (the full conversation as chat messages, llm-rubric asserts, and a judge that passed judge-check wired in as the grader when its rubric entry names a promptfoo `provider`), DeepEval dataset plus a `deepeval test run` file (the same checked judge grades every case with its exact prompt; without one, GEval), Inspect AI dataset plus `task.py` (Inspect's default `model_graded_qa` grader), plain JSONL. The manifest lists file hashes and which judges passed. | |
 | `report` | `report.md` and `report.json`: sources with sha256, counts, redactions, selection reasons, the judge table, and the limits. | |
 
 The verdict thresholds are explicit flags with defaults: flip rate at most 20% of cases,
 position consistency at least 80%, padding helps at most 10% of cases, kappa at least
 0.4 on at least 20 human-labeled cases. A judge without human labels is never called
-trustworthy.
+trustworthy. When at least 80% of the selected cases or of the human labels share one
+outcome, `select` and `judge-check` say so with the real proportions, because a judge
+that always gives that answer would look accurate on them.
 
 ## Setup for agents
 
@@ -172,14 +214,22 @@ file it edits and does nothing on a second run. The workflow the agent follows i
 [`skills/eval-builder/SKILL.md`](skills/eval-builder/SKILL.md).
 
 MCP tools: `ingest`, `select`, `draft`, `list_cases`, `update_case`, `set_rubric`,
-`validate`, `judge_plan`, `judge_check`, `export`, `report`, `status`. The judge runner
+`validate`, `judge_plan`, `label`, `label_import`, `judge_check`, `export`, `report`,
+`status`. The judge runner
 is CLI only, because it executes a command.
 
 ## What it can't do
 
 - It does not write expected behavior or human labels. The agent drafts expected
   behavior with you; labels must come from people. Without labels, judge-check can
-  tell you a judge is unstable or biased, but not that it is right.
+  tell you a judge is unstable or biased, but not that it is right. `label` makes the
+  labeling quick, but someone still has to read each case.
+- Picking labels where judges disagree makes each label more informative, but those
+  cases are harder than average, so accuracy measured on them leans pessimistic.
+  `--uncertain-share 0` picks by outcome and topic only.
+- The labeling sheet is a static page, so it cannot save files: the person has to
+  click Export (or copy the text) and import it. Unexported progress lives only in
+  that browser's local storage.
 - Selection is lexical. Two requests that mean the same thing in different words can
   land in different clusters, and near-duplicate detection only catches close textual
   matches.
@@ -191,16 +241,21 @@ is CLI only, because it executes a command.
 - It does not run your app, your judges or your eval. The agent (or a script you name
   with `judge-run`) calls the judge model; the exported files run the eval in promptfoo,
   DeepEval or Inspect AI.
-- Only the promptfoo export wires a checked judge in as the grader, and only a
-  pointwise judge whose prompt answers in JSON (`{"pass": ..., "reason": ...}`), because
-  promptfoo's llm-rubric cannot parse a bare "pass". DeepEval and Inspect exports use
-  their own default graders.
+- A checked judge is wired in as the grader in promptfoo and DeepEval, and only a
+  pointwise one. promptfoo needs its prompt to answer in JSON (`{"pass": ...,
+  "reason": ...}`), because llm-rubric cannot parse a bare "pass". The DeepEval test
+  calls Ollama judges itself; for any other provider you fill in `call_judge`. The
+  Inspect AI export still uses Inspect's default `model_graded_qa` grader, not your
+  checked judge.
 
 ## Privacy and safety
 
 Everything runs locally. eval-builder makes no network calls and sends nothing
 anywhere. The only process it starts is the judge command you name with
-`judge-run --enable-judge-plugin`. Redaction is on unless you pass `--no-redact`, and
+`judge-run --enable-judge-plugin`. The labeling sheet is one HTML file with a content
+security policy that blocks every network request; it keeps unexported labels in the
+browser's local storage on that machine. Exported test files can call a model when
+you run them (the DeepEval test calls the judge it was given). Redaction is on unless you pass `--no-redact`, and
 the report lists what was replaced (counts and kinds, never the values).
 
 ## License

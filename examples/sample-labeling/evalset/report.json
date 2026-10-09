@@ -1,0 +1,3593 @@
+{
+  "generated_at": "2026-10-09T08:21:43+00:00",
+  "eval_builder_version": "0.1.2",
+  "workspace": "examples/sample-labeling/evalset",
+  "ingest": {
+    "traces": 48,
+    "sources": [
+      {
+        "path": "examples/sample_logs.jsonl",
+        "sha256": "2d5dd2295784988bb23a42d67490b17d5ed2fd78e13c5c0e849458d4af42b76e",
+        "format": "openai",
+        "records": 48,
+        "traces": 48,
+        "skipped": {}
+      }
+    ],
+    "redactions": {
+      "enabled": true,
+      "total": 0,
+      "by_kind": {},
+      "traces_affected": 0,
+      "by_trace": {},
+      "note": "Values are replaced with [REDACTED_<KIND>]; originals are never written."
+    },
+    "with_error": 0,
+    "feedback": {
+      "negative": 13,
+      "positive": 2,
+      "none": 33
+    },
+    "routes": {
+      "none": 48
+    },
+    "tools": {},
+    "multi_turn": 48,
+    "output_file": "examples/sample-labeling/evalset/traces.jsonl"
+  },
+  "selection": {
+    "params": {
+      "n": 48,
+      "seed": 0,
+      "clusters": 7,
+      "failure_share": 0.3,
+      "near_dup_threshold": 0.99,
+      "dedupe_on": "input+output",
+      "stratify": [
+        "route",
+        "tools",
+        "error",
+        "feedback",
+        "category",
+        "model"
+      ]
+    },
+    "population": {
+      "traces": 48,
+      "exact_duplicates_removed": 0,
+      "near_duplicates_merged": 1,
+      "unique": 47,
+      "failures_unique": 13
+    },
+    "clusters": [
+      {
+        "id": 0,
+        "size": 9,
+        "share": 0.1915,
+        "terms": [
+          "like",
+          "elon",
+          "elon musk",
+          "musk",
+          "indicators"
+        ],
+        "selected": 9
+      },
+      {
+        "id": 1,
+        "size": 9,
+        "share": 0.1915,
+        "terms": [
+          "number",
+          "write",
+          "program",
+          "program nth",
+          "write program"
+        ],
+        "selected": 9
+      },
+      {
+        "id": 2,
+        "size": 9,
+        "share": 0.1915,
+        "terms": [
+          "response",
+          "email",
+          "point",
+          "post",
+          "sentence"
+        ],
+        "selected": 9
+      },
+      {
+        "id": 3,
+        "size": 8,
+        "share": 0.1702,
+        "terms": [
+          "person",
+          "house",
+          "second",
+          "second person",
+          "just"
+        ],
+        "selected": 8
+      },
+      {
+        "id": 4,
+        "size": 3,
+        "share": 0.0638,
+        "terms": [
+          "movie",
+          "released",
+          "parts",
+          "json",
+          "movie released"
+        ],
+        "selected": 3
+      },
+      {
+        "id": 5,
+        "size": 3,
+        "share": 0.0638,
+        "terms": [
+          "triangle",
+          "area",
+          "triangle area",
+          "area circle",
+          "area triangle"
+        ],
+        "selected": 3
+      },
+      {
+        "id": 6,
+        "size": 6,
+        "share": 0.1277,
+        "terms": [
+          "quantum",
+          "satellite",
+          "physics",
+          "cases",
+          "assumptions response"
+        ],
+        "selected": 6
+      }
+    ],
+    "strata": {
+      "feedback": {
+        "(none)": {
+          "population": 32,
+          "selected": 32
+        },
+        "negative": {
+          "population": 13,
+          "selected": 13
+        },
+        "positive": {
+          "population": 2,
+          "selected": 2
+        }
+      },
+      "category": {
+        "coding": {
+          "population": 6,
+          "selected": 6
+        },
+        "extraction": {
+          "population": 6,
+          "selected": 6
+        },
+        "humanities": {
+          "population": 6,
+          "selected": 6
+        },
+        "math": {
+          "population": 5,
+          "selected": 5
+        },
+        "reasoning": {
+          "population": 6,
+          "selected": 6
+        },
+        "roleplay": {
+          "population": 6,
+          "selected": 6
+        },
+        "stem": {
+          "population": 6,
+          "selected": 6
+        },
+        "writing": {
+          "population": 6,
+          "selected": 6
+        }
+      },
+      "model": {
+        "alpaca-13b": {
+          "population": 16,
+          "selected": 16
+        },
+        "gpt-4": {
+          "population": 16,
+          "selected": 16
+        },
+        "llama-13b": {
+          "population": 15,
+          "selected": 15
+        }
+      }
+    },
+    "strata_skipped": {},
+    "selected_count": 47,
+    "selected_failures": 13,
+    "selected": [
+      {
+        "trace_id": "q91-alpaca-13b",
+        "reasons": [
+          "adds variety within cluster 0 (9 traces, 19%; like, elon, elon musk); least similar to cases already picked there"
+        ],
+        "cluster": 0,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "roleplay"
+          ],
+          "model": [
+            "alpaca-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q91-gpt-4",
+        "reasons": [
+          "adds variety within cluster 0 (9 traces, 19%; like, elon, elon musk); least similar to cases already picked there"
+        ],
+        "cluster": 0,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "roleplay"
+          ],
+          "model": [
+            "gpt-4"
+          ]
+        }
+      },
+      {
+        "trace_id": "q91-llama-13b",
+        "reasons": [
+          "adds variety within cluster 0 (9 traces, 19%; like, elon, elon musk); least similar to cases already picked there"
+        ],
+        "cluster": 0,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "roleplay"
+          ],
+          "model": [
+            "llama-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q92-alpaca-13b",
+        "reasons": [
+          "adds variety within cluster 0 (9 traces, 19%; like, elon, elon musk); least similar to cases already picked there"
+        ],
+        "cluster": 0,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "roleplay"
+          ],
+          "model": [
+            "alpaca-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q92-gpt-4",
+        "reasons": [
+          "adds variety within cluster 0 (9 traces, 19%; like, elon, elon musk); least similar to cases already picked there"
+        ],
+        "cluster": 0,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "roleplay"
+          ],
+          "model": [
+            "gpt-4"
+          ]
+        }
+      },
+      {
+        "trace_id": "q92-llama-13b",
+        "reasons": [
+          "failure (negative user feedback); 28% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 0,
+        "represents": 1,
+        "duplicates": [],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "roleplay"
+          ],
+          "model": [
+            "llama-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q151-alpaca-13b",
+        "reasons": [
+          "failure (negative user feedback); 28% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 0,
+        "represents": 1,
+        "duplicates": [],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "humanities"
+          ],
+          "model": [
+            "alpaca-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q151-gpt-4",
+        "reasons": [
+          "adds variety within cluster 0 (9 traces, 19%; like, elon, elon musk); least similar to cases already picked there"
+        ],
+        "cluster": 0,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "humanities"
+          ],
+          "model": [
+            "gpt-4"
+          ]
+        }
+      },
+      {
+        "trace_id": "q151-llama-13b",
+        "reasons": [
+          "failure (negative user feedback); 28% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 0,
+        "represents": 1,
+        "duplicates": [],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "humanities"
+          ],
+          "model": [
+            "llama-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q121-alpaca-13b",
+        "reasons": [
+          "adds variety within cluster 1 (9 traces, 19%; number, write, program); least similar to cases already picked there"
+        ],
+        "cluster": 1,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "coding"
+          ],
+          "model": [
+            "alpaca-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q121-gpt-4",
+        "reasons": [
+          "adds variety within cluster 1 (9 traces, 19%; number, write, program); least similar to cases already picked there"
+        ],
+        "cluster": 1,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "coding"
+          ],
+          "model": [
+            "gpt-4"
+          ]
+        }
+      },
+      {
+        "trace_id": "q121-llama-13b",
+        "reasons": [
+          "failure (negative user feedback); 28% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 1,
+        "represents": 1,
+        "duplicates": [],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "coding"
+          ],
+          "model": [
+            "llama-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q122-alpaca-13b",
+        "reasons": [
+          "adds variety within cluster 1 (9 traces, 19%; number, write, program); least similar to cases already picked there"
+        ],
+        "cluster": 1,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "coding"
+          ],
+          "model": [
+            "alpaca-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q122-gpt-4",
+        "reasons": [
+          "adds variety within cluster 1 (9 traces, 19%; number, write, program); least similar to cases already picked there"
+        ],
+        "cluster": 1,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "coding"
+          ],
+          "model": [
+            "gpt-4"
+          ]
+        }
+      },
+      {
+        "trace_id": "q122-llama-13b",
+        "reasons": [
+          "failure (negative user feedback); 28% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 1,
+        "represents": 1,
+        "duplicates": [],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "coding"
+          ],
+          "model": [
+            "llama-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q152-alpaca-13b",
+        "reasons": [
+          "adds variety within cluster 1 (9 traces, 19%; number, write, program); least similar to cases already picked there"
+        ],
+        "cluster": 1,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "humanities"
+          ],
+          "model": [
+            "alpaca-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q152-gpt-4",
+        "reasons": [
+          "adds variety within cluster 1 (9 traces, 19%; number, write, program); least similar to cases already picked there"
+        ],
+        "cluster": 1,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "humanities"
+          ],
+          "model": [
+            "gpt-4"
+          ]
+        }
+      },
+      {
+        "trace_id": "q152-llama-13b",
+        "reasons": [
+          "failure (negative user feedback); 28% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 1,
+        "represents": 1,
+        "duplicates": [],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "humanities"
+          ],
+          "model": [
+            "llama-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q81-alpaca-13b",
+        "reasons": [
+          "failure (negative user feedback); 28% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 2,
+        "represents": 1,
+        "duplicates": [],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "writing"
+          ],
+          "model": [
+            "alpaca-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q81-gpt-4",
+        "reasons": [
+          "adds variety within cluster 2 (9 traces, 19%; response, email, point); least similar to cases already picked there"
+        ],
+        "cluster": 2,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "positive"
+          ],
+          "category": [
+            "writing"
+          ],
+          "model": [
+            "gpt-4"
+          ]
+        }
+      },
+      {
+        "trace_id": "q81-llama-13b",
+        "reasons": [
+          "adds variety within cluster 2 (9 traces, 19%; response, email, point); least similar to cases already picked there"
+        ],
+        "cluster": 2,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "writing"
+          ],
+          "model": [
+            "llama-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q82-alpaca-13b",
+        "reasons": [
+          "adds variety within cluster 2 (9 traces, 19%; response, email, point); least similar to cases already picked there"
+        ],
+        "cluster": 2,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "writing"
+          ],
+          "model": [
+            "alpaca-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q82-gpt-4",
+        "reasons": [
+          "adds variety within cluster 2 (9 traces, 19%; response, email, point); least similar to cases already picked there"
+        ],
+        "cluster": 2,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "writing"
+          ],
+          "model": [
+            "gpt-4"
+          ]
+        }
+      },
+      {
+        "trace_id": "q82-llama-13b",
+        "reasons": [
+          "adds variety within cluster 2 (9 traces, 19%; response, email, point); least similar to cases already picked there"
+        ],
+        "cluster": 2,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "writing"
+          ],
+          "model": [
+            "llama-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q132-alpaca-13b",
+        "reasons": [
+          "adds variety within cluster 2 (9 traces, 19%; response, email, point); least similar to cases already picked there"
+        ],
+        "cluster": 2,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "extraction"
+          ],
+          "model": [
+            "alpaca-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q132-gpt-4",
+        "reasons": [
+          "adds variety within cluster 2 (9 traces, 19%; response, email, point); least similar to cases already picked there"
+        ],
+        "cluster": 2,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "extraction"
+          ],
+          "model": [
+            "gpt-4"
+          ]
+        }
+      },
+      {
+        "trace_id": "q132-llama-13b",
+        "reasons": [
+          "adds variety within cluster 2 (9 traces, 19%; response, email, point); least similar to cases already picked there"
+        ],
+        "cluster": 2,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "extraction"
+          ],
+          "model": [
+            "llama-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q101-alpaca-13b",
+        "reasons": [
+          "adds variety within cluster 3 (8 traces, 17%; person, house, second); least similar to cases already picked there"
+        ],
+        "cluster": 3,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "reasoning"
+          ],
+          "model": [
+            "alpaca-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q101-gpt-4",
+        "reasons": [
+          "covers feedback=positive (2 unique traces, 4%)"
+        ],
+        "cluster": 3,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "positive"
+          ],
+          "category": [
+            "reasoning"
+          ],
+          "model": [
+            "gpt-4"
+          ]
+        }
+      },
+      {
+        "trace_id": "q101-llama-13b",
+        "reasons": [
+          "adds variety within cluster 3 (8 traces, 17%; person, house, second); least similar to cases already picked there"
+        ],
+        "cluster": 3,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "reasoning"
+          ],
+          "model": [
+            "llama-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q102-alpaca-13b",
+        "reasons": [
+          "adds variety within cluster 3 (8 traces, 17%; person, house, second); least similar to cases already picked there"
+        ],
+        "cluster": 3,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "reasoning"
+          ],
+          "model": [
+            "alpaca-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q102-gpt-4",
+        "reasons": [
+          "adds variety within cluster 3 (8 traces, 17%; person, house, second); least similar to cases already picked there"
+        ],
+        "cluster": 3,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "reasoning"
+          ],
+          "model": [
+            "gpt-4"
+          ]
+        }
+      },
+      {
+        "trace_id": "q102-llama-13b",
+        "reasons": [
+          "adds variety within cluster 3 (8 traces, 17%; person, house, second); least similar to cases already picked there"
+        ],
+        "cluster": 3,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "reasoning"
+          ],
+          "model": [
+            "llama-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q112-alpaca-13b",
+        "reasons": [
+          "failure (negative user feedback); 28% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 3,
+        "represents": 2,
+        "duplicates": [
+          "q112-llama-13b"
+        ],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "math"
+          ],
+          "model": [
+            "alpaca-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q112-gpt-4",
+        "reasons": [
+          "adds variety within cluster 3 (8 traces, 17%; person, house, second); least similar to cases already picked there"
+        ],
+        "cluster": 3,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "math"
+          ],
+          "model": [
+            "gpt-4"
+          ]
+        }
+      },
+      {
+        "trace_id": "q131-alpaca-13b",
+        "reasons": [
+          "failure (negative user feedback); 28% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 4,
+        "represents": 1,
+        "duplicates": [],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "extraction"
+          ],
+          "model": [
+            "alpaca-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q131-gpt-4",
+        "reasons": [
+          "adds variety within cluster 4 (3 traces, 6%; movie, released, parts); least similar to cases already picked there"
+        ],
+        "cluster": 4,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "extraction"
+          ],
+          "model": [
+            "gpt-4"
+          ]
+        }
+      },
+      {
+        "trace_id": "q131-llama-13b",
+        "reasons": [
+          "adds variety within cluster 4 (3 traces, 6%; movie, released, parts); least similar to cases already picked there"
+        ],
+        "cluster": 4,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "extraction"
+          ],
+          "model": [
+            "llama-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q111-alpaca-13b",
+        "reasons": [
+          "failure (negative user feedback); 28% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 5,
+        "represents": 1,
+        "duplicates": [],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "math"
+          ],
+          "model": [
+            "alpaca-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q111-gpt-4",
+        "reasons": [
+          "covers feedback=(none) (32 unique traces, 68%)"
+        ],
+        "cluster": 5,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "math"
+          ],
+          "model": [
+            "gpt-4"
+          ]
+        }
+      },
+      {
+        "trace_id": "q111-llama-13b",
+        "reasons": [
+          "adds variety within cluster 5 (3 traces, 6%; triangle, area, triangle area); least similar to cases already picked there"
+        ],
+        "cluster": 5,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "math"
+          ],
+          "model": [
+            "llama-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q141-alpaca-13b",
+        "reasons": [
+          "failure (negative user feedback); 28% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 6,
+        "represents": 1,
+        "duplicates": [],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "stem"
+          ],
+          "model": [
+            "alpaca-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q141-gpt-4",
+        "reasons": [
+          "adds variety within cluster 6 (6 traces, 13%; quantum, satellite, physics); least similar to cases already picked there"
+        ],
+        "cluster": 6,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "stem"
+          ],
+          "model": [
+            "gpt-4"
+          ]
+        }
+      },
+      {
+        "trace_id": "q141-llama-13b",
+        "reasons": [
+          "failure (negative user feedback); 28% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 6,
+        "represents": 1,
+        "duplicates": [],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "stem"
+          ],
+          "model": [
+            "llama-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q142-alpaca-13b",
+        "reasons": [
+          "adds variety within cluster 6 (6 traces, 13%; quantum, satellite, physics); least similar to cases already picked there"
+        ],
+        "cluster": 6,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "stem"
+          ],
+          "model": [
+            "alpaca-13b"
+          ]
+        }
+      },
+      {
+        "trace_id": "q142-gpt-4",
+        "reasons": [
+          "adds variety within cluster 6 (6 traces, 13%; quantum, satellite, physics); least similar to cases already picked there"
+        ],
+        "cluster": 6,
+        "represents": 1,
+        "duplicates": [],
+        "failure": false,
+        "failing_in_group": 0,
+        "strata": {
+          "feedback": [
+            "(none)"
+          ],
+          "category": [
+            "stem"
+          ],
+          "model": [
+            "gpt-4"
+          ]
+        }
+      },
+      {
+        "trace_id": "q142-llama-13b",
+        "reasons": [
+          "failure (negative user feedback); 28% of unique traces are failures and at least 30% of picks are reserved for them"
+        ],
+        "cluster": 6,
+        "represents": 1,
+        "duplicates": [],
+        "failure": true,
+        "failing_in_group": 1,
+        "strata": {
+          "feedback": [
+            "negative"
+          ],
+          "category": [
+            "stem"
+          ],
+          "model": [
+            "llama-13b"
+          ]
+        }
+      }
+    ],
+    "notes": [
+      "asked for 48 cases but only 47 unique traces remain after removing 0 exact and 1 near duplicates, so all of them were picked"
+    ],
+    "next": "run draft to turn the selection into cases.yaml"
+  },
+  "cases": {
+    "total": 47,
+    "by_status": {
+      "draft": 0,
+      "ready": 47,
+      "dropped": 0
+    }
+  },
+  "judge_check": {
+    "judge_check_file": "examples/sample-labeling/evalset/judge_check.json",
+    "judgments_file": "examples/sample-labeling/evalset/judgments.jsonl",
+    "labels_file": "examples/sample-labeling/evalset/labels.jsonl",
+    "labeled_cases": 24,
+    "human_label_counts": {
+      "fail": 18,
+      "pass": 6
+    },
+    "warnings": [
+      "judge llama3.2-3b's accuracy (54%) is no better than always answering 'fail' (75%) on these 24 labeled cases (the judge said pass 13 of 24 (54%), fail 11 (46%)); kappa 0.12 [-0.26, 0.50] is the number that corrects for this. Look at the cases it got wrong before relying on it",
+      "judge qwen2.5-7b's accuracy (71%) is no better than always answering 'fail' (75%) on these 24 labeled cases (the judge said pass 13 of 24 (54%), fail 11 (46%)); kappa 0.44 [0.09, 0.79] is the number that corrects for this. Look at the cases it got wrong before relying on it",
+      "judge qwen2.5-7b-temp0's accuracy (75%) is no better than always answering 'fail' (75%) on these 24 labeled cases (the judge said fail 12 of 24 (50%), pass 12 (50%)); kappa 0.50 [0.15, 0.85] is the number that corrects for this. Look at the cases it got wrong before relying on it"
+    ],
+    "thresholds": {
+      "min_trials": 3,
+      "min_cases": 10,
+      "max_flip_rate": 0.2,
+      "min_position_consistency": 0.8,
+      "max_toward_padded_rate": 0.1,
+      "min_kappa": 0.4,
+      "min_labeled": 20
+    },
+    "summary": [
+      {
+        "judge": "llama3.2-3b",
+        "mode": "pointwise",
+        "verdict": "unstable",
+        "cases": 47,
+        "calls": 376,
+        "invalid_outputs": 0,
+        "flip_rate": 0.4681,
+        "flip_rate_ci95": [
+          0.3333,
+          0.6077
+        ],
+        "labeled_cases": 24,
+        "kappa": 0.12,
+        "kappa_ci95": [
+          -0.2627,
+          0.5027
+        ],
+        "accuracy": 0.5417,
+        "accuracy_ci95": [
+          0.3507,
+          0.7211
+        ],
+        "majority_baseline": 0.75,
+        "position_consistency": null,
+        "position_consistency_ci95": null,
+        "toward_padded": 0.0426,
+        "toward_padded_ci95": [
+          0.0117,
+          0.1425
+        ],
+        "reasons": [
+          "verdict changed across repeated trials on 47% of cases (limit 20%)",
+          "agreement with human labels is low: kappa 0.12 (need 0.4), accuracy 54%"
+        ]
+      },
+      {
+        "judge": "qwen2.5-7b",
+        "mode": "pointwise",
+        "verdict": "trustworthy",
+        "cases": 47,
+        "calls": 376,
+        "invalid_outputs": 0,
+        "flip_rate": 0.0851,
+        "flip_rate_ci95": [
+          0.0336,
+          0.1993
+        ],
+        "labeled_cases": 24,
+        "kappa": 0.44,
+        "kappa_ci95": [
+          0.0909,
+          0.7891
+        ],
+        "accuracy": 0.7083,
+        "accuracy_ci95": [
+          0.5083,
+          0.8509
+        ],
+        "majority_baseline": 0.75,
+        "position_consistency": null,
+        "position_consistency_ci95": null,
+        "toward_padded": 0.0,
+        "toward_padded_ci95": [
+          0.0,
+          0.0756
+        ],
+        "reasons": [
+          "stable (flip rate 9%), kappa 0.44 with humans"
+        ]
+      },
+      {
+        "judge": "qwen2.5-7b-temp0",
+        "mode": "pointwise",
+        "verdict": "trustworthy",
+        "cases": 47,
+        "calls": 376,
+        "invalid_outputs": 0,
+        "flip_rate": 0.0,
+        "flip_rate_ci95": [
+          0.0,
+          0.0756
+        ],
+        "labeled_cases": 24,
+        "kappa": 0.5,
+        "kappa_ci95": [
+          0.1535,
+          0.8465
+        ],
+        "accuracy": 0.75,
+        "accuracy_ci95": [
+          0.551,
+          0.88
+        ],
+        "majority_baseline": 0.75,
+        "position_consistency": null,
+        "position_consistency_ci95": null,
+        "toward_padded": 0.0,
+        "toward_padded_ci95": [
+          0.0,
+          0.0756
+        ],
+        "reasons": [
+          "stable (flip rate 0%), kappa 0.50 with humans"
+        ]
+      }
+    ],
+    "judges": {
+      "llama3.2-3b": {
+        "mode": "pointwise",
+        "verdict": "unstable",
+        "reasons": [
+          "verdict changed across repeated trials on 47% of cases (limit 20%)",
+          "agreement with human labels is low: kappa 0.12 (need 0.4), accuracy 54%"
+        ],
+        "checks": {
+          "stability": "fail",
+          "position": "not run",
+          "verbosity": "pass",
+          "human_agreement": "fail"
+        },
+        "stability": {
+          "cases": 47,
+          "trials_per_case": [
+            5
+          ],
+          "flip_rate": {
+            "k": 22,
+            "n": 47,
+            "rate": 0.4681,
+            "ci95": [
+              0.3333,
+              0.6077
+            ]
+          },
+          "mean_self_agreement": 0.8255,
+          "no_majority_cases": 0,
+          "majority_of_3_stability": 0.8787,
+          "invalid_outputs": 0,
+          "calls": 376
+        },
+        "human_agreement": {
+          "cases": 24,
+          "accuracy": {
+            "k": 13,
+            "n": 24,
+            "rate": 0.5417,
+            "ci95": [
+              0.3507,
+              0.7211
+            ]
+          },
+          "kappa": 0.12,
+          "kappa_ci95": [
+            -0.2627,
+            0.5027
+          ],
+          "chance_agreement": 0.4792,
+          "single_call_accuracy": 0.6167,
+          "human_label_counts": {
+            "fail": 18,
+            "pass": 6
+          },
+          "judge_label_counts": {
+            "fail": 11,
+            "pass": 13
+          },
+          "majority_baseline": 0.75
+        },
+        "position_probe": null,
+        "verbosity_probe": {
+          "cases": 47,
+          "changed": {
+            "k": 4,
+            "n": 47,
+            "rate": 0.0851,
+            "ci95": [
+              0.0336,
+              0.1993
+            ]
+          },
+          "toward_padded": {
+            "k": 2,
+            "n": 47,
+            "rate": 0.0426,
+            "ci95": [
+              0.0117,
+              0.1425
+            ]
+          },
+          "note": "padding appends an irrelevant paragraph; toward_padded = share of cases where the padded answer's verdict improved"
+        },
+        "cases": [
+          {
+            "case_id": "case-001",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-002",
+            "trials": 5,
+            "counts": {
+              "fail": 3,
+              "pass": 2
+            },
+            "majority": "fail",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-003",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-004",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-005",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-006",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-007",
+            "trials": 5,
+            "counts": {
+              "pass": 4,
+              "fail": 1
+            },
+            "majority": "pass",
+            "majority_share": 0.8,
+            "flipped": true,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-008",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "pass",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-009",
+            "trials": 5,
+            "counts": {
+              "pass": 4,
+              "fail": 1
+            },
+            "majority": "pass",
+            "majority_share": 0.8,
+            "flipped": true,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-010",
+            "trials": 5,
+            "counts": {
+              "pass": 3,
+              "fail": 2
+            },
+            "majority": "pass",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "human": "fail",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-011",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-012",
+            "trials": 5,
+            "counts": {
+              "pass": 3,
+              "fail": 2
+            },
+            "majority": "pass",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "human": "fail",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-013",
+            "trials": 5,
+            "counts": {
+              "pass": 3,
+              "fail": 2
+            },
+            "majority": "pass",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "human": "fail",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-014",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-015",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-016",
+            "trials": 5,
+            "counts": {
+              "pass": 3,
+              "fail": 2
+            },
+            "majority": "pass",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-017",
+            "trials": 5,
+            "counts": {
+              "pass": 3,
+              "fail": 2
+            },
+            "majority": "pass",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-018",
+            "trials": 5,
+            "counts": {
+              "pass": 3,
+              "fail": 2
+            },
+            "majority": "pass",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-019",
+            "trials": 5,
+            "counts": {
+              "fail": 3,
+              "pass": 2
+            },
+            "majority": "fail",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-020",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-021",
+            "trials": 5,
+            "counts": {
+              "pass": 3,
+              "fail": 2
+            },
+            "majority": "pass",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-022",
+            "trials": 5,
+            "counts": {
+              "pass": 3,
+              "fail": 2
+            },
+            "majority": "pass",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-023",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "pass",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-024",
+            "trials": 5,
+            "counts": {
+              "fail": 3,
+              "pass": 2
+            },
+            "majority": "fail",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-025",
+            "trials": 5,
+            "counts": {
+              "fail": 3,
+              "pass": 2
+            },
+            "majority": "fail",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "human": "fail",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-026",
+            "trials": 5,
+            "counts": {
+              "pass": 3,
+              "fail": 2
+            },
+            "majority": "pass",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-027",
+            "trials": 5,
+            "counts": {
+              "pass": 3,
+              "fail": 2
+            },
+            "majority": "pass",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "human": "fail",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-028",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-029",
+            "trials": 5,
+            "counts": {
+              "fail": 4,
+              "pass": 1
+            },
+            "majority": "fail",
+            "majority_share": 0.8,
+            "flipped": true,
+            "majority_of_3_stability": 1.0,
+            "human": "pass",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-030",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-031",
+            "trials": 5,
+            "counts": {
+              "fail": 3,
+              "pass": 2
+            },
+            "majority": "fail",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "human": "pass",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-032",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "pass",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-033",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-034",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-035",
+            "trials": 5,
+            "counts": {
+              "pass": 3,
+              "fail": 2
+            },
+            "majority": "pass",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-036",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-037",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-038",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-039",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-040",
+            "trials": 5,
+            "counts": {
+              "fail": 3,
+              "pass": 2
+            },
+            "majority": "fail",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-041",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-042",
+            "trials": 5,
+            "counts": {
+              "fail": 3,
+              "pass": 2
+            },
+            "majority": "fail",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-043",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "pass",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-044",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-045",
+            "trials": 5,
+            "counts": {
+              "pass": 3,
+              "fail": 2
+            },
+            "majority": "pass",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-046",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-047",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          }
+        ]
+      },
+      "qwen2.5-7b": {
+        "mode": "pointwise",
+        "verdict": "trustworthy",
+        "reasons": [
+          "stable (flip rate 9%), kappa 0.44 with humans"
+        ],
+        "checks": {
+          "stability": "pass",
+          "position": "not run",
+          "verbosity": "pass",
+          "human_agreement": "pass"
+        },
+        "stability": {
+          "cases": 47,
+          "trials_per_case": [
+            5
+          ],
+          "flip_rate": {
+            "k": 4,
+            "n": 47,
+            "rate": 0.0851,
+            "ci95": [
+              0.0336,
+              0.1993
+            ]
+          },
+          "mean_self_agreement": 0.966,
+          "no_majority_cases": 0,
+          "majority_of_3_stability": 0.9745,
+          "invalid_outputs": 0,
+          "calls": 376
+        },
+        "human_agreement": {
+          "cases": 24,
+          "accuracy": {
+            "k": 17,
+            "n": 24,
+            "rate": 0.7083,
+            "ci95": [
+              0.5083,
+              0.8509
+            ]
+          },
+          "kappa": 0.44,
+          "kappa_ci95": [
+            0.0909,
+            0.7891
+          ],
+          "chance_agreement": 0.4792,
+          "single_call_accuracy": 0.725,
+          "human_label_counts": {
+            "fail": 18,
+            "pass": 6
+          },
+          "judge_label_counts": {
+            "fail": 11,
+            "pass": 13
+          },
+          "majority_baseline": 0.75
+        },
+        "position_probe": null,
+        "verbosity_probe": {
+          "cases": 47,
+          "changed": {
+            "k": 8,
+            "n": 47,
+            "rate": 0.1702,
+            "ci95": [
+              0.0889,
+              0.3014
+            ]
+          },
+          "toward_padded": {
+            "k": 0,
+            "n": 47,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.0756
+            ]
+          },
+          "note": "padding appends an irrelevant paragraph; toward_padded = share of cases where the padded answer's verdict improved"
+        },
+        "cases": [
+          {
+            "case_id": "case-001",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-002",
+            "trials": 5,
+            "counts": {
+              "fail": 3,
+              "pass": 2
+            },
+            "majority": "fail",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-003",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-004",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-005",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-006",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-007",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-008",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "pass",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-009",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-010",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-011",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-012",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-013",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-014",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-015",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-016",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-017",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-018",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-019",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-020",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-021",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-022",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-023",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "pass",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-024",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-025",
+            "trials": 5,
+            "counts": {
+              "pass": 3,
+              "fail": 2
+            },
+            "majority": "pass",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-026",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-027",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-028",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-029",
+            "trials": 5,
+            "counts": {
+              "pass": 3,
+              "fail": 2
+            },
+            "majority": "pass",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "human": "pass",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-030",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-031",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "pass",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-032",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "pass",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-033",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-034",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-035",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-036",
+            "trials": 5,
+            "counts": {
+              "pass": 3,
+              "fail": 2
+            },
+            "majority": "pass",
+            "majority_share": 0.6,
+            "flipped": true,
+            "majority_of_3_stability": 0.7,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-037",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-038",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-039",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-040",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-041",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-042",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-043",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "pass",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-044",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-045",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-046",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-047",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          }
+        ]
+      },
+      "qwen2.5-7b-temp0": {
+        "mode": "pointwise",
+        "verdict": "trustworthy",
+        "reasons": [
+          "stable (flip rate 0%), kappa 0.50 with humans"
+        ],
+        "checks": {
+          "stability": "pass",
+          "position": "not run",
+          "verbosity": "pass",
+          "human_agreement": "pass"
+        },
+        "stability": {
+          "cases": 47,
+          "trials_per_case": [
+            5
+          ],
+          "flip_rate": {
+            "k": 0,
+            "n": 47,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.0756
+            ]
+          },
+          "mean_self_agreement": 1.0,
+          "no_majority_cases": 0,
+          "majority_of_3_stability": 1.0,
+          "invalid_outputs": 0,
+          "calls": 376
+        },
+        "human_agreement": {
+          "cases": 24,
+          "accuracy": {
+            "k": 18,
+            "n": 24,
+            "rate": 0.75,
+            "ci95": [
+              0.551,
+              0.88
+            ]
+          },
+          "kappa": 0.5,
+          "kappa_ci95": [
+            0.1535,
+            0.8465
+          ],
+          "chance_agreement": 0.5,
+          "single_call_accuracy": 0.75,
+          "human_label_counts": {
+            "fail": 18,
+            "pass": 6
+          },
+          "judge_label_counts": {
+            "fail": 12,
+            "pass": 12
+          },
+          "majority_baseline": 0.75
+        },
+        "position_probe": null,
+        "verbosity_probe": {
+          "cases": 47,
+          "changed": {
+            "k": 7,
+            "n": 47,
+            "rate": 0.1489,
+            "ci95": [
+              0.0741,
+              0.2769
+            ]
+          },
+          "toward_padded": {
+            "k": 0,
+            "n": 47,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.0756
+            ]
+          },
+          "note": "padding appends an irrelevant paragraph; toward_padded = share of cases where the padded answer's verdict improved"
+        },
+        "cases": [
+          {
+            "case_id": "case-001",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-002",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-003",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-004",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-005",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-006",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-007",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-008",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "pass",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-009",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-010",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-011",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-012",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-013",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-014",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-015",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-016",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-017",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-018",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-019",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-020",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-021",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-022",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-023",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "pass",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-024",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-025",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-026",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-027",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-028",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-029",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "pass",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-030",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-031",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "pass",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-032",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "pass",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-033",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-034",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-035",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-036",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-037",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-038",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-039",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-040",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-041",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-042",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-043",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "pass",
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-044",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-045",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "fail"
+          },
+          {
+            "case_id": "case-046",
+            "trials": 5,
+            "counts": {
+              "pass": 5
+            },
+            "majority": "pass",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "pad_majority": "pass"
+          },
+          {
+            "case_id": "case-047",
+            "trials": 5,
+            "counts": {
+              "fail": 5
+            },
+            "majority": "fail",
+            "majority_share": 1.0,
+            "flipped": false,
+            "majority_of_3_stability": 1.0,
+            "human": "fail",
+            "pad_majority": "fail"
+          }
+        ]
+      }
+    },
+    "trustworthy": [
+      "qwen2.5-7b",
+      "qwen2.5-7b-temp0"
+    ],
+    "next": "export: judges ['qwen2.5-7b', 'qwen2.5-7b-temp0'] passed; export wires a passing pointwise judge into promptfoo when its rubric.yaml entry has a `provider`"
+  },
+  "exports": {
+    "cases": 47,
+    "formats": [
+      "promptfoo",
+      "deepeval",
+      "inspect",
+      "jsonl"
+    ],
+    "files": [
+      {
+        "path": "exports/promptfoo/promptfooconfig.yaml",
+        "sha256": "23c43efb656ee17cf190fffd1100eb18986917593f6854dcdf36973ae4a6b6f3"
+      },
+      {
+        "path": "exports/deepeval/dataset.json",
+        "sha256": "f6cf982eeef58e135e8b20bd9bd2a39f6965e1c2bc8e8ceb39e38f07b8c17536"
+      },
+      {
+        "path": "exports/deepeval/test_eval_builder.py",
+        "sha256": "05f445309c2983afd8a9cfb675dc7fd2a97f32f35ea2d918442a7bb391c270f7"
+      },
+      {
+        "path": "exports/deepeval/judge.json",
+        "sha256": "dd632220790c10ab8c788b1407cc08c0db17a28b58d4911b373b32b32bcf2fdd"
+      },
+      {
+        "path": "exports/inspect/dataset.jsonl",
+        "sha256": "63fb2547e1e810076647ebbd7c8a23cadd290ed8ad28fd1fc886b5b17b2b9215"
+      },
+      {
+        "path": "exports/inspect/task.py",
+        "sha256": "df284b6b6dedeb833e283cd9226241c17a84bed70924d097e9a6c45cba69c36e"
+      },
+      {
+        "path": "exports/jsonl/cases.jsonl",
+        "sha256": "d10eff47dcc67a113871b634bdbf8a705ce71ab6d485f0b109a06934d9c2bdef"
+      }
+    ],
+    "judge_check": {
+      "trustworthy": [
+        "qwen2.5-7b",
+        "qwen2.5-7b-temp0"
+      ],
+      "verdicts": {
+        "llama3.2-3b": "unstable",
+        "qwen2.5-7b": "trustworthy",
+        "qwen2.5-7b-temp0": "trustworthy"
+      },
+      "thresholds": {
+        "min_trials": 3,
+        "min_cases": 10,
+        "max_flip_rate": 0.2,
+        "min_position_consistency": 0.8,
+        "max_toward_padded_rate": 0.1,
+        "min_kappa": 0.4,
+        "min_labeled": 20
+      }
+    },
+    "trusted_judge_prompts": {
+      "qwen2.5-7b": {
+        "mode": "pointwise",
+        "labels": [
+          "pass",
+          "fail"
+        ],
+        "prompt": "You are grading one reply from an AI assistant.\n\nEarlier conversation:\n{context}\n\nLatest user message:\n{input}\n\nAssistant reply to grade:\n{output}\n\nWhat a good reply does:\n{expected_behavior}\n\nCriteria:\n{criteria}\n\nDoes the reply do what a good reply does and meet the criteria? Answer with JSON only:\n{\"pass\": true or false, \"reason\": \"<one short sentence>\"}\n"
+      },
+      "qwen2.5-7b-temp0": {
+        "mode": "pointwise",
+        "labels": [
+          "pass",
+          "fail"
+        ],
+        "prompt": "You are grading one reply from an AI assistant.\n\nEarlier conversation:\n{context}\n\nLatest user message:\n{input}\n\nAssistant reply to grade:\n{output}\n\nWhat a good reply does:\n{expected_behavior}\n\nCriteria:\n{criteria}\n\nDoes the reply do what a good reply does and meet the criteria? Answer with JSON only:\n{\"pass\": true or false, \"reason\": \"<one short sentence>\"}\n"
+      }
+    },
+    "promptfoo_grader": {
+      "judge": "qwen2.5-7b",
+      "provider": "ollama:chat:qwen2.5:7b-instruct",
+      "verdict": "trustworthy"
+    },
+    "deepeval_grader": {
+      "judge": "qwen2.5-7b",
+      "provider": "ollama:chat:qwen2.5:7b-instruct",
+      "verdict": "trustworthy"
+    },
+    "notes": [
+      "Inspect AI: task.py grades with Inspect's default model_graded_qa scorer, not a judge checked here"
+    ]
+  },
+  "judge_run": {
+    "runs": [
+      {
+        "started": "2026-10-08T20:49:18.739323+00:00",
+        "judges": {
+          "qwen2.5-7b": {
+            "command": "python examples/judges/ollama_judge.py --model qwen2.5:7b-instruct --num-predict 80",
+            "requests": 376,
+            "ok": 376,
+            "errors": 0,
+            "seconds": 1114.1,
+            "exit_code": 0
+          },
+          "qwen2.5-7b-temp0": {
+            "command": "python examples/judges/ollama_judge.py --model qwen2.5:7b-instruct --num-predict 80 --temperature 0",
+            "requests": 376,
+            "ok": 376,
+            "errors": 0,
+            "seconds": 1129.93,
+            "exit_code": 0
+          },
+          "llama3.2-3b": {
+            "command": "python examples/judges/ollama_judge.py --model llama3.2:3b --num-predict 80",
+            "requests": 376,
+            "ok": 376,
+            "errors": 0,
+            "seconds": 589.09,
+            "exit_code": 0
+          }
+        },
+        "finished": "2026-10-08T22:19:15.672820+00:00",
+        "judges_without_command": []
+      }
+    ]
+  },
+  "limits": [
+    "Selection is lexical (TF-IDF over the user input). Two inputs that mean the same thing in different words can land in different clusters, and near-duplicate detection only catches close textual matches.",
+    "Redaction is pattern-based (emails, common API key formats, Luhn-valid card numbers, US-style phone numbers, SSN-shaped numbers). Names, addresses and free-form secrets are not detected. Review traces before sharing them.",
+    "eval-builder does not write expected behavior. Cases are only as good as what the agent and user put in cases.yaml.",
+    "Judge verdicts depend on the thresholds shown and on how many cases, trials and human labels were provided. Small samples give wide intervals; read the intervals, not just the point estimates.",
+    "The bias probes cover answer order and irrelevant padding only. They do not detect self-preference, style bias or rubric misreadings."
+  ]
+}

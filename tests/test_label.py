@@ -249,6 +249,22 @@ def test_judge_check_warns_on_skewed_labels(ready_workspace: Path) -> None:
     assert s["majority_baseline"] == round((n - 1) / n, 4)
 
 
+def test_judge_check_warns_when_accuracy_is_only_the_baseline(ready_workspace: Path) -> None:
+    judge_plan(ready_workspace, trials=3)
+    cases = [c["id"] for c in load_cases(ready_workspace)["cases"]]
+    assert len(cases) == 5
+    # humans: pass on 1 case, fail on 4; judge: pass on 2 (one right, one wrong)
+    _judge_all(
+        ready_workspace, {cases[0]: ["pass"], cases[1]: ["pass"]} | {c: ["fail"] for c in cases[2:]}
+    )
+    labels = [{"case_id": cases[0], "label": "pass"}]
+    labels += [{"case_id": c, "label": "fail"} for c in cases[1:]]
+    (ready_workspace / "labels.jsonl").write_text("".join(json.dumps(x) + "\n" for x in labels))
+    r = judge_check(ready_workspace)
+    # accuracy 4/5 = baseline 4/5 (always 'fail')
+    assert any("no better than always answering 'fail' (80%)" in w for w in r["warnings"])
+
+
 def test_select_warns_when_picks_are_mostly_failures() -> None:
     from eval_builder.select import selection_warnings
 

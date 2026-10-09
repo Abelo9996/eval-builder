@@ -1,0 +1,33 @@
+{
+  "traces": 48,
+  "sources": [
+    {
+      "path": "examples/sample_logs.jsonl",
+      "sha256": "2d5dd2295784988bb23a42d67490b17d5ed2fd78e13c5c0e849458d4af42b76e",
+      "format": "openai",
+      "records": 48,
+      "traces": 48,
+      "skipped": {}
+    }
+  ],
+  "redactions": {
+    "enabled": true,
+    "total": 0,
+    "by_kind": {},
+    "traces_affected": 0,
+    "by_trace": {},
+    "note": "Values are replaced with [REDACTED_<KIND>]; originals are never written."
+  },
+  "with_error": 0,
+  "feedback": {
+    "negative": 13,
+    "positive": 2,
+    "none": 33
+  },
+  "routes": {
+    "none": 48
+  },
+  "tools": {},
+  "multi_turn": 48,
+  "output_file": "examples/sample-labeling/evalset/traces.jsonl"
+}

@@ -277,7 +277,7 @@ def call_judge(prompt: str) -> str:
         model = pid.split(":", 1)[1]
         for prefix in ("chat:", "completion:"):
             if model.startswith(prefix):
-                model = model[len(prefix):]
+                model = model[len(prefix) :]
         keys = ("temperature", "top_p", "seed", "num_ctx", "num_predict")
         body = {
             "model": model,

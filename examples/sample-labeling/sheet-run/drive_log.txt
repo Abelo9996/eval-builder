@@ -1,0 +1,12 @@
+title: Label 24 cases: MT-Bench sample, labeling example
+cases in sheet: 24
+progress at start: 0 of 24 labeled
+reload after 13 labels: '13 of 24 labeled' -> '13 of 24 labeled'
+export summary: 24 of 24 cases labeled: fail 18 (75%), pass 6 (25%).
+export warning shown: False
+download: labels.jsonl, 4292 bytes
+download equals the copy box: True
+import command shown: uvx eval-builder label import ~/Downloads/labels.jsonl -w /Users/abelyagubyan/Downloads/eval-builder/examples/sample-labeling/evalset
+requests: 2 total, 0 not file/blob/data: []
+console errors: []
+cases visited: 24, distinct 24

@@ -1,0 +1,24 @@
+{"case_id":"case-042","label":"fail","mode":"pointwise","labeler":"developer","note":"restates definitions, no real assumptions examined","labeled_at":"2026-10-09T08:18:57.948Z","sheet":"24483021cc1a"}
+{"case_id":"case-032","label":"pass","mode":"pointwise","labeler":"developer","labeled_at":"2026-10-09T08:18:58.204Z","sheet":"24483021cc1a"}
+{"case_id":"case-023","label":"pass","mode":"pointwise","labeler":"developer","note":"names one improvement; misses that the email is not short","labeled_at":"2026-10-09T08:18:58.516Z","sheet":"24483021cc1a"}
+{"case_id":"case-043","label":"pass","mode":"pointwise","labeler":"developer","labeled_at":"2026-10-09T08:18:58.770Z","sheet":"24483021cc1a"}
+{"case_id":"case-013","label":"fail","mode":"pointwise","labeler":"developer","note":"wrong start values and sums two terms, not three","labeled_at":"2026-10-09T08:18:59.046Z","sheet":"24483021cc1a"}
+{"case_id":"case-008","label":"pass","mode":"pointwise","labeler":"developer","labeled_at":"2026-10-09T08:18:59.301Z","sheet":"24483021cc1a"}
+{"case_id":"case-039","label":"fail","mode":"pointwise","labeler":"developer","note":"12 is wrong; 5*pi","labeled_at":"2026-10-09T08:18:59.576Z","sheet":"24483021cc1a"}
+{"case_id":"case-015","label":"fail","mode":"pointwise","labeler":"developer","note":"Fibonacci-style, wrong recurrence","labeled_at":"2026-10-09T08:18:59.871Z","sheet":"24483021cc1a"}
+{"case_id":"case-018","label":"fail","mode":"pointwise","labeler":"developer","note":"no poem","labeled_at":"2026-10-09T08:19:00.135Z","sheet":"24483021cc1a"}
+{"case_id":"case-006","label":"fail","mode":"pointwise","labeler":"developer","labeled_at":"2026-10-09T08:19:00.392Z","sheet":"24483021cc1a"}
+{"case_id":"case-012","label":"fail","mode":"pointwise","labeler":"developer","labeled_at":"2026-10-09T08:19:00.667Z","sheet":"24483021cc1a"}
+{"case_id":"case-036","label":"fail","mode":"pointwise","labeler":"developer","note":"ratings reordered and only one date","labeled_at":"2026-10-09T08:19:00.944Z","sheet":"24483021cc1a"}
+{"case_id":"case-019","label":"fail","mode":"pointwise","labeler":"developer","note":"most sentences do not start with A","labeled_at":"2026-10-09T08:19:01.212Z","sheet":"24483021cc1a"}
+{"case_id":"case-027","label":"fail","mode":"pointwise","labeler":"developer","note":"three lines, Washington instead of Roosevelt, da Vinci under science","labeled_at":"2026-10-09T08:19:04.602Z","sheet":"24483021cc1a"}
+{"case_id":"case-034","label":"fail","mode":"pointwise","labeler":"developer","note":"says $4000, should be $2000","labeled_at":"2026-10-09T08:19:01.846Z","sheet":"24483021cc1a"}
+{"case_id":"case-024","label":"fail","mode":"pointwise","labeler":"developer","note":"answers a different message","labeled_at":"2026-10-09T08:19:02.114Z","sheet":"24483021cc1a"}
+{"case_id":"case-047","label":"fail","mode":"pointwise","labeler":"developer","note":"repeats a wrong claim","labeled_at":"2026-10-09T08:19:02.381Z","sheet":"24483021cc1a"}
+{"case_id":"case-031","label":"pass","mode":"pointwise","labeler":"developer","note":"says no, without explaining why","labeled_at":"2026-10-09T08:19:02.650Z","sheet":"24483021cc1a"}
+{"case_id":"case-016","label":"fail","mode":"pointwise","labeler":"developer","note":"names the stages literally; not an allegory","labeled_at":"2026-10-09T08:19:02.923Z","sheet":"24483021cc1a"}
+{"case_id":"case-029","label":"pass","mode":"pointwise","labeler":"developer","note":"explains why it is a contradiction","labeled_at":"2026-10-09T08:19:03.211Z","sheet":"24483021cc1a"}
+{"case_id":"case-010","label":"fail","mode":"pointwise","labeler":"developer","note":"one sentence, no program","labeled_at":"2026-10-09T08:19:03.477Z","sheet":"24483021cc1a"}
+{"case_id":"case-025","label":"fail","mode":"pointwise","labeler":"developer","note":"'US President' and 'Lewis' are not specific people","labeled_at":"2026-10-09T08:19:03.768Z","sheet":"24483021cc1a"}
+{"case_id":"case-007","label":"fail","mode":"pointwise","labeler":"developer","note":"same textbook definitions, not for a five-year-old","labeled_at":"2026-10-09T08:19:04.051Z","sheet":"24483021cc1a"}
+{"case_id":"case-009","label":"fail","mode":"pointwise","labeler":"developer","note":"repeats one definition, not simplified","labeled_at":"2026-10-09T08:19:04.324Z","sheet":"24483021cc1a"}

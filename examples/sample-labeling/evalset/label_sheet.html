@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+<title>Label 24 cases: MT-Bench sample, labeling example</title>
+<style>
+:root {
+  --bg: #f6f6f4; --card: #ffffff; --ink: #1d1d1b; --muted: #6b6b66; --line: #deded8;
+  --user: #eef3fb; --assistant: #f3f3ef; --reply: #fff8e6; --reply-line: #e0b84a;
+  --accent: #2f5fb3; --pass: #1f7a3f; --fail: #b3261e; --other: #5a4fb3; --warn: #8a5a00;
+  --warn-bg: #fff4dc;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161615; --card: #1f1f1d; --ink: #ececea; --muted: #a2a29b; --line: #34342f;
+    --user: #1c2636; --assistant: #262624; --reply: #2c2614; --reply-line: #a8862e;
+    --accent: #7aa2e8; --pass: #5cc382; --fail: #f08a80; --other: #a99ef0; --warn: #f0c060;
+    --warn-bg: #2e2612;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+header { position: sticky; top: 0; z-index: 2; background: var(--card); border-bottom: 1px solid var(--line);
+  padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+header h1 { font-size: 16px; margin: 0; flex: 1 1 260px; }
+.progress { flex: 1 1 200px; display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; }
+.bar { flex: 1; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.bar > div { height: 100%; background: var(--accent); width: 0; }
+header label { font-size: 13px; color: var(--muted); }
+header input { font: inherit; padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px;
+  background: var(--bg); color: var(--ink); width: 150px; }
+button { font: inherit; cursor: pointer; border: 1px solid var(--line); background: var(--card); color: var(--ink);
+  border-radius: 8px; padding: 6px 12px; }
+button:hover { border-color: var(--accent); }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+main { max-width: 860px; margin: 0 auto; padding: 16px 16px 140px; }
+.dots { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 12px; }
+.dots button { width: 26px; height: 26px; padding: 0; font-size: 11px; border-radius: 50%; color: var(--muted); }
+.dots button.done { background: var(--accent); color: #fff; border-color: var(--accent); }
+.dots button.here { outline: 2px solid var(--ink); outline-offset: 1px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+.meta { color: var(--muted); font-size: 13px; margin-bottom: 8px; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 18px 0 6px; }
+.turn { border-radius: 8px; padding: 8px 12px; margin: 6px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.turn .role { display: block; font-size: 12px; color: var(--muted); margin-bottom: 2px; }
+.turn.user { background: var(--user); }
+.turn.assistant, .turn.system { background: var(--assistant); }
+.turn.reply { background: var(--reply); border-left: 4px solid var(--reply-line); }
+details.earlier > summary { cursor: pointer; color: var(--muted); font-size: 13px; }
+.expected { white-space: pre-wrap; }
+.criteria { margin: 6px 0 0; padding-left: 20px; color: var(--muted); }
+.question { font-weight: 600; margin-top: 18px; }
+textarea { width: 100%; font: inherit; padding: 8px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--bg); color: var(--ink); resize: vertical; }
+.note { min-height: 56px; }
+footer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 1px solid var(--line);
+  padding: 10px 16px; }
+.actions { max-width: 860px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.labels { display: flex; flex-wrap: wrap; gap: 8px; flex: 1 1 auto; }
+.labels button { min-width: 96px; padding: 10px 16px; font-weight: 600; }
+.labels button .key { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 6px; }
+.labels button.pass[aria-pressed="true"] { background: var(--pass); border-color: var(--pass); color: #fff; }
+.labels button.fail[aria-pressed="true"] { background: var(--fail); border-color: var(--fail); color: #fff; }
+.labels button.other[aria-pressed="true"] { background: var(--other); border-color: var(--other); color: #fff; }
+.labels button[aria-pressed="true"] .key { color: #fff; }
+.nav { display: flex; gap: 8px; }
+.small { font-size: 13px; color: var(--muted); }
+.warn { background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 8px 12px; margin: 10px 0; }
+.help { font-size: 13px; color: var(--muted); }
+.help kbd, .small kbd { border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 0 4px; font-size: 12px; }
+#export textarea { min-height: 220px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
+#export code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px;
+  background: var(--assistant); padding: 2px 6px; border-radius: 4px; overflow-wrap: anywhere; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 10px 0; }
+[hidden] { display: none !important; }
+@media (max-width: 600px) {
+  .labels button { min-width: 0; flex: 1 1 30%; }
+  .labels button.clear { flex: 0 1 auto; padding: 10px; }
+  .nav { flex: 1 1 100%; }
+  .nav button { flex: 1; }
+  header input { width: 120px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1 id="title"></h1>
+  <div class="progress"><span id="count"></span><div class="bar"><div id="bar"></div></div></div>
+  <label>Your name <input id="labeler" autocomplete="name" placeholder="optional"></label>
+  <button id="to-export" type="button">Export</button>
+</header>
+<main>
+  <section id="cases">
+    <p class="help">Read the conversation and the reply, then decide whether the reply does what a good reply
+      does. The judges' verdicts are hidden on purpose. Keys: <kbd>1</kbd> <kbd>2</kbd> ... or the first
+      letter of a label, <kbd>&larr;</kbd> <kbd>&rarr;</kbd> previous and next, <kbd>U</kbd> next unlabeled,
+      <kbd>Backspace</kbd> clear, <kbd>N</kbd> note, <kbd>E</kbd> export. <span id="saved"></span></p>
+    <div class="dots" id="dots" aria-label="Cases"></div>
+    <article class="card" id="card"></article>
+  </section>
+  <section id="export" hidden>
+    <div class="card">
+      <h2 style="margin-top:0">Export labels</h2>
+      <p id="export-summary"></p>
+      <div id="export-warn" class="warn" hidden></div>
+      <div class="row">
+        <button id="download" type="button">Download labels.jsonl</button>
+        <button id="copy" type="button">Copy</button>
+        <span id="copy-status" class="small"></span>
+      </div>
+      <p class="small">Then, in a terminal:</p>
+      <p><code id="import-cmd"></code></p>
+      <p class="small">If you copied the text instead, save it to a file and import that file, or on a Mac run
+        <code id="paste-cmd"></code>. Each line is one label in the format <code>judge-check</code> reads:
+        <code>{"case_id": ..., "label": ...}</code> plus your name, note and the time.</p>
+      <textarea id="blob" readonly aria-label="Labels as JSON lines"></textarea>
+      <div class="row"><button id="back" type="button">Back to the cases</button></div>
+    </div>
+  </section>
+</main>
+<footer id="bottom">
+  <div class="actions">
+    <div class="labels" id="labels"></div>
+    <div class="nav">
+      <button id="prev" type="button" aria-label="Previous case">&larr; Prev</button>
+      <button id="next" type="button" aria-label="Next case">Next &rarr;</button>
+    </div>
+  </div>
+  <div class="actions"><label class="small"><input type="checkbox" id="auto" checked> go to the next case after labeling</label></div>
+</footer>
+<script id="sheet-data" type="application/json">{"format": "eval-builder-label-sheet", "version": 1, "sheet_id": "24483021cc1a", "created": "2026-10-09T08:18:45+00:00", "suite": "MT-Bench sample, labeling example", "workspace": "/Users/abelyagubyan/Downloads/eval-builder/examples/sample-labeling/evalset", "cases": [{"id": "case-042", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "In the field of quantum physics, what is superposition, and how does it relate to the phenomenon of quantum entanglement?"}, {"role": "assistant", "content": "Superposition is a phenomenon in quantum physics that occurs when two particles become entangled, or connected, so that the state of one particle affects the state of the other, even if the two particles are separated by a large distance. This phenomenon is an example of quantum entanglement, which is a quantum mechanical phenomenon in which particles such as photons, atoms, and molecules become interconnected so that the observable properties of one particle directly affect the observable properties of another particle, even if the two particles are separated by a large distance."}], "input": "What assumptions have you made in your response? Are they valid?", "output": "My response assumes that superposition is a phenomenon in quantum physics, which is a valid assumption. It also assumes that quantum entanglement is a phenomenon in which particles become interconnected, which is also a valid assumption.", "compare_output": "", "expected_behavior": "Names the assumptions its explanation of superposition and entanglement relied on and judges whether each holds, without stating physics that is wrong.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-032", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "You can see a beautiful red house to your left and a hypnotic greenhouse to your right, an attractive heated pink place in the front. So, where is the White House?"}, {"role": "assistant", "content": "The White House is located at 1600 Pennsylvania Avenue NW in Washington, D.C. It is the official residence and workplace of the President of the United States."}], "input": "Does the original question contain any clues to definitively determine the location of the White House?", "output": "No, the original question does not contain any clues to definitively determine the location of the White House. It only describes a red house, a greenhouse, and a pink place, which are unrelated to the White House's location.", "compare_output": "", "expected_behavior": "Says no: nothing in the original question locates the White House; the red house, greenhouse and pink place are unrelated to it.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-023", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "Draft a professional email seeking your supervisor's feedback on the 'Quarterly Financial Report' you prepared. Ask specifically about the data analysis, presentation style, and the clarity of conclusions drawn. Keep the email short and to the point."}, {"role": "assistant", "content": "Subject: Request for Feedback on Quarterly Financial Report\n\nDear [Supervisor's Name],\n\nI hope this email finds you well. I have recently completed the Quarterly Financial Report and would greatly appreciate your valuable feedback to ensure its accuracy and effectiveness.\n\nIn particular, I am seeking your insights on the following aspects of the report:\n\n1. Data Analysis: Are the methods and metrics used appropriate and comprehensive? Do the financial trends and patterns accurately reflect our current financial situation?\n\n2. Presentation Style: Is the report visually appealing and easy to understand? Are the charts, graphs, and tables effectively communicating the key financial data?\n\n3. Clarity of Conclusions: Are the conclusions drawn from the analysis clear, concise, and actionable? Do they provide adequate guidance for decision-making and strategic planning?\n\nI have attached the report to this email for your convenience. Your feedback will greatly help me improve the quality of the report and ensure it effectively conveys the necessary information to the team and other stakeholders.\n\nPlease let me know if you have any questions or need any additional information. I would be grateful if you could provide your feedback by [deadline], as this will allow me ample time to make any necessary revisions before the report is circulated.\n\nThank you in advance for your time and valuable insights.\n\nBest regards,\n\n[Your Name]\n[Your Designation]"}], "input": "Take a moment to evaluate and critique your own response.", "output": "Upon evaluating my response, I believe it effectively addresses the key requirements of a professional email seeking feedback. The email is concise, well-structured, and clearly communicates the purpose by specifying the three areas where feedback is sought. Additionally, it maintains a polite and respectful tone throughout the email.\n\nThe subject line is clear and directly related to the content of the email, making it easy for the supervisor to understand its purpose at a glance. The email also mentions a specific deadline for the feedback, which helps in setting expectations and ensuring timely responses.\n\nOne possible improvement could be to provide a brief overview of the report's content or main findings to give the supervisor some context before diving into the specific areas of feedback. However, this might not be necessary if the supervisor is already familiar with the report's purpose and content.\n\nOverall, I believe the email effectively serves its purpose and meets the requirements of a professional email seeking feedback on a report.", "compare_output": "", "expected_behavior": "Critiques its own feedback-request email honestly: says what works and names at least one concrete weakness or improvement, and describes the email accurately.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-043", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "In the field of quantum physics, what is superposition, and how does it relate to the phenomenon of quantum entanglement?"}, {"role": "assistant", "content": "Superposition is a fundamental principle in quantum physics that states that particles, such as electrons or photons, can exist in multiple states or positions simultaneously until they are measured. In other words, a quantum particle can occupy all of its possible states at once, and its final state is only determined when it is observed or measured. This concept is famously illustrated by the Schrödinger's cat thought experiment, where a cat in a closed box can be considered both alive and dead until the box is opened and the cat is observed.\n\nQuantum entanglement is a phenomenon in which two or more particles become correlated in such a way that the state of one particle is dependent on the state of the other, even when they are separated by large distances. This means that when the state of one entangled particle is measured, the state of the other particle is instantly determined, regardless of the distance between them. This phenomenon has been experimentally demonstrated and is considered one of the most intriguing aspects of quantum physics.\n\nThe relationship between superposition and quantum entanglement lies in the fact that entangled particles are in a superposition of states until they are measured. When a measurement is made on one of the entangled particles, its state collapses into a definite value, and the state of the other entangled particle also collapses into a correlated value, even if they are far apart. This instantaneous correlation between the particles defies classical physics and is often referred to as \"spooky action at a distance.\" Both superposition and entanglement are key concepts in the field of quantum mechanics and have significant implications for emerging technologies such as quantum computing and quantum communication."}], "input": "What assumptions have you made in your response? Are they valid?", "output": "In my response, I made the following assumptions:\n\n1. The reader has a basic understanding of quantum physics concepts: I assumed that the reader is familiar with terms like particles, electrons, and photons. This assumption is necessary to provide a concise explanation without delving into the basics of quantum mechanics.\n\n2. The Schrödinger's cat thought experiment is a valid illustration of superposition: This thought experiment is widely used to explain the concept of superposition in a more relatable manner. While it is a simplification of the actual quantum mechanics involved, it is generally considered a valid way to introduce the concept.\n\n3. Quantum entanglement has been experimentally demonstrated: This assumption is based on numerous experiments that have been conducted over the years, such as the famous Bell's theorem experiments, which have provided strong evidence for the existence of quantum entanglement.\n\n4. The reader is interested in the relationship between superposition and entanglement: The question specifically asked about the relationship between these two concepts, so I assumed that the reader is interested in understanding how they are connected.\n\nThese assumptions are generally valid for providing a brief and accessible explanation of superposition and quantum entanglement. However, it is important to note that quantum mechanics is a complex and often counterintuitive field, and a more in-depth understanding would require a deeper exploration of the underlying principles and mathematics.", "compare_output": "", "expected_behavior": "Names the assumptions its explanation of superposition and entanglement relied on and judges whether each holds, without stating physics that is wrong.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-013", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "Write a C++ program to find the nth Fibonacci number using recursion."}, {"role": "assistant", "content": "```\n// Function to find the nth Fibonacci number\nint fibonacci(int n)\n{\n    // Base case\n    if (n == 0)\n        return 0;\n    // Recursive case\n    else if (n == 1)\n        return 1;\n    else\n        return fibonacci(n - 1) + fibonacci(n - 2);\n}\n\n// Driver program\nint main()\n{\n    int n;\n    cout << \"Enter the value of n: \";\n    cin >> n;\n    cout << \"The nth Fibonacci number is: \" << fibonacci(n);\n    return 0;\n}\n```"}], "input": "Now we define a sequence of numbers in which each number is the sum of the three preceding ones. The first three numbers are 0, -1, -1. Write a program to find the nth number.", "output": "```\n// Function to find the nth number\nint nextNumber(int n)\n{\n    // Base case\n    if (n == 0)\n        return 0;\n    // Recursive case\n    else if (n == 1)\n        return -1;\n    else if (n == 2)\n        return 1;\n    else\n        return nextNumber(n - 1) + nextNumber(n - 2);\n}\n\n// Driver program\nint main()\n{\n    int n;\n    cout << \"Enter the value of n: \";\n    cin >> n;\n    cout << \"The nth number is: \" << nextNumber(n);\n    return 0;\n}\n```", "compare_output": "", "expected_behavior": "Gives a program that returns the nth number of the sequence 0, -1, -1, where each later number is the sum of the three before it, with correct starting values and recurrence.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-008", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "Provide insights into the correlation between economic indicators such as GDP, inflation, and unemployment rates. Explain how fiscal and monetary policies affect those indicators."}, {"role": "assistant", "content": "Economic indicators such as GDP, inflation, and unemployment rates are interconnected and provide insights into the overall health of an economy. Understanding the correlation between these indicators helps policymakers and economists make informed decisions about fiscal and monetary policies.\n\n1. GDP (Gross Domestic Product): GDP is the total value of goods and services produced within a country during a specific period, usually a year. It is a key indicator of economic growth and prosperity. A growing GDP indicates a healthy economy, while a declining GDP signals a contracting economy.\n\n2. Inflation: Inflation is the rate at which the general level of prices for goods and services is rising, leading to a decrease in the purchasing power of money. Moderate inflation is considered normal in a growing economy, but high inflation can erode the value of money and lead to economic instability.\n\n3. Unemployment Rate: The unemployment rate measures the percentage of the labor force that is unemployed and actively seeking employment. High unemployment rates can indicate a weak economy, while low unemployment rates suggest a strong economy with ample job opportunities.\n\nCorrelations between economic indicators:\n\n- GDP and Inflation: There is a positive correlation between GDP and inflation. When the economy is growing, demand for goods and services increases, leading to higher prices and inflation. However, if GDP growth is too rapid, it can lead to excessive inflation, which can be detrimental to the economy.\n\n- GDP and Unemployment: There is a negative correlation between GDP and unemployment. When the economy is growing, businesses tend to hire more workers to meet increased demand, leading to a decrease in unemployment. Conversely, when the economy is contracting, businesses may lay off workers, resulting in higher unemployment rates.\n\n- Inflation and Unemployment: The relationship between inflation and unemployment is described by the Phillips Curve, which suggests an inverse relationship between the two. High inflation is often associated with low unemployment, while low inflation is associated with high unemployment. However, this relationship is not always consistent and can be influenced by various factors.\n\nFiscal and monetary policies affect these economic indicators in the following ways:\n\n1. Fiscal Policy: Fiscal policy involves government decisions on taxation and spending to influence the economy. Expansionary fiscal policy, such as tax cuts or increased government spending, can boost GDP growth and reduce unemployment but may also lead to higher inflation. On the other hand, contractionary fiscal policy, such as tax increases or reduced government spending, can help control inflation but may slow down GDP growth and increase unemployment.\n\n2. Monetary Policy: Monetary policy is managed by a country's central bank and involves controlling the money supply and interest rates to influence economic activity. Expansionary monetary policy, such as lowering interest rates or increasing the money supply, can stimulate GDP growth and reduce unemployment but may also lead to higher inflation. Conversely, contractionary monetary policy, such as raising interest rates or decreasing the money supply, can help control inflation but may slow down GDP growth and increase unemployment.\n\nIn conclusion, understanding the correlations between economic indicators such as GDP, inflation, and unemployment rates is crucial for making informed decisions about fiscal and monetary policies. Policymakers must carefully consider the potential effects of their decisions on these indicators to maintain a stable and growing economy."}], "input": "Now, explain them again like I'm five.", "output": "Okay! Let's imagine the economy is like a big toy store.\n\n1. GDP is like the total number of toys made in the store. If the store makes more toys, it means the store is doing well. If it makes fewer toys, it means the store is not doing so well.\n\n2. Inflation is like the prices of the toys going up. When the prices go up a little bit, it's normal. But if the prices go up too much, it's not good because people can't buy as many toys with their money.\n\n3. Unemployment is like the number of people who don't have a job at the toy store. If there are fewer people without jobs, it means the store is doing well. If there are more people without jobs, it means the store is not doing well.\n\nNow, let's talk about how the store's boss (the government) can help the store do better:\n\n1. Fiscal Policy: The boss can decide to spend more money on the store or give people more money to buy toys. This can help the store make more toys and give more jobs to people. But, if the boss spends too much money, the prices of toys might go up too much.\n\n2. Monetary Policy: The boss can also ask the bank to change how much money people can borrow to buy toys. If the bank makes it easier to borrow money, more people can buy toys, and the store can make more toys and give more jobs. But, if the bank makes it too easy, the prices of toys might go up too much.\n\nSo, the boss needs to make good decisions to help the toy store do well and make sure everyone can buy toys and have jobs.", "compare_output": "", "expected_behavior": "Explains GDP, inflation, unemployment and fiscal and monetary policy again in words a five-year-old could follow (short sentences, simple comparisons), and stays accurate.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-039", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "The vertices of a triangle are at points (0, 0), (-1, 1), and (3, 3). What is the area of the triangle?"}, {"role": "assistant", "content": "The area of the triangle is 6 square units."}], "input": "What's area of the circle circumscribing the triangle?", "output": "The area of the circle circumscribing the triangle is 12 square units.", "compare_output": "", "expected_behavior": "Finds the area of the circle circumscribing the triangle (0,0), (-1,1), (3,3): the triangle has a right angle at the origin, so the radius is sqrt(5) and the area is 5*pi (about 15.71). A different final number is a fail.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-015", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "Write a C++ program to find the nth Fibonacci number using recursion."}, {"role": "assistant", "content": "Here is a C++ program to find the nth Fibonacci number using recursion:\nint fib(int n)\nif (n == 0 || n == 1)\nreturn fib(n - 1) + fib(n - 2);"}], "input": "Now we define a sequence of numbers in which each number is the sum of the three preceding ones. The first three numbers are 0, -1, -1. Write a program to find the nth number.", "output": "Here is a program to find the nth number:\nint fib(int n) {\nif (n == 0 || n == 1) return 0;\nreturn fib(n - 1) + fib(n - 2);", "compare_output": "", "expected_behavior": "Gives a program that returns the nth number of the sequence 0, -1, -1, where each later number is the sum of the three before it, with correct starting values and recurrence.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-018", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "How do the stages of life shape our understanding of time and mortality?"}, {"role": "assistant", "content": "The stages of life shape our understanding of time and mortality in many ways."}], "input": "Write an allegorical poem that illustrates the above.", "output": "Here is an allegorical poem that illustrates the above:", "compare_output": "", "expected_behavior": "Writes an allegorical poem in which characters or images stand for the stages of life and show how they shape our sense of time and mortality.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-006", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "Embrace the role of Sheldon from \"The Big Bang Theory\" as we delve into our conversation. Don’t start with phrases like \"As Sheldon\". Let's kick things off with the following question: \"What is your opinion on hand dryers?\""}, {"role": "assistant", "content": "I like hand dryers."}], "input": "Let’s grab dinner in town. Would you like to take bus with me?", "output": "Of course!", "compare_output": "", "expected_behavior": "Stays in character as Sheldon Cooper, without opening with 'As Sheldon', and answers the dinner and bus invitation the way Sheldon would. Answering as an AI that cannot eat breaks character and is a fail.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-012", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "Develop a Python program that reads all the text files under a directory and returns top-5 words with the most number of occurrences."}, {"role": "assistant", "content": "Here is a Python program that reads all the text files under a directory and returns top-5 words with the most number of occurrences:"}], "input": "Can you parallelize it?", "output": "Yes, I can parallelize it.", "compare_output": "", "expected_behavior": "Gives a working parallel version of the program that counts words in all text files of a directory and returns the top 5 (threads or processes), with the counts merged correctly.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-036", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "Evaluate the following movie reviews on a scale of 1 to 5, with 1 being very negative, 3 being neutral, and 5 being very positive:\n1. This movie released on Nov. 18, 2019, was phenomenal. The cinematography, the acting, the plot - everything was top-notch.\n2. Never before have I been so disappointed with a movie. The plot was predictable and the characters were one-dimensional. In my opinion, this movie is the worst one to have been released in 2022.\n3. The movie was okay. There were some parts I  enjoyed, but there were also parts that felt lackluster. This is a movie that was released in Feb 2018 and seems to be quite ordinary.\nReturn the answer as a JSON array of integers."}, {"role": "assistant", "content": "[1, 3, 5]"}], "input": "Update your previous reply by including the release date as part of the JSON content.", "output": "[1, 3, 5, \"2019-11-18\"]", "compare_output": "", "expected_behavior": "Returns the three ratings 5, 1, 3 as valid JSON that also includes each review's release date (Nov. 18, 2019; 2022; Feb 2018).", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-019", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions."}, {"role": "assistant", "content": "I recently had the pleasure of visiting Hawaii and it quickly became one of my favorite places. From the stunning beaches to the lush mountains, this place has it all. The people are incredibly friendly and the culture is alive and well. One of the highlights of my trip was visiting the Polynesian Cultural Center. Here, I was able to learn about the culture of the native Hawaiian people and try my hand at traditional crafts and activities. I also had a chance to explore some of the natural wonders of the island, including the breathtaking Hanauma Bay and the majestic Waimea Canyon. Whether you’re looking for a relaxing beach vacation or an adventure filled with culture and nature, Hawaii is the perfect destination."}], "input": "Rewrite your previous response. Start every sentence with the letter A.", "output": "Aloha! I recently had the pleasure of visiting Hawaii and it quickly became one of my favorite places. From the stunning beaches to the lush mountains, this place has it all. The people are incredibly friendly and the culture is alive and well. One of the highlights of my trip was visiting the Polynesian Cultural Center. Here, I was able to learn about the culture of the native Hawaiian people and try my hand at traditional crafts and activities. I also had a chance to explore some of the natural wonders of the island, including the breathtaking Hanauma Bay and the majestic Waimea Canyon. Whether you’re looking for a relaxing beach vacation or an adventure filled with culture and nature, Hawaii is the perfect destination.", "compare_output": "", "expected_behavior": "Rewrites the Hawaii travel post so that every sentence starts with the letter A, keeping the cultural experiences and attractions. One sentence that starts with another letter is a fail.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-027", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "Given these categories - Literature, History, Science, and Art. Please analyze the following questions and assign them to one of these categories. In your response, refrain from uttering any extraneous words. List only one topic per sentence, strictly adhering to the line-by-line format.\n1. Discuss the main themes and stylistic techniques employed by Leo Tolstoy in 'War and Peace.' How do they align with the wider social context of 19th-century Russia?\n2. Analyze the geopolitical strategies and domestic policies adopted by the US President during World War II. How did these actions shape the post-war international order?\n3. Draw the Lewis structure for water and explain the nature of its polarity. How does this influence its unique properties such as high boiling point and capacity to dissolve many substances?\n4. Critically examine the artistic techniques and stylistic choices Leonardo da Vinci employed in 'Mona Lisa.' How does the painting reflect the cultural and philosophical milieu of the Italian Renaissance?"}, {"role": "assistant", "content": "1. Literature:\nWar and Peace is a novel by Leo Tolstoy, first published in 1869. The work is epic in scale and is regarded as one of the most important works of world literature. It is considered Tolstoy's finest literary achievement, along with his other major prose work Anna Karenina (1877).\nThe novel chronicles the history of the French invasion of Russia and the impact of the Napoleonic era on Tsarist society through the stories of five Russian aristocratic families. Portions of an earlier version, titled The Year 1805, were serialized in The Russian Messenger between 1865 and 1867. The novel was first published in its entirety in 1869.\nTolstoy said that War and Peace was \"not a novel, even less is it a poem, and still less a historical chronicle\". Large sections, especially the later chapters, are a philosophical discussion rather than narrative. He also said that the best Russian literature does not conform to standards and hence hesitated to call War and Peace a novel. Instead, he regarded Anna Karenina as his first true novel.\nThe novel is divided into four volumes, each volume containing several books. The first volume opens with the old Prince Bolkonsky's birthday party at his country estate. The guests include the Rostovs, the Bagrations, and the Kuragins. The novel's main characters are introduced: Pierre, Prince Andrei, and Natasha Rostov; Prince Andrei's sister, Princess Marya; and Boris, the eldest son of the old Prince Bolkonsky.\nThe second volume opens with the Rostovs' and Bolkonskys' preparations for the coming war. Pierre, who has been called to join the army, is sent to the front lines. The Rostovs and Bolkonskys are separated by the war.\nThe third volume opens with the Rostovs' and Bolkonskys' reunion in Moscow. Pierre is taken prisoner by the French. The Rostovs and Bolkonskys are reunited in Moscow.\nThe fourth volume opens with the Rostovs' and Bolkonskys' reunion in Moscow. Pierre is taken prisoner by the French. The Rostovs and Bolkonskys are reunited in Moscow.\n2. History:\nThe history of the United States is what happened in the past in the United States, a country in North America. Native Americans have lived there for thousands of years. English people in the 1600s and 1700s settled there. In the 1770s, they fought the British for independence. The United States of America is now a country of 50 states. It has a capital, Washington, D.C., and an extensive history.\nThe United States has been a strong military power. It fought in World War I and World War II. It fought in the Korean War and the Vietnam War. It fought in the Persian Gulf War and the Iraq War. It is a member of the United Nations.\nThe United States has been a leader in science and technology. It has sent people into space. It has sent robots to explore other planets. It has sent satellites into space. It has sent people to the moon.\nThe United States has been a leader in the arts. It has produced many famous writers, artists, and musicians. It has produced many famous movies.\nThe United States has been a leader in business. It has many large companies. It has many large banks. It has many large factories. It has many large farms.\nThe United States has been a leader in sports. It has many famous athletes. It has many famous sports teams.\nThe United States has been a leader in education. It has many famous universities. It has many famous schools.\nThe United States has been a leader in politics. It has had many famous presidents. It has had many famous senators. It has had many famous representatives.\nThe United States has been a leader in many other ways. It has many famous people. It has many famous places. It has many famous things.\n3. Science:\nWater is a transparent fluid which forms the world's streams, lakes, oceans and rain, and is the major constituent of the fluids of organisms. As a chemical compound, a water molecule contains one oxygen and two hydrogen atoms that are connected by covalent bonds. Water is a liquid at standard ambient temperature and pressure, but it often co-exists on Earth with its solid state, ice; and gaseous state, steam"}], "input": "Amend your earlier answer by mentioning a person who is most relevant to each point.", "output": "1. Literature: Leo Tolstoy\n2. History: George Washington\n3. Science: Leonardo da Vinci", "compare_output": "", "expected_behavior": "Lists, one line per question and without extra words, the most relevant person for each: Leo Tolstoy, Franklin D. Roosevelt, a chemist tied to Lewis structures or polarity (such as Gilbert N. Lewis or Linus Pauling), Leonardo da Vinci.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-034", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "A tech startup invests $8000 in software development in the first year, and then invests half of that amount in software development in the second year.\nWhat's the total amount the startup invested in software development over the two years?"}, {"role": "assistant", "content": "The total amount the startup invested in software development over the two years is $16,000."}], "input": "If the startup maintains the same strategy for the third year, investing half of the previous year's amount into software development, how much will they invest in the third year?", "output": "The startup will invest $4000 in software development in the third year.", "compare_output": "", "expected_behavior": "Says the third-year investment is $2000 (half of the $4000 invested in year two).", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-024", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "Draft a professional email seeking your supervisor's feedback on the 'Quarterly Financial Report' you prepared. Ask specifically about the data analysis, presentation style, and the clarity of conclusions drawn. Keep the email short and to the point."}, {"role": "assistant", "content": "Hi <your supervisor's name>,\nI would like to seek your feedback on the Quarterly Financial Report I prepared for the finance team.\nWould you mind reviewing it and providing your feedback on the data analysis, presentation style, and the clarity of conclusions drawn?\nThe report is attached.\nThanks, <your name>"}], "input": "Take a moment to evaluate and critique your own response.", "output": "Hi,\nThank you for taking the time to provide your feedback. Your feedback has been very valuable and has helped me improve my communication skills. I will keep your comments in mind while preparing reports in the future.\nI would be happy to answer any other questions you may have.", "compare_output": "", "expected_behavior": "Critiques its own feedback-request email honestly: says what works and names at least one concrete weakness or improvement, and describes the email accurately.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-047", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "Consider a satellite that is in a circular orbit around the Earth. The speed of the satellite decreases. What will happen to the satellite's orbital radius and period of revolution? Please justify your answer using principles of physics."}, {"role": "assistant", "content": "The satellite's orbital radius will increase and its period of revolution will decrease."}], "input": "What are some corner cases or edge cases in your solution? How do you handle them?", "output": "The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite'", "compare_output": "", "expected_behavior": "Names real edge cases for the satellite answer (for example elliptical orbits, atmospheric drag, a speed too low to stay in orbit, thrust) and says how each changes the analysis.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-031", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "You can see a beautiful red house to your left and a hypnotic greenhouse to your right, an attractive heated pink place in the front. So, where is the White House?"}, {"role": "assistant", "content": "The White House is in the center of the three buildings."}], "input": "Does the original question contain any clues to definitively determine the location of the White House?", "output": "No, the original question does not contain any clues to definitively determine the location of the White House.", "compare_output": "", "expected_behavior": "Says no: nothing in the original question locates the White House; the red house, greenhouse and pink place are unrelated to it.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-016", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "How do the stages of life shape our understanding of time and mortality?"}, {"role": "assistant", "content": "The stages of life shape our understanding of time and mortality in various ways. As children, we have no concept of death and are unaware of the passing of time. As we reach adulthood, we become more aware of our mortality and the limited time we have in life. We begin to prioritize our goals and make decisions with a greater sense of urgency. As we age, we become more accepting of our mortality and learn to appreciate the present moment. We understand that time is limited and use it more wisely."}], "input": "Write an allegorical poem that illustrates the above.", "output": "Childhood is a timeless dream,\nUnaware of life's fleeting gleam.\nInnocence reigns with boundless bliss,\nUnknowing of the future's grim miss.\n\nAdulthood brings a dawning fear,\nA sense of urgency, a greater near.\nLife's fragility made clear,\nAwareness of the future draws near.\n\nOld age brings a peaceful grace,\nA wisdom that accepts the race.\nLife's precious moments seen,\nA contentment of the present is serene.", "compare_output": "", "expected_behavior": "Writes an allegorical poem in which characters or images stand for the stages of life and show how they shape our sense of time and mortality.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-029", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "Imagine you are participating in a race with a group of people. If you have just overtaken the second person, what's your current position? Where is the person you just overtook?"}, {"role": "assistant", "content": "If you have just overtaken the second person, that means you are now ahead of them, making you the new second place runner. The person you just overtook is now in the third position."}], "input": "If the \"second person\" is changed to \"last person\" in the above question, what would the answer be?", "output": "If you have just overtaken the last person in the race, it would be logically impossible, as you cannot overtake the person who is in the last position while you are also participating in the race. You would already be ahead of the last person if you are not the one in the last position.", "compare_output": "", "expected_behavior": "Gives a logically consistent answer for overtaking the last person: you are now second to last and the person overtaken is last, or it explains why overtaking the last runner is a contradiction. Saying you are now first is a fail.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-010", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "Develop a Python program that reads all the text files under a directory and returns top-5 words with the most number of occurrences."}, {"role": "assistant", "content": "```\nimport collections\n\ndef count_words(files):\n    word_counts = collections.Counter()\n    for file in files:\n        with open(file) as f:\n            for word in f.read().split():\n                word_counts[word] += 1\n    return word_counts.most_common(5)\n\nif __name__ == '__main__':\n    top_words = count_words('*.txt')\n    print(top_words)\n```"}], "input": "Can you parallelize it?", "output": "Yes, the program can be parallelized by using multiple threads to read the files and compute the word counts in parallel.", "compare_output": "", "expected_behavior": "Gives a working parallel version of the program that counts words in all text files of a directory and returns the top 5 (threads or processes), with the counts merged correctly.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-025", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "Given these categories - Literature, History, Science, and Art. Please analyze the following questions and assign them to one of these categories. In your response, refrain from uttering any extraneous words. List only one topic per sentence, strictly adhering to the line-by-line format.\n1. Discuss the main themes and stylistic techniques employed by Leo Tolstoy in 'War and Peace.' How do they align with the wider social context of 19th-century Russia?\n2. Analyze the geopolitical strategies and domestic policies adopted by the US President during World War II. How did these actions shape the post-war international order?\n3. Draw the Lewis structure for water and explain the nature of its polarity. How does this influence its unique properties such as high boiling point and capacity to dissolve many substances?\n4. Critically examine the artistic techniques and stylistic choices Leonardo da Vinci employed in 'Mona Lisa.' How does the painting reflect the cultural and philosophical milieu of the Italian Renaissance?"}, {"role": "assistant", "content": "1. Literature\n2. History\n3. Science\n4. Art"}], "input": "Amend your earlier answer by mentioning a person who is most relevant to each point.", "output": "1. Leo Tolstoy\n2. US President\n3. Lewis\n4. Leonardo da Vinci", "compare_output": "", "expected_behavior": "Lists, one line per question and without extra words, the most relevant person for each: Leo Tolstoy, Franklin D. Roosevelt, a chemist tied to Lewis structures or polarity (such as Gilbert N. Lewis or Linus Pauling), Leonardo da Vinci.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-007", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "Provide insights into the correlation between economic indicators such as GDP, inflation, and unemployment rates. Explain how fiscal and monetary policies affect those indicators."}, {"role": "assistant", "content": "The Gross Domestic Product (GDP) is a measure of the total value of goods and services produced in an economy over a given period of time. It is typically used as an indicator of economic growth. Inflation is a measure of the average price level of goods and services in an economy, and is typically used as an indicator of the cost of living. The unemployment rate is a measure of the number of people who are unemployed relative to the total labor force, and is typically used as an indicator of economic health.\n\nFiscal and monetary policies can both affect these economic indicators. Fiscal policy refers to government spending and taxation policies, which can be used to influence economic growth. Monetary policy refers to the actions of a central bank, such as setting interest rates and issuing and buying government bonds, which can be used to influence inflation and the cost of borrowing money. Both fiscal and monetary policies can be used to try to improve economic performance and reduce unemployment."}], "input": "Now, explain them again like I'm five.", "output": "Gross Domestic Product (GDP) is a measure of all the goods and services produced in an economy over a certain period of time. It is used as an indicator of economic growth. Inflation is a measure of the average price level of goods and services in an economy, and is used as an indicator of the cost of living. The unemployment rate is a measure of the number of people who are unemployed relative to the total labor force, and is used as an indicator of economic health.\n\nFiscal policy refers to government spending and taxation policies which can be used to influence economic growth. Monetary policy refers to the actions of a central bank, such as setting interest rates and issuing and buying government bonds, which can be used to influence inflation and the cost of borrowing money. Both fiscal and monetary policies can be used to try to improve economic performance and reduce unemployment.", "compare_output": "", "expected_behavior": "Explains GDP, inflation, unemployment and fiscal and monetary policy again in words a five-year-old could follow (short sentences, simple comparisons), and stays accurate.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}, {"id": "case-009", "mode": "pointwise", "labels": ["pass", "fail"], "context": [{"role": "user", "content": "Provide insights into the correlation between economic indicators such as GDP, inflation, and unemployment rates. Explain how fiscal and monetary policies affect those indicators."}, {"role": "assistant", "content": "Gross domestic product (GDP) is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output.\nGDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year.\nGDP is the total market value of all final goods and services produced in a country in a given year.\nGDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output.\nGDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year.\nGDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year.\nGDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced i"}], "input": "Now, explain them again like I'm five.", "output": "GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given birthday party. GDP is the total market value of all final goods and services produced in a birthday party. GDP is the total market value of all final goods and services produced in a birthday party. GDP is birthday party. Gifts for a birthday party. GDP is the total market value of all final party.", "compare_output": "", "expected_behavior": "Explains GDP, inflation, unemployment and fiscal and monetary policy again in words a five-year-old could follow (short sentences, simple comparisons), and stays accurate.", "criteria": [{"id": "correct", "description": "Facts, numbers and code are correct."}, {"id": "follows-instructions", "description": "Does what the latest user turn asks, including format constraints."}]}]}</script>
+<script>
+(function () {
+  "use strict";
+  var DATA = JSON.parse(document.getElementById("sheet-data").textContent);
+  var CASES = DATA.cases;
+  var KEY = "eval-builder-labels:" + DATA.sheet_id;
+  var state = { labeler: "", labels: {}, notes: {}, at: {}, pos: 0, auto: true };
+  var storage = "unknown";
+  var view = "cases";
+
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined && text !== null) e.textContent = text;
+    return e;
+  }
+
+  try {
+    var saved = window.localStorage.getItem(KEY);
+    if (saved) {
+      var s = JSON.parse(saved);
+      ["labeler", "labels", "notes", "at", "pos", "auto"].forEach(function (k) { if (k in s) state[k] = s[k]; });
+    }
+    storage = "ok";
+  } catch (e) { storage = "blocked"; }
+  if (state.pos < 0 || state.pos >= CASES.length) state.pos = 0;
+
+  function save() {
+    try { window.localStorage.setItem(KEY, JSON.stringify(state)); storage = "ok"; }
+    catch (e) { storage = "blocked"; }
+    $("saved").textContent = storage === "ok"
+      ? "Progress is kept in this browser until you export."
+      : "This browser does not allow saving here: export before you close the page.";
+  }
+
+  function labeledCount() {
+    return CASES.filter(function (c) { return state.labels[c.id] !== undefined; }).length;
+  }
+
+  function cls(label) {
+    var l = String(label).toLowerCase();
+    if (l === "pass" || l === "yes" || l === "good") return "pass";
+    if (l === "fail" || l === "no" || l === "bad") return "fail";
+    return "other";
+  }
+
+  function keymap(labels) {
+    var map = {}, firsts = {};
+    labels.forEach(function (l, i) {
+      if (i < 9) map[String(i + 1)] = l;
+      var f = String(l).charAt(0).toLowerCase();
+      firsts[f] = (firsts[f] || 0) + 1;
+    });
+    labels.forEach(function (l) {
+      var f = String(l).charAt(0).toLowerCase();
+      if (firsts[f] === 1 && /[a-z]/.test(f)) map[f] = l;
+    });
+    return map;
+  }
+
+  function keyHint(labels, label) {
+    var m = keymap(labels), keys = [];
+    Object.keys(m).forEach(function (k) { if (m[k] === label) keys.push(k.toUpperCase()); });
+    return keys.reverse().join(" / ");
+  }
+
+  function turn(role, text, extra) {
+    var d = el("div", "turn " + (extra || role));
+    d.appendChild(el("span", "role", role));
+    d.appendChild(document.createTextNode(text));
+    return d;
+  }
+
+  function renderHeader() {
+    var n = labeledCount();
+    $("title").textContent = document.title;
+    $("count").textContent = n + " of " + CASES.length + " labeled";
+    $("bar").style.width = (CASES.length ? (100 * n / CASES.length) : 0) + "%";
+    var dots = $("dots");
+    dots.textContent = "";
+    CASES.forEach(function (c, i) {
+      var b = el("button", (state.labels[c.id] !== undefined ? "done" : "") + (i === state.pos ? " here" : ""), String(i + 1));
+      b.type = "button";
+      b.title = c.id + (state.labels[c.id] !== undefined ? ": " + state.labels[c.id] : ": not labeled");
+      b.setAttribute("aria-label", "Case " + (i + 1) + ", " + b.title);
+      b.addEventListener("click", function () { go(i); });
+      dots.appendChild(b);
+    });
+  }
+
+  function renderCase() {
+    var c = CASES[state.pos];
+    var card = $("card");
+    card.textContent = "";
+    var meta = el("div", "meta");
+    meta.appendChild(el("span", "", "Case " + (state.pos + 1) + " of " + CASES.length));
+    meta.appendChild(el("span", "", c.id));
+    card.appendChild(meta);
+
+    if (c.context && c.context.length) {
+      card.appendChild(el("h2", "", "Earlier in the conversation"));
+      var holder = card;
+      if (c.context.length > 4) {
+        holder = el("details", "earlier");
+        holder.appendChild(el("summary", "", "Show " + c.context.length + " earlier turns"));
+        card.appendChild(holder);
+      }
+      c.context.forEach(function (t) { holder.appendChild(turn(t.role, t.content)); });
+    }
+    card.appendChild(el("h2", "", "Latest user message"));
+    card.appendChild(turn("user", c.input));
+    if (c.mode === "pairwise") {
+      card.appendChild(el("h2", "", "Answer A"));
+      card.appendChild(turn("assistant (A)", c.output, "reply"));
+      card.appendChild(el("h2", "", "Answer B"));
+      card.appendChild(turn("assistant (B)", c.compare_output, "reply"));
+    } else {
+      card.appendChild(el("h2", "", "Reply to label"));
+      card.appendChild(turn("assistant", c.output, "reply"));
+    }
+    if (c.expected_behavior) {
+      card.appendChild(el("h2", "", "What a good reply does"));
+      card.appendChild(el("div", "expected", c.expected_behavior));
+    }
+    if (c.criteria && c.criteria.length) {
+      var ul = el("ul", "criteria");
+      c.criteria.forEach(function (k) { ul.appendChild(el("li", "", k.id + (k.description ? ": " + k.description : ""))); });
+      card.appendChild(ul);
+    }
+    card.appendChild(el("p", "question", c.mode === "pairwise"
+      ? "Which answer is better? Choose a label below."
+      : "Does the reply do what a good reply does? Choose a label below."));
+    card.appendChild(el("h2", "", "Note (optional)"));
+    var note = el("textarea", "note");
+    note.id = "note";
+    note.placeholder = "Why, if it was a close call";
+    note.value = state.notes[c.id] || "";
+    note.addEventListener("input", function () {
+      if (note.value) state.notes[c.id] = note.value; else delete state.notes[c.id];
+      save();
+    });
+    card.appendChild(note);
+
+    var labels = $("labels");
+    labels.textContent = "";
+    c.labels.forEach(function (l) {
+      var b = el("button", cls(l));
+      b.type = "button";
+      b.appendChild(document.createTextNode(l));
+      b.appendChild(el("span", "key", keyHint(c.labels, l)));
+      b.setAttribute("aria-pressed", state.labels[c.id] === l ? "true" : "false");
+      b.addEventListener("click", function () { setLabel(l); });
+      labels.appendChild(b);
+    });
+    var clear = el("button", "clear", "Clear");
+    clear.type = "button";
+    clear.disabled = state.labels[c.id] === undefined;
+    clear.addEventListener("click", function () { setLabel(undefined); });
+    labels.appendChild(clear);
+    $("prev").disabled = state.pos === 0;
+    $("next").disabled = state.pos === CASES.length - 1;
+  }
+
+  function render() {
+    renderHeader();
+    if (view === "cases") renderCase(); else renderExport();
+  }
+
+  function go(i) {
+    state.pos = Math.max(0, Math.min(CASES.length - 1, i));
+    save();
+    showCases();
+    window.scrollTo(0, 0);
+  }
+
+  function nextUnlabeled() {
+    for (var k = 1; k <= CASES.length; k++) {
+      var i = (state.pos + k) % CASES.length;
+      if (state.labels[CASES[i].id] === undefined) return i;
+    }
+    return -1;
+  }
+
+  function setLabel(l) {
+    var c = CASES[state.pos];
+    if (l === undefined) { delete state.labels[c.id]; delete state.at[c.id]; }
+    else { state.labels[c.id] = l; state.at[c.id] = new Date().toISOString(); }
+    save();
+    if (l !== undefined && state.auto) {
+      var nxt = nextUnlabeled();
+      if (nxt === -1) { showExport(); return; }
+      if (nxt !== state.pos) { setTimeout(function () { go(nxt); }, 120); }
+    }
+    render();
+  }
+
+  function rows() {
+    var out = [];
+    CASES.forEach(function (c) {
+      if (state.labels[c.id] === undefined) return;
+      var r = { case_id: c.id, label: state.labels[c.id], mode: c.mode };
+      if (state.labeler) r.labeler = state.labeler;
+      if (state.notes[c.id]) r.note = state.notes[c.id];
+      if (state.at[c.id]) r.labeled_at = state.at[c.id];
+      r.sheet = DATA.sheet_id;
+      out.push(r);
+    });
+    return out;
+  }
+
+  function jsonl() {
+    return rows().map(function (r) { return JSON.stringify(r); }).join("\n") + (rows().length ? "\n" : "");
+  }
+
+  function renderExport() {
+    var rs = rows(), n = rs.length, counts = {};
+    rs.forEach(function (r) { counts[r.label] = (counts[r.label] || 0) + 1; });
+    var parts = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; })
+      .map(function (k) { return k + " " + counts[k] + " (" + Math.round(100 * counts[k] / n) + "%)"; });
+    var missing = CASES.length - n;
+    $("export-summary").textContent = n + " of " + CASES.length + " cases labeled" +
+      (parts.length ? ": " + parts.join(", ") : "") +
+      (missing ? ". " + missing + " unlabeled case(s) are left out of the export." : ".") +
+      (state.labeler ? "" : " Add your name at the top so labels from several people stay apart.");
+    var warn = $("export-warn");
+    var top = parts.length ? counts[Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; })[0]] : 0;
+    if (n >= 5 && top / n >= 0.8) {
+      warn.hidden = false;
+      warn.textContent = "Most of these labels are the same (" + parts.join(", ") +
+        "). A judge that always gives that answer would look accurate on them. That is fine if it is what you saw; it means the judge check needs cases of the other outcome too.";
+    } else { warn.hidden = true; }
+    $("blob").value = jsonl();
+    $("import-cmd").textContent = "uvx eval-builder label import ~/Downloads/labels.jsonl -w " + shellQuote(DATA.workspace);
+    $("paste-cmd").textContent = "pbpaste | uvx eval-builder label import - -w " + shellQuote(DATA.workspace);
+    $("download").disabled = n === 0;
+    $("copy").disabled = n === 0;
+  }
+
+  function shellQuote(s) {
+    return /^[A-Za-z0-9_\/.~:-]+$/.test(s) ? s : "'" + String(s).replace(/'/g, "'\\''") + "'";
+  }
+
+  function showExport() {
+    view = "export";
+    $("cases").hidden = true; $("export").hidden = false; $("bottom").hidden = true;
+    render();
+    window.scrollTo(0, 0);
+  }
+  function showCases() {
+    view = "cases";
+    $("cases").hidden = false; $("export").hidden = true; $("bottom").hidden = false;
+    render();
+  }
+
+  $("labeler").value = state.labeler;
+  $("labeler").addEventListener("input", function (e) { state.labeler = e.target.value.trim(); save(); });
+  $("auto").checked = !!state.auto;
+  $("auto").addEventListener("change", function (e) { state.auto = e.target.checked; save(); });
+  $("prev").addEventListener("click", function () { go(state.pos - 1); });
+  $("next").addEventListener("click", function () { go(state.pos + 1); });
+  $("to-export").addEventListener("click", showExport);
+  $("back").addEventListener("click", showCases);
+  $("download").addEventListener("click", function () {
+    var blob = new Blob([jsonl()], { type: "application/x-ndjson" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "labels.jsonl";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
+  });
+  $("copy").addEventListener("click", function () {
+    var text = jsonl(), status = $("copy-status");
+    function fallback() {
+      var box = $("blob");
+      box.focus(); box.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      status.textContent = ok ? "Copied." : "Select the text below and copy it (Cmd+C or Ctrl+C).";
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { status.textContent = "Copied."; }, fallback);
+    } else { fallback(); }
+  });
+
+  document.addEventListener("keydown", function (e) {
+    var t = e.target;
+    if (t && (t.tagName === "TEXTAREA" || t.tagName === "INPUT")) {
+      if (e.key === "Escape") t.blur();
+      return;
+    }
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (view === "export") { if (e.key === "Escape") { showCases(); e.preventDefault(); } return; }
+    var c = CASES[state.pos], k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    var m = keymap(c.labels);
+    if (m[k] !== undefined) { setLabel(m[k]); e.preventDefault(); return; }
+    if (k === "ArrowRight" || k === "Enter") { go(state.pos + 1); e.preventDefault(); }
+    else if (k === "ArrowLeft") { go(state.pos - 1); e.preventDefault(); }
+    else if (k === "Backspace" || k === "Delete") { setLabel(undefined); e.preventDefault(); }
+    else if (k === "u") { var i = nextUnlabeled(); if (i !== -1) go(i); e.preventDefault(); }
+    else if (k === "n") { $("note").focus(); e.preventDefault(); }
+    else if (k === "e") { showExport(); e.preventDefault(); }
+  });
+
+  save();
+  showCases();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+{
+ "case-006": {
+  "label": "fail",
+  "note": ""
+ },
+ "case-007": {
+  "label": "fail",
+  "note": "same textbook definitions, not for a five-year-old"
+ },
+ "case-008": {
+  "label": "pass",
+  "note": ""
+ },
+ "case-009": {
+  "label": "fail",
+  "note": "repeats one definition, not simplified"
+ },
+ "case-010": {
+  "label": "fail",
+  "note": "one sentence, no program"
+ },
+ "case-012": {
+  "label": "fail",
+  "note": ""
+ },
+ "case-013": {
+  "label": "fail",
+  "note": "wrong start values and sums two terms, not three"
+ },
+ "case-015": {
+  "label": "fail",
+  "note": "Fibonacci-style, wrong recurrence"
+ },
+ "case-016": {
+  "label": "fail",
+  "note": "names the stages literally; not an allegory"
+ },
+ "case-018": {
+  "label": "fail",
+  "note": "no poem"
+ },
+ "case-019": {
+  "label": "fail",
+  "note": "most sentences do not start with A"
+ },
+ "case-023": {
+  "label": "pass",
+  "note": "names one improvement; misses that the email is not short"
+ },
+ "case-024": {
+  "label": "fail",
+  "note": "answers a different message"
+ },
+ "case-025": {
+  "label": "fail",
+  "note": "'US President' and 'Lewis' are not specific people"
+ },
+ "case-027": {
+  "label": "fail",
+  "note": "three lines, Washington instead of Roosevelt, da Vinci under science"
+ },
+ "case-029": {
+  "label": "pass",
+  "note": "explains why it is a contradiction"
+ },
+ "case-031": {
+  "label": "pass",
+  "note": "says no, without explaining why"
+ },
+ "case-032": {
+  "label": "pass",
+  "note": ""
+ },
+ "case-034": {
+  "label": "fail",
+  "note": "says $4000, should be $2000"
+ },
+ "case-036": {
+  "label": "fail",
+  "note": "ratings reordered and only one date"
+ },
+ "case-039": {
+  "label": "fail",
+  "note": "12 is wrong; 5*pi"
+ },
+ "case-042": {
+  "label": "fail",
+  "note": "restates definitions, no real assumptions examined"
+ },
+ "case-043": {
+  "label": "pass",
+  "note": ""
+ },
+ "case-047": {
+  "label": "fail",
+  "note": "repeats a wrong claim"
+ }
+}

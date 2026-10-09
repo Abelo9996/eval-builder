@@ -1,0 +1,2188 @@
+{
+  "judge_check_file": "examples/sample-labeling/evalset/judge_check.json",
+  "judgments_file": "examples/sample-labeling/evalset/judgments.jsonl",
+  "labels_file": "examples/sample-labeling/evalset/labels.jsonl",
+  "labeled_cases": 24,
+  "human_label_counts": {
+    "fail": 18,
+    "pass": 6
+  },
+  "warnings": [
+    "judge llama3.2-3b's accuracy (54%) is no better than always answering 'fail' (75%) on these 24 labeled cases (the judge said pass 13 of 24 (54%), fail 11 (46%)); kappa 0.12 [-0.26, 0.50] is the number that corrects for this. Look at the cases it got wrong before relying on it",
+    "judge qwen2.5-7b's accuracy (71%) is no better than always answering 'fail' (75%) on these 24 labeled cases (the judge said pass 13 of 24 (54%), fail 11 (46%)); kappa 0.44 [0.09, 0.79] is the number that corrects for this. Look at the cases it got wrong before relying on it",
+    "judge qwen2.5-7b-temp0's accuracy (75%) is no better than always answering 'fail' (75%) on these 24 labeled cases (the judge said fail 12 of 24 (50%), pass 12 (50%)); kappa 0.50 [0.15, 0.85] is the number that corrects for this. Look at the cases it got wrong before relying on it"
+  ],
+  "thresholds": {
+    "min_trials": 3,
+    "min_cases": 10,
+    "max_flip_rate": 0.2,
+    "min_position_consistency": 0.8,
+    "max_toward_padded_rate": 0.1,
+    "min_kappa": 0.4,
+    "min_labeled": 20
+  },
+  "summary": [
+    {
+      "judge": "llama3.2-3b",
+      "mode": "pointwise",
+      "verdict": "unstable",
+      "cases": 47,
+      "calls": 376,
+      "invalid_outputs": 0,
+      "flip_rate": 0.4681,
+      "flip_rate_ci95": [
+        0.3333,
+        0.6077
+      ],
+      "labeled_cases": 24,
+      "kappa": 0.12,
+      "kappa_ci95": [
+        -0.2627,
+        0.5027
+      ],
+      "accuracy": 0.5417,
+      "accuracy_ci95": [
+        0.3507,
+        0.7211
+      ],
+      "majority_baseline": 0.75,
+      "position_consistency": null,
+      "position_consistency_ci95": null,
+      "toward_padded": 0.0426,
+      "toward_padded_ci95": [
+        0.0117,
+        0.1425
+      ],
+      "reasons": [
+        "verdict changed across repeated trials on 47% of cases (limit 20%)",
+        "agreement with human labels is low: kappa 0.12 (need 0.4), accuracy 54%"
+      ]
+    },
+    {
+      "judge": "qwen2.5-7b",
+      "mode": "pointwise",
+      "verdict": "trustworthy",
+      "cases": 47,
+      "calls": 376,
+      "invalid_outputs": 0,
+      "flip_rate": 0.0851,
+      "flip_rate_ci95": [
+        0.0336,
+        0.1993
+      ],
+      "labeled_cases": 24,
+      "kappa": 0.44,
+      "kappa_ci95": [
+        0.0909,
+        0.7891
+      ],
+      "accuracy": 0.7083,
+      "accuracy_ci95": [
+        0.5083,
+        0.8509
+      ],
+      "majority_baseline": 0.75,
+      "position_consistency": null,
+      "position_consistency_ci95": null,
+      "toward_padded": 0.0,
+      "toward_padded_ci95": [
+        0.0,
+        0.0756
+      ],
+      "reasons": [
+        "stable (flip rate 9%), kappa 0.44 with humans"
+      ]
+    },
+    {
+      "judge": "qwen2.5-7b-temp0",
+      "mode": "pointwise",
+      "verdict": "trustworthy",
+      "cases": 47,
+      "calls": 376,
+      "invalid_outputs": 0,
+      "flip_rate": 0.0,
+      "flip_rate_ci95": [
+        0.0,
+        0.0756
+      ],
+      "labeled_cases": 24,
+      "kappa": 0.5,
+      "kappa_ci95": [
+        0.1535,
+        0.8465
+      ],
+      "accuracy": 0.75,
+      "accuracy_ci95": [
+        0.551,
+        0.88
+      ],
+      "majority_baseline": 0.75,
+      "position_consistency": null,
+      "position_consistency_ci95": null,
+      "toward_padded": 0.0,
+      "toward_padded_ci95": [
+        0.0,
+        0.0756
+      ],
+      "reasons": [
+        "stable (flip rate 0%), kappa 0.50 with humans"
+      ]
+    }
+  ],
+  "judges": {
+    "llama3.2-3b": {
+      "mode": "pointwise",
+      "verdict": "unstable",
+      "reasons": [
+        "verdict changed across repeated trials on 47% of cases (limit 20%)",
+        "agreement with human labels is low: kappa 0.12 (need 0.4), accuracy 54%"
+      ],
+      "checks": {
+        "stability": "fail",
+        "position": "not run",
+        "verbosity": "pass",
+        "human_agreement": "fail"
+      },
+      "stability": {
+        "cases": 47,
+        "trials_per_case": [
+          5
+        ],
+        "flip_rate": {
+          "k": 22,
+          "n": 47,
+          "rate": 0.4681,
+          "ci95": [
+            0.3333,
+            0.6077
+          ]
+        },
+        "mean_self_agreement": 0.8255,
+        "no_majority_cases": 0,
+        "majority_of_3_stability": 0.8787,
+        "invalid_outputs": 0,
+        "calls": 376
+      },
+      "human_agreement": {
+        "cases": 24,
+        "accuracy": {
+          "k": 13,
+          "n": 24,
+          "rate": 0.5417,
+          "ci95": [
+            0.3507,
+            0.7211
+          ]
+        },
+        "kappa": 0.12,
+        "kappa_ci95": [
+          -0.2627,
+          0.5027
+        ],
+        "chance_agreement": 0.4792,
+        "single_call_accuracy": 0.6167,
+        "human_label_counts": {
+          "fail": 18,
+          "pass": 6
+        },
+        "judge_label_counts": {
+          "fail": 11,
+          "pass": 13
+        },
+        "majority_baseline": 0.75
+      },
+      "position_probe": null,
+      "verbosity_probe": {
+        "cases": 47,
+        "changed": {
+          "k": 4,
+          "n": 47,
+          "rate": 0.0851,
+          "ci95": [
+            0.0336,
+            0.1993
+          ]
+        },
+        "toward_padded": {
+          "k": 2,
+          "n": 47,
+          "rate": 0.0426,
+          "ci95": [
+            0.0117,
+            0.1425
+          ]
+        },
+        "note": "padding appends an irrelevant paragraph; toward_padded = share of cases where the padded answer's verdict improved"
+      },
+      "cases": [
+        {
+          "case_id": "case-001",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-002",
+          "trials": 5,
+          "counts": {
+            "fail": 3,
+            "pass": 2
+          },
+          "majority": "fail",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-003",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-004",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-005",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-006",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-007",
+          "trials": 5,
+          "counts": {
+            "pass": 4,
+            "fail": 1
+          },
+          "majority": "pass",
+          "majority_share": 0.8,
+          "flipped": true,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-008",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "pass",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-009",
+          "trials": 5,
+          "counts": {
+            "pass": 4,
+            "fail": 1
+          },
+          "majority": "pass",
+          "majority_share": 0.8,
+          "flipped": true,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-010",
+          "trials": 5,
+          "counts": {
+            "pass": 3,
+            "fail": 2
+          },
+          "majority": "pass",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "human": "fail",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-011",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-012",
+          "trials": 5,
+          "counts": {
+            "pass": 3,
+            "fail": 2
+          },
+          "majority": "pass",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "human": "fail",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-013",
+          "trials": 5,
+          "counts": {
+            "pass": 3,
+            "fail": 2
+          },
+          "majority": "pass",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "human": "fail",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-014",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-015",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-016",
+          "trials": 5,
+          "counts": {
+            "pass": 3,
+            "fail": 2
+          },
+          "majority": "pass",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-017",
+          "trials": 5,
+          "counts": {
+            "pass": 3,
+            "fail": 2
+          },
+          "majority": "pass",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-018",
+          "trials": 5,
+          "counts": {
+            "pass": 3,
+            "fail": 2
+          },
+          "majority": "pass",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-019",
+          "trials": 5,
+          "counts": {
+            "fail": 3,
+            "pass": 2
+          },
+          "majority": "fail",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-020",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-021",
+          "trials": 5,
+          "counts": {
+            "pass": 3,
+            "fail": 2
+          },
+          "majority": "pass",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-022",
+          "trials": 5,
+          "counts": {
+            "pass": 3,
+            "fail": 2
+          },
+          "majority": "pass",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-023",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "pass",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-024",
+          "trials": 5,
+          "counts": {
+            "fail": 3,
+            "pass": 2
+          },
+          "majority": "fail",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-025",
+          "trials": 5,
+          "counts": {
+            "fail": 3,
+            "pass": 2
+          },
+          "majority": "fail",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "human": "fail",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-026",
+          "trials": 5,
+          "counts": {
+            "pass": 3,
+            "fail": 2
+          },
+          "majority": "pass",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-027",
+          "trials": 5,
+          "counts": {
+            "pass": 3,
+            "fail": 2
+          },
+          "majority": "pass",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "human": "fail",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-028",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-029",
+          "trials": 5,
+          "counts": {
+            "fail": 4,
+            "pass": 1
+          },
+          "majority": "fail",
+          "majority_share": 0.8,
+          "flipped": true,
+          "majority_of_3_stability": 1.0,
+          "human": "pass",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-030",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-031",
+          "trials": 5,
+          "counts": {
+            "fail": 3,
+            "pass": 2
+          },
+          "majority": "fail",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "human": "pass",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-032",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "pass",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-033",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-034",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-035",
+          "trials": 5,
+          "counts": {
+            "pass": 3,
+            "fail": 2
+          },
+          "majority": "pass",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-036",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-037",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-038",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-039",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-040",
+          "trials": 5,
+          "counts": {
+            "fail": 3,
+            "pass": 2
+          },
+          "majority": "fail",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-041",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-042",
+          "trials": 5,
+          "counts": {
+            "fail": 3,
+            "pass": 2
+          },
+          "majority": "fail",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-043",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "pass",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-044",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-045",
+          "trials": 5,
+          "counts": {
+            "pass": 3,
+            "fail": 2
+          },
+          "majority": "pass",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-046",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-047",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        }
+      ]
+    },
+    "qwen2.5-7b": {
+      "mode": "pointwise",
+      "verdict": "trustworthy",
+      "reasons": [
+        "stable (flip rate 9%), kappa 0.44 with humans"
+      ],
+      "checks": {
+        "stability": "pass",
+        "position": "not run",
+        "verbosity": "pass",
+        "human_agreement": "pass"
+      },
+      "stability": {
+        "cases": 47,
+        "trials_per_case": [
+          5
+        ],
+        "flip_rate": {
+          "k": 4,
+          "n": 47,
+          "rate": 0.0851,
+          "ci95": [
+            0.0336,
+            0.1993
+          ]
+        },
+        "mean_self_agreement": 0.966,
+        "no_majority_cases": 0,
+        "majority_of_3_stability": 0.9745,
+        "invalid_outputs": 0,
+        "calls": 376
+      },
+      "human_agreement": {
+        "cases": 24,
+        "accuracy": {
+          "k": 17,
+          "n": 24,
+          "rate": 0.7083,
+          "ci95": [
+            0.5083,
+            0.8509
+          ]
+        },
+        "kappa": 0.44,
+        "kappa_ci95": [
+          0.0909,
+          0.7891
+        ],
+        "chance_agreement": 0.4792,
+        "single_call_accuracy": 0.725,
+        "human_label_counts": {
+          "fail": 18,
+          "pass": 6
+        },
+        "judge_label_counts": {
+          "fail": 11,
+          "pass": 13
+        },
+        "majority_baseline": 0.75
+      },
+      "position_probe": null,
+      "verbosity_probe": {
+        "cases": 47,
+        "changed": {
+          "k": 8,
+          "n": 47,
+          "rate": 0.1702,
+          "ci95": [
+            0.0889,
+            0.3014
+          ]
+        },
+        "toward_padded": {
+          "k": 0,
+          "n": 47,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0756
+          ]
+        },
+        "note": "padding appends an irrelevant paragraph; toward_padded = share of cases where the padded answer's verdict improved"
+      },
+      "cases": [
+        {
+          "case_id": "case-001",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-002",
+          "trials": 5,
+          "counts": {
+            "fail": 3,
+            "pass": 2
+          },
+          "majority": "fail",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-003",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-004",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-005",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-006",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-007",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-008",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "pass",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-009",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-010",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-011",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-012",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-013",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-014",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-015",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-016",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-017",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-018",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-019",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-020",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-021",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-022",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-023",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "pass",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-024",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-025",
+          "trials": 5,
+          "counts": {
+            "pass": 3,
+            "fail": 2
+          },
+          "majority": "pass",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-026",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-027",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-028",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-029",
+          "trials": 5,
+          "counts": {
+            "pass": 3,
+            "fail": 2
+          },
+          "majority": "pass",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "human": "pass",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-030",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-031",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "pass",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-032",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "pass",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-033",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-034",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-035",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-036",
+          "trials": 5,
+          "counts": {
+            "pass": 3,
+            "fail": 2
+          },
+          "majority": "pass",
+          "majority_share": 0.6,
+          "flipped": true,
+          "majority_of_3_stability": 0.7,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-037",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-038",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-039",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-040",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-041",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-042",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-043",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "pass",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-044",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-045",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-046",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-047",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        }
+      ]
+    },
+    "qwen2.5-7b-temp0": {
+      "mode": "pointwise",
+      "verdict": "trustworthy",
+      "reasons": [
+        "stable (flip rate 0%), kappa 0.50 with humans"
+      ],
+      "checks": {
+        "stability": "pass",
+        "position": "not run",
+        "verbosity": "pass",
+        "human_agreement": "pass"
+      },
+      "stability": {
+        "cases": 47,
+        "trials_per_case": [
+          5
+        ],
+        "flip_rate": {
+          "k": 0,
+          "n": 47,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0756
+          ]
+        },
+        "mean_self_agreement": 1.0,
+        "no_majority_cases": 0,
+        "majority_of_3_stability": 1.0,
+        "invalid_outputs": 0,
+        "calls": 376
+      },
+      "human_agreement": {
+        "cases": 24,
+        "accuracy": {
+          "k": 18,
+          "n": 24,
+          "rate": 0.75,
+          "ci95": [
+            0.551,
+            0.88
+          ]
+        },
+        "kappa": 0.5,
+        "kappa_ci95": [
+          0.1535,
+          0.8465
+        ],
+        "chance_agreement": 0.5,
+        "single_call_accuracy": 0.75,
+        "human_label_counts": {
+          "fail": 18,
+          "pass": 6
+        },
+        "judge_label_counts": {
+          "fail": 12,
+          "pass": 12
+        },
+        "majority_baseline": 0.75
+      },
+      "position_probe": null,
+      "verbosity_probe": {
+        "cases": 47,
+        "changed": {
+          "k": 7,
+          "n": 47,
+          "rate": 0.1489,
+          "ci95": [
+            0.0741,
+            0.2769
+          ]
+        },
+        "toward_padded": {
+          "k": 0,
+          "n": 47,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0756
+          ]
+        },
+        "note": "padding appends an irrelevant paragraph; toward_padded = share of cases where the padded answer's verdict improved"
+      },
+      "cases": [
+        {
+          "case_id": "case-001",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-002",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-003",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-004",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-005",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-006",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-007",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-008",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "pass",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-009",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-010",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-011",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-012",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-013",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-014",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-015",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-016",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-017",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-018",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-019",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-020",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-021",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-022",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-023",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "pass",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-024",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-025",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-026",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-027",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-028",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-029",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "pass",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-030",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-031",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "pass",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-032",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "pass",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-033",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-034",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-035",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-036",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-037",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-038",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-039",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-040",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-041",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-042",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-043",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "pass",
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-044",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-045",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "fail"
+        },
+        {
+          "case_id": "case-046",
+          "trials": 5,
+          "counts": {
+            "pass": 5
+          },
+          "majority": "pass",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "pad_majority": "pass"
+        },
+        {
+          "case_id": "case-047",
+          "trials": 5,
+          "counts": {
+            "fail": 5
+          },
+          "majority": "fail",
+          "majority_share": 1.0,
+          "flipped": false,
+          "majority_of_3_stability": 1.0,
+          "human": "fail",
+          "pad_majority": "fail"
+        }
+      ]
+    }
+  },
+  "trustworthy": [
+    "qwen2.5-7b",
+    "qwen2.5-7b-temp0"
+  ],
+  "next": "export: judges ['qwen2.5-7b', 'qwen2.5-7b-temp0'] passed; export wires a passing pointwise judge into promptfoo when its rubric.yaml entry has a `provider`"
+}

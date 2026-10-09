@@ -1,0 +1,90 @@
+{
+  "cases": 47,
+  "formats": [
+    "promptfoo",
+    "deepeval",
+    "inspect",
+    "jsonl"
+  ],
+  "files": [
+    {
+      "path": "exports/promptfoo/promptfooconfig.yaml",
+      "sha256": "23c43efb656ee17cf190fffd1100eb18986917593f6854dcdf36973ae4a6b6f3"
+    },
+    {
+      "path": "exports/deepeval/dataset.json",
+      "sha256": "f6cf982eeef58e135e8b20bd9bd2a39f6965e1c2bc8e8ceb39e38f07b8c17536"
+    },
+    {
+      "path": "exports/deepeval/test_eval_builder.py",
+      "sha256": "05f445309c2983afd8a9cfb675dc7fd2a97f32f35ea2d918442a7bb391c270f7"
+    },
+    {
+      "path": "exports/deepeval/judge.json",
+      "sha256": "dd632220790c10ab8c788b1407cc08c0db17a28b58d4911b373b32b32bcf2fdd"
+    },
+    {
+      "path": "exports/inspect/dataset.jsonl",
+      "sha256": "63fb2547e1e810076647ebbd7c8a23cadd290ed8ad28fd1fc886b5b17b2b9215"
+    },
+    {
+      "path": "exports/inspect/task.py",
+      "sha256": "df284b6b6dedeb833e283cd9226241c17a84bed70924d097e9a6c45cba69c36e"
+    },
+    {
+      "path": "exports/jsonl/cases.jsonl",
+      "sha256": "d10eff47dcc67a113871b634bdbf8a705ce71ab6d485f0b109a06934d9c2bdef"
+    }
+  ],
+  "judge_check": {
+    "trustworthy": [
+      "qwen2.5-7b",
+      "qwen2.5-7b-temp0"
+    ],
+    "verdicts": {
+      "llama3.2-3b": "unstable",
+      "qwen2.5-7b": "trustworthy",
+      "qwen2.5-7b-temp0": "trustworthy"
+    },
+    "thresholds": {
+      "min_trials": 3,
+      "min_cases": 10,
+      "max_flip_rate": 0.2,
+      "min_position_consistency": 0.8,
+      "max_toward_padded_rate": 0.1,
+      "min_kappa": 0.4,
+      "min_labeled": 20
+    }
+  },
+  "trusted_judge_prompts": {
+    "qwen2.5-7b": {
+      "mode": "pointwise",
+      "labels": [
+        "pass",
+        "fail"
+      ],
+      "prompt": "You are grading one reply from an AI assistant.\n\nEarlier conversation:\n{context}\n\nLatest user message:\n{input}\n\nAssistant reply to grade:\n{output}\n\nWhat a good reply does:\n{expected_behavior}\n\nCriteria:\n{criteria}\n\nDoes the reply do what a good reply does and meet the criteria? Answer with JSON only:\n{\"pass\": true or false, \"reason\": \"<one short sentence>\"}\n"
+    },
+    "qwen2.5-7b-temp0": {
+      "mode": "pointwise",
+      "labels": [
+        "pass",
+        "fail"
+      ],
+      "prompt": "You are grading one reply from an AI assistant.\n\nEarlier conversation:\n{context}\n\nLatest user message:\n{input}\n\nAssistant reply to grade:\n{output}\n\nWhat a good reply does:\n{expected_behavior}\n\nCriteria:\n{criteria}\n\nDoes the reply do what a good reply does and meet the criteria? Answer with JSON only:\n{\"pass\": true or false, \"reason\": \"<one short sentence>\"}\n"
+    }
+  },
+  "promptfoo_grader": {
+    "judge": "qwen2.5-7b",
+    "provider": "ollama:chat:qwen2.5:7b-instruct",
+    "verdict": "trustworthy"
+  },
+  "deepeval_grader": {
+    "judge": "qwen2.5-7b",
+    "provider": "ollama:chat:qwen2.5:7b-instruct",
+    "verdict": "trustworthy"
+  },
+  "notes": [
+    "Inspect AI: task.py grades with Inspect's default model_graded_qa scorer, not a judge checked here"
+  ]
+}

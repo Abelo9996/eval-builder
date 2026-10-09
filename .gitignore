@@ -9,9 +9,11 @@ build/
 *.egg-info/
 .DS_Store
 evalset/
+!examples/sample-labeling/evalset/
 .deepeval/
 # Example inputs that prepare.py downloads or derives (reproducible from the pinned dataset)
 examples/mt-bench/data/
 # Large or derived files inside example workspaces
 examples/mt-bench/*/judge_requests.jsonl
 examples/mt-bench/*/traces.jsonl
+examples/sample-labeling/evalset/judge_requests.jsonl

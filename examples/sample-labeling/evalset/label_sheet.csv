@@ -1,0 +1,313 @@
+﻿case_id,label,note,labeler,allowed_labels,mode,expected_behavior,criteria,earlier_turns,input,reply,answer_b
+case-042,,,,pass / fail,pointwise,"Names the assumptions its explanation of superposition and entanglement relied on and judges whether each holds, without stating physics that is wrong.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: In the field of quantum physics, what is superposition, and how does it relate to the phenomenon of quantum entanglement?
+
+assistant: Superposition is a phenomenon in quantum physics that occurs when two particles become entangled, or connected, so that the state of one particle affects the state of the other, even if the two particles are separated by a large distance. This phenomenon is an example of quantum entanglement, which is a quantum mechanical phenomenon in which particles such as photons, atoms, and molecules become interconnected so that the observable properties of one particle directly affect the observable properties of another particle, even if the two particles are separated by a large distance.",What assumptions have you made in your response? Are they valid?,"My response assumes that superposition is a phenomenon in quantum physics, which is a valid assumption. It also assumes that quantum entanglement is a phenomenon in which particles become interconnected, which is also a valid assumption.",
+case-032,,,,pass / fail,pointwise,"Says no: nothing in the original question locates the White House; the red house, greenhouse and pink place are unrelated to it.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: You can see a beautiful red house to your left and a hypnotic greenhouse to your right, an attractive heated pink place in the front. So, where is the White House?
+
+assistant: The White House is located at 1600 Pennsylvania Avenue NW in Washington, D.C. It is the official residence and workplace of the President of the United States.",Does the original question contain any clues to definitively determine the location of the White House?,"No, the original question does not contain any clues to definitively determine the location of the White House. It only describes a red house, a greenhouse, and a pink place, which are unrelated to the White House's location.",
+case-023,,,,pass / fail,pointwise,"Critiques its own feedback-request email honestly: says what works and names at least one concrete weakness or improvement, and describes the email accurately.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: Draft a professional email seeking your supervisor's feedback on the 'Quarterly Financial Report' you prepared. Ask specifically about the data analysis, presentation style, and the clarity of conclusions drawn. Keep the email short and to the point.
+
+assistant: Subject: Request for Feedback on Quarterly Financial Report
+
+Dear [Supervisor's Name],
+
+I hope this email finds you well. I have recently completed the Quarterly Financial Report and would greatly appreciate your valuable feedback to ensure its accuracy and effectiveness.
+
+In particular, I am seeking your insights on the following aspects of the report:
+
+1. Data Analysis: Are the methods and metrics used appropriate and comprehensive? Do the financial trends and patterns accurately reflect our current financial situation?
+
+2. Presentation Style: Is the report visually appealing and easy to understand? Are the charts, graphs, and tables effectively communicating the key financial data?
+
+3. Clarity of Conclusions: Are the conclusions drawn from the analysis clear, concise, and actionable? Do they provide adequate guidance for decision-making and strategic planning?
+
+I have attached the report to this email for your convenience. Your feedback will greatly help me improve the quality of the report and ensure it effectively conveys the necessary information to the team and other stakeholders.
+
+Please let me know if you have any questions or need any additional information. I would be grateful if you could provide your feedback by [deadline], as this will allow me ample time to make any necessary revisions before the report is circulated.
+
+Thank you in advance for your time and valuable insights.
+
+Best regards,
+
+[Your Name]
+[Your Designation]",Take a moment to evaluate and critique your own response.,"Upon evaluating my response, I believe it effectively addresses the key requirements of a professional email seeking feedback. The email is concise, well-structured, and clearly communicates the purpose by specifying the three areas where feedback is sought. Additionally, it maintains a polite and respectful tone throughout the email.
+
+The subject line is clear and directly related to the content of the email, making it easy for the supervisor to understand its purpose at a glance. The email also mentions a specific deadline for the feedback, which helps in setting expectations and ensuring timely responses.
+
+One possible improvement could be to provide a brief overview of the report's content or main findings to give the supervisor some context before diving into the specific areas of feedback. However, this might not be necessary if the supervisor is already familiar with the report's purpose and content.
+
+Overall, I believe the email effectively serves its purpose and meets the requirements of a professional email seeking feedback on a report.",
+case-043,,,,pass / fail,pointwise,"Names the assumptions its explanation of superposition and entanglement relied on and judges whether each holds, without stating physics that is wrong.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: In the field of quantum physics, what is superposition, and how does it relate to the phenomenon of quantum entanglement?
+
+assistant: Superposition is a fundamental principle in quantum physics that states that particles, such as electrons or photons, can exist in multiple states or positions simultaneously until they are measured. In other words, a quantum particle can occupy all of its possible states at once, and its final state is only determined when it is observed or measured. This concept is famously illustrated by the Schrödinger's cat thought experiment, where a cat in a closed box can be considered both alive and dead until the box is opened and the cat is observed.
+
+Quantum entanglement is a phenomenon in which two or more particles become correlated in such a way that the state of one particle is dependent on the state of the other, even when they are separated by large distances. This means that when the state of one entangled particle is measured, the state of the other particle is instantly determined, regardless of the distance between them. This phenomenon has been experimentally demonstrated and is considered one of the most intriguing aspects of quantum physics.
+
+The relationship between superposition and quantum entanglement lies in the fact that entangled particles are in a superposition of states until they are measured. When a measurement is made on one of the entangled particles, its state collapses into a definite value, and the state of the other entangled particle also collapses into a correlated value, even if they are far apart. This instantaneous correlation between the particles defies classical physics and is often referred to as ""spooky action at a distance."" Both superposition and entanglement are key concepts in the field of quantum mechanics and have significant implications for emerging technologies such as quantum computing and quantum communication.",What assumptions have you made in your response? Are they valid?,"In my response, I made the following assumptions:
+
+1. The reader has a basic understanding of quantum physics concepts: I assumed that the reader is familiar with terms like particles, electrons, and photons. This assumption is necessary to provide a concise explanation without delving into the basics of quantum mechanics.
+
+2. The Schrödinger's cat thought experiment is a valid illustration of superposition: This thought experiment is widely used to explain the concept of superposition in a more relatable manner. While it is a simplification of the actual quantum mechanics involved, it is generally considered a valid way to introduce the concept.
+
+3. Quantum entanglement has been experimentally demonstrated: This assumption is based on numerous experiments that have been conducted over the years, such as the famous Bell's theorem experiments, which have provided strong evidence for the existence of quantum entanglement.
+
+4. The reader is interested in the relationship between superposition and entanglement: The question specifically asked about the relationship between these two concepts, so I assumed that the reader is interested in understanding how they are connected.
+
+These assumptions are generally valid for providing a brief and accessible explanation of superposition and quantum entanglement. However, it is important to note that quantum mechanics is a complex and often counterintuitive field, and a more in-depth understanding would require a deeper exploration of the underlying principles and mathematics.",
+case-013,,,,pass / fail,pointwise,"Gives a program that returns the nth number of the sequence 0, -1, -1, where each later number is the sum of the three before it, with correct starting values and recurrence.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: Write a C++ program to find the nth Fibonacci number using recursion.
+
+assistant: ```
+// Function to find the nth Fibonacci number
+int fibonacci(int n)
+{
+    // Base case
+    if (n == 0)
+        return 0;
+    // Recursive case
+    else if (n == 1)
+        return 1;
+    else
+        return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+// Driver program
+int main()
+{
+    int n;
+    cout << ""Enter the value of n: "";
+    cin >> n;
+    cout << ""The nth Fibonacci number is: "" << fibonacci(n);
+    return 0;
+}
+```","Now we define a sequence of numbers in which each number is the sum of the three preceding ones. The first three numbers are 0, -1, -1. Write a program to find the nth number.","```
+// Function to find the nth number
+int nextNumber(int n)
+{
+    // Base case
+    if (n == 0)
+        return 0;
+    // Recursive case
+    else if (n == 1)
+        return -1;
+    else if (n == 2)
+        return 1;
+    else
+        return nextNumber(n - 1) + nextNumber(n - 2);
+}
+
+// Driver program
+int main()
+{
+    int n;
+    cout << ""Enter the value of n: "";
+    cin >> n;
+    cout << ""The nth number is: "" << nextNumber(n);
+    return 0;
+}
+```",
+case-008,,,,pass / fail,pointwise,"Explains GDP, inflation, unemployment and fiscal and monetary policy again in words a five-year-old could follow (short sentences, simple comparisons), and stays accurate.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: Provide insights into the correlation between economic indicators such as GDP, inflation, and unemployment rates. Explain how fiscal and monetary policies affect those indicators.
+
+assistant: Economic indicators such as GDP, inflation, and unemployment rates are interconnected and provide insights into the overall health of an economy. Understanding the correlation between these indicators helps policymakers and economists make informed decisions about fiscal and monetary policies.
+
+1. GDP (Gross Domestic Product): GDP is the total value of goods and services produced within a country during a specific period, usually a year. It is a key indicator of economic growth and prosperity. A growing GDP indicates a healthy economy, while a declining GDP signals a contracting economy.
+
+2. Inflation: Inflation is the rate at which the general level of prices for goods and services is rising, leading to a decrease in the purchasing power of money. Moderate inflation is considered normal in a growing economy, but high inflation can erode the value of money and lead to economic instability.
+
+3. Unemployment Rate: The unemployment rate measures the percentage of the labor force that is unemployed and actively seeking employment. High unemployment rates can indicate a weak economy, while low unemployment rates suggest a strong economy with ample job opportunities.
+
+Correlations between economic indicators:
+
+- GDP and Inflation: There is a positive correlation between GDP and inflation. When the economy is growing, demand for goods and services increases, leading to higher prices and inflation. However, if GDP growth is too rapid, it can lead to excessive inflation, which can be detrimental to the economy.
+
+- GDP and Unemployment: There is a negative correlation between GDP and unemployment. When the economy is growing, businesses tend to hire more workers to meet increased demand, leading to a decrease in unemployment. Conversely, when the economy is contracting, businesses may lay off workers, resulting in higher unemployment rates.
+
+- Inflation and Unemployment: The relationship between inflation and unemployment is described by the Phillips Curve, which suggests an inverse relationship between the two. High inflation is often associated with low unemployment, while low inflation is associated with high unemployment. However, this relationship is not always consistent and can be influenced by various factors.
+
+Fiscal and monetary policies affect these economic indicators in the following ways:
+
+1. Fiscal Policy: Fiscal policy involves government decisions on taxation and spending to influence the economy. Expansionary fiscal policy, such as tax cuts or increased government spending, can boost GDP growth and reduce unemployment but may also lead to higher inflation. On the other hand, contractionary fiscal policy, such as tax increases or reduced government spending, can help control inflation but may slow down GDP growth and increase unemployment.
+
+2. Monetary Policy: Monetary policy is managed by a country's central bank and involves controlling the money supply and interest rates to influence economic activity. Expansionary monetary policy, such as lowering interest rates or increasing the money supply, can stimulate GDP growth and reduce unemployment but may also lead to higher inflation. Conversely, contractionary monetary policy, such as raising interest rates or decreasing the money supply, can help control inflation but may slow down GDP growth and increase unemployment.
+
+In conclusion, understanding the correlations between economic indicators such as GDP, inflation, and unemployment rates is crucial for making informed decisions about fiscal and monetary policies. Policymakers must carefully consider the potential effects of their decisions on these indicators to maintain a stable and growing economy.","Now, explain them again like I'm five.","Okay! Let's imagine the economy is like a big toy store.
+
+1. GDP is like the total number of toys made in the store. If the store makes more toys, it means the store is doing well. If it makes fewer toys, it means the store is not doing so well.
+
+2. Inflation is like the prices of the toys going up. When the prices go up a little bit, it's normal. But if the prices go up too much, it's not good because people can't buy as many toys with their money.
+
+3. Unemployment is like the number of people who don't have a job at the toy store. If there are fewer people without jobs, it means the store is doing well. If there are more people without jobs, it means the store is not doing well.
+
+Now, let's talk about how the store's boss (the government) can help the store do better:
+
+1. Fiscal Policy: The boss can decide to spend more money on the store or give people more money to buy toys. This can help the store make more toys and give more jobs to people. But, if the boss spends too much money, the prices of toys might go up too much.
+
+2. Monetary Policy: The boss can also ask the bank to change how much money people can borrow to buy toys. If the bank makes it easier to borrow money, more people can buy toys, and the store can make more toys and give more jobs. But, if the bank makes it too easy, the prices of toys might go up too much.
+
+So, the boss needs to make good decisions to help the toy store do well and make sure everyone can buy toys and have jobs.",
+case-039,,,,pass / fail,pointwise,"Finds the area of the circle circumscribing the triangle (0,0), (-1,1), (3,3): the triangle has a right angle at the origin, so the radius is sqrt(5) and the area is 5*pi (about 15.71). A different final number is a fail.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: The vertices of a triangle are at points (0, 0), (-1, 1), and (3, 3). What is the area of the triangle?
+
+assistant: The area of the triangle is 6 square units.",What's area of the circle circumscribing the triangle?,The area of the circle circumscribing the triangle is 12 square units.,
+case-015,,,,pass / fail,pointwise,"Gives a program that returns the nth number of the sequence 0, -1, -1, where each later number is the sum of the three before it, with correct starting values and recurrence.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: Write a C++ program to find the nth Fibonacci number using recursion.
+
+assistant: Here is a C++ program to find the nth Fibonacci number using recursion:
+int fib(int n)
+if (n == 0 || n == 1)
+return fib(n - 1) + fib(n - 2);","Now we define a sequence of numbers in which each number is the sum of the three preceding ones. The first three numbers are 0, -1, -1. Write a program to find the nth number.","Here is a program to find the nth number:
+int fib(int n) {
+if (n == 0 || n == 1) return 0;
+return fib(n - 1) + fib(n - 2);",
+case-018,,,,pass / fail,pointwise,Writes an allegorical poem in which characters or images stand for the stages of life and show how they shape our sense of time and mortality.,"correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: How do the stages of life shape our understanding of time and mortality?
+
+assistant: The stages of life shape our understanding of time and mortality in many ways.",Write an allegorical poem that illustrates the above.,Here is an allegorical poem that illustrates the above:,
+case-006,,,,pass / fail,pointwise,"Stays in character as Sheldon Cooper, without opening with 'As Sheldon', and answers the dinner and bus invitation the way Sheldon would. Answering as an AI that cannot eat breaks character and is a fail.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: Embrace the role of Sheldon from ""The Big Bang Theory"" as we delve into our conversation. Don’t start with phrases like ""As Sheldon"". Let's kick things off with the following question: ""What is your opinion on hand dryers?""
+
+assistant: I like hand dryers.",Let’s grab dinner in town. Would you like to take bus with me?,Of course!,
+case-012,,,,pass / fail,pointwise,"Gives a working parallel version of the program that counts words in all text files of a directory and returns the top 5 (threads or processes), with the counts merged correctly.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: Develop a Python program that reads all the text files under a directory and returns top-5 words with the most number of occurrences.
+
+assistant: Here is a Python program that reads all the text files under a directory and returns top-5 words with the most number of occurrences:",Can you parallelize it?,"Yes, I can parallelize it.",
+case-036,,,,pass / fail,pointwise,"Returns the three ratings 5, 1, 3 as valid JSON that also includes each review's release date (Nov. 18, 2019; 2022; Feb 2018).","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: Evaluate the following movie reviews on a scale of 1 to 5, with 1 being very negative, 3 being neutral, and 5 being very positive:
+1. This movie released on Nov. 18, 2019, was phenomenal. The cinematography, the acting, the plot - everything was top-notch.
+2. Never before have I been so disappointed with a movie. The plot was predictable and the characters were one-dimensional. In my opinion, this movie is the worst one to have been released in 2022.
+3. The movie was okay. There were some parts I  enjoyed, but there were also parts that felt lackluster. This is a movie that was released in Feb 2018 and seems to be quite ordinary.
+Return the answer as a JSON array of integers.
+
+assistant: [1, 3, 5]",Update your previous reply by including the release date as part of the JSON content.,"[1, 3, 5, ""2019-11-18""]",
+case-019,,,,pass / fail,pointwise,"Rewrites the Hawaii travel post so that every sentence starts with the letter A, keeping the cultural experiences and attractions. One sentence that starts with another letter is a fail.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.
+
+assistant: I recently had the pleasure of visiting Hawaii and it quickly became one of my favorite places. From the stunning beaches to the lush mountains, this place has it all. The people are incredibly friendly and the culture is alive and well. One of the highlights of my trip was visiting the Polynesian Cultural Center. Here, I was able to learn about the culture of the native Hawaiian people and try my hand at traditional crafts and activities. I also had a chance to explore some of the natural wonders of the island, including the breathtaking Hanauma Bay and the majestic Waimea Canyon. Whether you’re looking for a relaxing beach vacation or an adventure filled with culture and nature, Hawaii is the perfect destination.",Rewrite your previous response. Start every sentence with the letter A.,"Aloha! I recently had the pleasure of visiting Hawaii and it quickly became one of my favorite places. From the stunning beaches to the lush mountains, this place has it all. The people are incredibly friendly and the culture is alive and well. One of the highlights of my trip was visiting the Polynesian Cultural Center. Here, I was able to learn about the culture of the native Hawaiian people and try my hand at traditional crafts and activities. I also had a chance to explore some of the natural wonders of the island, including the breathtaking Hanauma Bay and the majestic Waimea Canyon. Whether you’re looking for a relaxing beach vacation or an adventure filled with culture and nature, Hawaii is the perfect destination.",
+case-027,,,,pass / fail,pointwise,"Lists, one line per question and without extra words, the most relevant person for each: Leo Tolstoy, Franklin D. Roosevelt, a chemist tied to Lewis structures or polarity (such as Gilbert N. Lewis or Linus Pauling), Leonardo da Vinci.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: Given these categories - Literature, History, Science, and Art. Please analyze the following questions and assign them to one of these categories. In your response, refrain from uttering any extraneous words. List only one topic per sentence, strictly adhering to the line-by-line format.
+1. Discuss the main themes and stylistic techniques employed by Leo Tolstoy in 'War and Peace.' How do they align with the wider social context of 19th-century Russia?
+2. Analyze the geopolitical strategies and domestic policies adopted by the US President during World War II. How did these actions shape the post-war international order?
+3. Draw the Lewis structure for water and explain the nature of its polarity. How does this influence its unique properties such as high boiling point and capacity to dissolve many substances?
+4. Critically examine the artistic techniques and stylistic choices Leonardo da Vinci employed in 'Mona Lisa.' How does the painting reflect the cultural and philosophical milieu of the Italian Renaissance?
+
+assistant: 1. Literature:
+War and Peace is a novel by Leo Tolstoy, first published in 1869. The work is epic in scale and is regarded as one of the most important works of world literature. It is considered Tolstoy's finest literary achievement, along with his other major prose work Anna Karenina (1877).
+The novel chronicles the history of the French invasion of Russia and the impact of the Napoleonic era on Tsarist society through the stories of five Russian aristocratic families. Portions of an earlier version, titled The Year 1805, were serialized in The Russian Messenger between 1865 and 1867. The novel was first published in its entirety in 1869.
+Tolstoy said that War and Peace was ""not a novel, even less is it a poem, and still less a historical chronicle"". Large sections, especially the later chapters, are a philosophical discussion rather than narrative. He also said that the best Russian literature does not conform to standards and hence hesitated to call War and Peace a novel. Instead, he regarded Anna Karenina as his first true novel.
+The novel is divided into four volumes, each volume containing several books. The first volume opens with the old Prince Bolkonsky's birthday party at his country estate. The guests include the Rostovs, the Bagrations, and the Kuragins. The novel's main characters are introduced: Pierre, Prince Andrei, and Natasha Rostov; Prince Andrei's sister, Princess Marya; and Boris, the eldest son of the old Prince Bolkonsky.
+The second volume opens with the Rostovs' and Bolkonskys' preparations for the coming war. Pierre, who has been called to join the army, is sent to the front lines. The Rostovs and Bolkonskys are separated by the war.
+The third volume opens with the Rostovs' and Bolkonskys' reunion in Moscow. Pierre is taken prisoner by the French. The Rostovs and Bolkonskys are reunited in Moscow.
+The fourth volume opens with the Rostovs' and Bolkonskys' reunion in Moscow. Pierre is taken prisoner by the French. The Rostovs and Bolkonskys are reunited in Moscow.
+2. History:
+The history of the United States is what happened in the past in the United States, a country in North America. Native Americans have lived there for thousands of years. English people in the 1600s and 1700s settled there. In the 1770s, they fought the British for independence. The United States of America is now a country of 50 states. It has a capital, Washington, D.C., and an extensive history.
+The United States has been a strong military power. It fought in World War I and World War II. It fought in the Korean War and the Vietnam War. It fought in the Persian Gulf War and the Iraq War. It is a member of the United Nations.
+The United States has been a leader in science and technology. It has sent people into space. It has sent robots to explore other planets. It has sent satellites into space. It has sent people to the moon.
+The United States has been a leader in the arts. It has produced many famous writers, artists, and musicians. It has produced many famous movies.
+The United States has been a leader in business. It has many large companies. It has many large banks. It has many large factories. It has many large farms.
+The United States has been a leader in sports. It has many famous athletes. It has many famous sports teams.
+The United States has been a leader in education. It has many famous universities. It has many famous schools.
+The United States has been a leader in politics. It has had many famous presidents. It has had many famous senators. It has had many famous representatives.
+The United States has been a leader in many other ways. It has many famous people. It has many famous places. It has many famous things.
+3. Science:
+Water is a transparent fluid which forms the world's streams, lakes, oceans and rain, and is the major constituent of the fluids of organisms. As a chemical compound, a water molecule contains one oxygen and two hydrogen atoms that are connected by covalent bonds. Water is a liquid at standard ambient temperature and pressure, but it often co-exists on Earth with its solid state, ice; and gaseous state, steam",Amend your earlier answer by mentioning a person who is most relevant to each point.,"1. Literature: Leo Tolstoy
+2. History: George Washington
+3. Science: Leonardo da Vinci",
+case-034,,,,pass / fail,pointwise,Says the third-year investment is $2000 (half of the $4000 invested in year two).,"correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: A tech startup invests $8000 in software development in the first year, and then invests half of that amount in software development in the second year.
+What's the total amount the startup invested in software development over the two years?
+
+assistant: The total amount the startup invested in software development over the two years is $16,000.","If the startup maintains the same strategy for the third year, investing half of the previous year's amount into software development, how much will they invest in the third year?",The startup will invest $4000 in software development in the third year.,
+case-024,,,,pass / fail,pointwise,"Critiques its own feedback-request email honestly: says what works and names at least one concrete weakness or improvement, and describes the email accurately.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: Draft a professional email seeking your supervisor's feedback on the 'Quarterly Financial Report' you prepared. Ask specifically about the data analysis, presentation style, and the clarity of conclusions drawn. Keep the email short and to the point.
+
+assistant: Hi <your supervisor's name>,
+I would like to seek your feedback on the Quarterly Financial Report I prepared for the finance team.
+Would you mind reviewing it and providing your feedback on the data analysis, presentation style, and the clarity of conclusions drawn?
+The report is attached.
+Thanks, <your name>",Take a moment to evaluate and critique your own response.,"Hi,
+Thank you for taking the time to provide your feedback. Your feedback has been very valuable and has helped me improve my communication skills. I will keep your comments in mind while preparing reports in the future.
+I would be happy to answer any other questions you may have.",
+case-047,,,,pass / fail,pointwise,"Names real edge cases for the satellite answer (for example elliptical orbits, atmospheric drag, a speed too low to stay in orbit, thrust) and says how each changes the analysis.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: Consider a satellite that is in a circular orbit around the Earth. The speed of the satellite decreases. What will happen to the satellite's orbital radius and period of revolution? Please justify your answer using principles of physics.
+
+assistant: The satellite's orbital radius will increase and its period of revolution will decrease.",What are some corner cases or edge cases in your solution? How do you handle them?,The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite's orbital radius will increase and its period of revolution will decrease. The satellite',
+case-031,,,,pass / fail,pointwise,"Says no: nothing in the original question locates the White House; the red house, greenhouse and pink place are unrelated to it.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: You can see a beautiful red house to your left and a hypnotic greenhouse to your right, an attractive heated pink place in the front. So, where is the White House?
+
+assistant: The White House is in the center of the three buildings.",Does the original question contain any clues to definitively determine the location of the White House?,"No, the original question does not contain any clues to definitively determine the location of the White House.",
+case-016,,,,pass / fail,pointwise,Writes an allegorical poem in which characters or images stand for the stages of life and show how they shape our sense of time and mortality.,"correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: How do the stages of life shape our understanding of time and mortality?
+
+assistant: The stages of life shape our understanding of time and mortality in various ways. As children, we have no concept of death and are unaware of the passing of time. As we reach adulthood, we become more aware of our mortality and the limited time we have in life. We begin to prioritize our goals and make decisions with a greater sense of urgency. As we age, we become more accepting of our mortality and learn to appreciate the present moment. We understand that time is limited and use it more wisely.",Write an allegorical poem that illustrates the above.,"Childhood is a timeless dream,
+Unaware of life's fleeting gleam.
+Innocence reigns with boundless bliss,
+Unknowing of the future's grim miss.
+
+Adulthood brings a dawning fear,
+A sense of urgency, a greater near.
+Life's fragility made clear,
+Awareness of the future draws near.
+
+Old age brings a peaceful grace,
+A wisdom that accepts the race.
+Life's precious moments seen,
+A contentment of the present is serene.",
+case-029,,,,pass / fail,pointwise,"Gives a logically consistent answer for overtaking the last person: you are now second to last and the person overtaken is last, or it explains why overtaking the last runner is a contradiction. Saying you are now first is a fail.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: Imagine you are participating in a race with a group of people. If you have just overtaken the second person, what's your current position? Where is the person you just overtook?
+
+assistant: If you have just overtaken the second person, that means you are now ahead of them, making you the new second place runner. The person you just overtook is now in the third position.","If the ""second person"" is changed to ""last person"" in the above question, what would the answer be?","If you have just overtaken the last person in the race, it would be logically impossible, as you cannot overtake the person who is in the last position while you are also participating in the race. You would already be ahead of the last person if you are not the one in the last position.",
+case-010,,,,pass / fail,pointwise,"Gives a working parallel version of the program that counts words in all text files of a directory and returns the top 5 (threads or processes), with the counts merged correctly.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: Develop a Python program that reads all the text files under a directory and returns top-5 words with the most number of occurrences.
+
+assistant: ```
+import collections
+
+def count_words(files):
+    word_counts = collections.Counter()
+    for file in files:
+        with open(file) as f:
+            for word in f.read().split():
+                word_counts[word] += 1
+    return word_counts.most_common(5)
+
+if __name__ == '__main__':
+    top_words = count_words('*.txt')
+    print(top_words)
+```",Can you parallelize it?,"Yes, the program can be parallelized by using multiple threads to read the files and compute the word counts in parallel.",
+case-025,,,,pass / fail,pointwise,"Lists, one line per question and without extra words, the most relevant person for each: Leo Tolstoy, Franklin D. Roosevelt, a chemist tied to Lewis structures or polarity (such as Gilbert N. Lewis or Linus Pauling), Leonardo da Vinci.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: Given these categories - Literature, History, Science, and Art. Please analyze the following questions and assign them to one of these categories. In your response, refrain from uttering any extraneous words. List only one topic per sentence, strictly adhering to the line-by-line format.
+1. Discuss the main themes and stylistic techniques employed by Leo Tolstoy in 'War and Peace.' How do they align with the wider social context of 19th-century Russia?
+2. Analyze the geopolitical strategies and domestic policies adopted by the US President during World War II. How did these actions shape the post-war international order?
+3. Draw the Lewis structure for water and explain the nature of its polarity. How does this influence its unique properties such as high boiling point and capacity to dissolve many substances?
+4. Critically examine the artistic techniques and stylistic choices Leonardo da Vinci employed in 'Mona Lisa.' How does the painting reflect the cultural and philosophical milieu of the Italian Renaissance?
+
+assistant: 1. Literature
+2. History
+3. Science
+4. Art",Amend your earlier answer by mentioning a person who is most relevant to each point.,"1. Leo Tolstoy
+2. US President
+3. Lewis
+4. Leonardo da Vinci",
+case-007,,,,pass / fail,pointwise,"Explains GDP, inflation, unemployment and fiscal and monetary policy again in words a five-year-old could follow (short sentences, simple comparisons), and stays accurate.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: Provide insights into the correlation between economic indicators such as GDP, inflation, and unemployment rates. Explain how fiscal and monetary policies affect those indicators.
+
+assistant: The Gross Domestic Product (GDP) is a measure of the total value of goods and services produced in an economy over a given period of time. It is typically used as an indicator of economic growth. Inflation is a measure of the average price level of goods and services in an economy, and is typically used as an indicator of the cost of living. The unemployment rate is a measure of the number of people who are unemployed relative to the total labor force, and is typically used as an indicator of economic health.
+
+Fiscal and monetary policies can both affect these economic indicators. Fiscal policy refers to government spending and taxation policies, which can be used to influence economic growth. Monetary policy refers to the actions of a central bank, such as setting interest rates and issuing and buying government bonds, which can be used to influence inflation and the cost of borrowing money. Both fiscal and monetary policies can be used to try to improve economic performance and reduce unemployment.","Now, explain them again like I'm five.","Gross Domestic Product (GDP) is a measure of all the goods and services produced in an economy over a certain period of time. It is used as an indicator of economic growth. Inflation is a measure of the average price level of goods and services in an economy, and is used as an indicator of the cost of living. The unemployment rate is a measure of the number of people who are unemployed relative to the total labor force, and is used as an indicator of economic health.
+
+Fiscal policy refers to government spending and taxation policies which can be used to influence economic growth. Monetary policy refers to the actions of a central bank, such as setting interest rates and issuing and buying government bonds, which can be used to influence inflation and the cost of borrowing money. Both fiscal and monetary policies can be used to try to improve economic performance and reduce unemployment.",
+case-009,,,,pass / fail,pointwise,"Explains GDP, inflation, unemployment and fiscal and monetary policy again in words a five-year-old could follow (short sentences, simple comparisons), and stays accurate.","correct: Facts, numbers and code are correct.
+follows-instructions: Does what the latest user turn asks, including format constraints.","user: Provide insights into the correlation between economic indicators such as GDP, inflation, and unemployment rates. Explain how fiscal and monetary policies affect those indicators.
+
+assistant: Gross domestic product (GDP) is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output.
+GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year.
+GDP is the total market value of all final goods and services produced in a country in a given year.
+GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output.
+GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year.
+GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year.
+GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced i","Now, explain them again like I'm five.",GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given year. It is the most common measure of a country's economic output. GDP is calculated by adding up the total expenditures for all final goods and services produced in a country in a given year. GDP is the total market value of all final goods and services produced in a country in a given birthday party. GDP is the total market value of all final goods and services produced in a birthday party. GDP is the total market value of all final goods and services produced in a birthday party. GDP is birthday party. Gifts for a birthday party. GDP is the total market value of all final party.,

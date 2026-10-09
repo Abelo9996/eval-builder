@@ -1,0 +1,100 @@
+# eval-builder rubric. Define the criteria your cases reference and the judges
+# you plan to check. A judge prompt may use {input}, {context} (earlier turns), {output},
+# {answer_a}, {answer_b}, {expected_behavior} and {criteria}; judge-plan renders it per
+# request.
+version: 1
+criteria:
+- id: correct
+  description: Facts, numbers and code are correct.
+  scale: pass_fail
+- id: follows-instructions
+  description: Does what the latest user turn asks, including format constraints.
+  scale: pass_fail
+judges:
+- id: qwen2.5-7b
+  mode: pointwise
+  criteria:
+  - correct
+  - follows-instructions
+  labels:
+  - pass
+  - fail
+  prompt: |
+    You are grading one reply from an AI assistant.
+
+    Earlier conversation:
+    {context}
+
+    Latest user message:
+    {input}
+
+    Assistant reply to grade:
+    {output}
+
+    What a good reply does:
+    {expected_behavior}
+
+    Criteria:
+    {criteria}
+
+    Does the reply do what a good reply does and meet the criteria? Answer with JSON only:
+    {"pass": true or false, "reason": "<one short sentence>"}
+  provider: ollama:chat:qwen2.5:7b-instruct
+- id: qwen2.5-7b-temp0
+  mode: pointwise
+  criteria:
+  - correct
+  - follows-instructions
+  labels:
+  - pass
+  - fail
+  prompt: |
+    You are grading one reply from an AI assistant.
+
+    Earlier conversation:
+    {context}
+
+    Latest user message:
+    {input}
+
+    Assistant reply to grade:
+    {output}
+
+    What a good reply does:
+    {expected_behavior}
+
+    Criteria:
+    {criteria}
+
+    Does the reply do what a good reply does and meet the criteria? Answer with JSON only:
+    {"pass": true or false, "reason": "<one short sentence>"}
+  provider: ollama:chat:qwen2.5:7b-instruct
+- id: llama3.2-3b
+  mode: pointwise
+  criteria:
+  - correct
+  - follows-instructions
+  labels:
+  - pass
+  - fail
+  prompt: |
+    You are grading one reply from an AI assistant.
+
+    Earlier conversation:
+    {context}
+
+    Latest user message:
+    {input}
+
+    Assistant reply to grade:
+    {output}
+
+    What a good reply does:
+    {expected_behavior}
+
+    Criteria:
+    {criteria}
+
+    Does the reply do what a good reply does and meet the criteria? Answer with JSON only:
+    {"pass": true or false, "reason": "<one short sentence>"}
+  provider: ollama:chat:llama3.2:3b

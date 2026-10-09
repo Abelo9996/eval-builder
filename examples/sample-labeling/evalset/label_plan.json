@@ -1,0 +1,673 @@
+{
+  "sheet_id": "24483021cc1a",
+  "created": "2026-10-09T08:18:45+00:00",
+  "label_sheet_html": "examples/sample-labeling/evalset/label_sheet.html",
+  "label_sheet_csv": "examples/sample-labeling/evalset/label_sheet.csv",
+  "params": {
+    "n": 24,
+    "seed": 0,
+    "include_labeled": false,
+    "uncertain_share": 0.5
+  },
+  "ready_cases": 47,
+  "already_labeled": 0,
+  "candidates": 47,
+  "judges": [
+    "llama3.2-3b",
+    "qwen2.5-7b",
+    "qwen2.5-7b-temp0"
+  ],
+  "strata": {
+    "judges say fail": {
+      "candidates": 24,
+      "picked": 12
+    },
+    "judges say pass": {
+      "candidates": 23,
+      "picked": 12
+    }
+  },
+  "picked": 24,
+  "uncertain_picked": 15,
+  "picks": [
+    {
+      "case_id": "case-042",
+      "stratum": "judges say pass",
+      "reasons": [
+        "outcome stratum 'judges say pass' (23 candidates, 12 picked)",
+        "judges disagree: llama3.2-3b says fail, qwen2.5-7b says pass, qwen2.5-7b-temp0 says pass",
+        "llama3.2-3b changed its verdict across repeats (fail 3, pass 2)",
+        "irrelevant padding changed qwen2.5-7b's verdict",
+        "irrelevant padding changed qwen2.5-7b-temp0's verdict"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "fail",
+          "qwen2.5-7b": "pass",
+          "qwen2.5-7b-temp0": "pass"
+        },
+        "consensus": "pass",
+        "disagree": true,
+        "flipped": [
+          "llama3.2-3b"
+        ],
+        "pad_moved": [
+          "qwen2.5-7b",
+          "qwen2.5-7b-temp0"
+        ],
+        "uncertainty": 2.6667,
+        "reasons": [
+          "judges disagree: llama3.2-3b says fail, qwen2.5-7b says pass, qwen2.5-7b-temp0 says pass",
+          "llama3.2-3b changed its verdict across repeats (fail 3, pass 2)",
+          "irrelevant padding changed qwen2.5-7b's verdict",
+          "irrelevant padding changed qwen2.5-7b-temp0's verdict"
+        ]
+      }
+    },
+    {
+      "case_id": "case-032",
+      "stratum": "judges say pass",
+      "reasons": [
+        "outcome stratum 'judges say pass' (23 candidates, 12 picked)",
+        "spread across topics (cluster:3)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "pass",
+          "qwen2.5-7b": "pass",
+          "qwen2.5-7b-temp0": "pass"
+        },
+        "consensus": "pass",
+        "disagree": false,
+        "flipped": [],
+        "pad_moved": [],
+        "uncertainty": 0.0,
+        "reasons": []
+      }
+    },
+    {
+      "case_id": "case-023",
+      "stratum": "judges say pass",
+      "reasons": [
+        "outcome stratum 'judges say pass' (23 candidates, 12 picked)",
+        "spread across topics (cluster:2)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "pass",
+          "qwen2.5-7b": "pass",
+          "qwen2.5-7b-temp0": "pass"
+        },
+        "consensus": "pass",
+        "disagree": false,
+        "flipped": [],
+        "pad_moved": [],
+        "uncertainty": 0.0,
+        "reasons": []
+      }
+    },
+    {
+      "case_id": "case-043",
+      "stratum": "judges say pass",
+      "reasons": [
+        "outcome stratum 'judges say pass' (23 candidates, 12 picked)",
+        "spread across topics (cluster:6)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "pass",
+          "qwen2.5-7b": "pass",
+          "qwen2.5-7b-temp0": "pass"
+        },
+        "consensus": "pass",
+        "disagree": false,
+        "flipped": [],
+        "pad_moved": [],
+        "uncertainty": 0.0,
+        "reasons": []
+      }
+    },
+    {
+      "case_id": "case-013",
+      "stratum": "judges say fail",
+      "reasons": [
+        "outcome stratum 'judges say fail' (24 candidates, 12 picked)",
+        "judges disagree: llama3.2-3b says pass, qwen2.5-7b says fail, qwen2.5-7b-temp0 says fail",
+        "llama3.2-3b changed its verdict across repeats (pass 3, fail 2)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "pass",
+          "qwen2.5-7b": "fail",
+          "qwen2.5-7b-temp0": "fail"
+        },
+        "consensus": "fail",
+        "disagree": true,
+        "flipped": [
+          "llama3.2-3b"
+        ],
+        "pad_moved": [],
+        "uncertainty": 2.3333,
+        "reasons": [
+          "judges disagree: llama3.2-3b says pass, qwen2.5-7b says fail, qwen2.5-7b-temp0 says fail",
+          "llama3.2-3b changed its verdict across repeats (pass 3, fail 2)"
+        ]
+      }
+    },
+    {
+      "case_id": "case-008",
+      "stratum": "judges say pass",
+      "reasons": [
+        "outcome stratum 'judges say pass' (23 candidates, 12 picked)",
+        "spread across topics (cluster:0)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "pass",
+          "qwen2.5-7b": "pass",
+          "qwen2.5-7b-temp0": "pass"
+        },
+        "consensus": "pass",
+        "disagree": false,
+        "flipped": [],
+        "pad_moved": [],
+        "uncertainty": 0.0,
+        "reasons": []
+      }
+    },
+    {
+      "case_id": "case-039",
+      "stratum": "judges say fail",
+      "reasons": [
+        "outcome stratum 'judges say fail' (24 candidates, 12 picked)",
+        "spread across topics (cluster:5)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "fail",
+          "qwen2.5-7b": "fail",
+          "qwen2.5-7b-temp0": "fail"
+        },
+        "consensus": "fail",
+        "disagree": false,
+        "flipped": [],
+        "pad_moved": [],
+        "uncertainty": 0.0,
+        "reasons": []
+      }
+    },
+    {
+      "case_id": "case-015",
+      "stratum": "judges say fail",
+      "reasons": [
+        "outcome stratum 'judges say fail' (24 candidates, 12 picked)",
+        "spread across topics (cluster:1)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "fail",
+          "qwen2.5-7b": "fail",
+          "qwen2.5-7b-temp0": "fail"
+        },
+        "consensus": "fail",
+        "disagree": false,
+        "flipped": [],
+        "pad_moved": [],
+        "uncertainty": 0.0,
+        "reasons": []
+      }
+    },
+    {
+      "case_id": "case-018",
+      "stratum": "judges say pass",
+      "reasons": [
+        "outcome stratum 'judges say pass' (23 candidates, 12 picked)",
+        "llama3.2-3b changed its verdict across repeats (pass 3, fail 2)",
+        "irrelevant padding changed llama3.2-3b's verdict",
+        "irrelevant padding changed qwen2.5-7b's verdict",
+        "irrelevant padding changed qwen2.5-7b-temp0's verdict"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "pass",
+          "qwen2.5-7b": "pass",
+          "qwen2.5-7b-temp0": "pass"
+        },
+        "consensus": "pass",
+        "disagree": false,
+        "flipped": [
+          "llama3.2-3b"
+        ],
+        "pad_moved": [
+          "llama3.2-3b",
+          "qwen2.5-7b",
+          "qwen2.5-7b-temp0"
+        ],
+        "uncertainty": 0.8333,
+        "reasons": [
+          "llama3.2-3b changed its verdict across repeats (pass 3, fail 2)",
+          "irrelevant padding changed llama3.2-3b's verdict",
+          "irrelevant padding changed qwen2.5-7b's verdict",
+          "irrelevant padding changed qwen2.5-7b-temp0's verdict"
+        ]
+      }
+    },
+    {
+      "case_id": "case-006",
+      "stratum": "judges say fail",
+      "reasons": [
+        "outcome stratum 'judges say fail' (24 candidates, 12 picked)",
+        "spread across topics (cluster:0)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "fail",
+          "qwen2.5-7b": "fail",
+          "qwen2.5-7b-temp0": "fail"
+        },
+        "consensus": "fail",
+        "disagree": false,
+        "flipped": [],
+        "pad_moved": [],
+        "uncertainty": 0.0,
+        "reasons": []
+      }
+    },
+    {
+      "case_id": "case-012",
+      "stratum": "judges say fail",
+      "reasons": [
+        "outcome stratum 'judges say fail' (24 candidates, 12 picked)",
+        "judges disagree: llama3.2-3b says pass, qwen2.5-7b says fail, qwen2.5-7b-temp0 says fail",
+        "llama3.2-3b changed its verdict across repeats (pass 3, fail 2)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "pass",
+          "qwen2.5-7b": "fail",
+          "qwen2.5-7b-temp0": "fail"
+        },
+        "consensus": "fail",
+        "disagree": true,
+        "flipped": [
+          "llama3.2-3b"
+        ],
+        "pad_moved": [],
+        "uncertainty": 2.3333,
+        "reasons": [
+          "judges disagree: llama3.2-3b says pass, qwen2.5-7b says fail, qwen2.5-7b-temp0 says fail",
+          "llama3.2-3b changed its verdict across repeats (pass 3, fail 2)"
+        ]
+      }
+    },
+    {
+      "case_id": "case-036",
+      "stratum": "judges say pass",
+      "reasons": [
+        "outcome stratum 'judges say pass' (23 candidates, 12 picked)",
+        "spread across topics (cluster:4)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "pass",
+          "qwen2.5-7b": "pass",
+          "qwen2.5-7b-temp0": "pass"
+        },
+        "consensus": "pass",
+        "disagree": false,
+        "flipped": [
+          "qwen2.5-7b"
+        ],
+        "pad_moved": [
+          "qwen2.5-7b",
+          "qwen2.5-7b-temp0"
+        ],
+        "uncertainty": 0.6667,
+        "reasons": [
+          "qwen2.5-7b changed its verdict across repeats (pass 3, fail 2)",
+          "irrelevant padding changed qwen2.5-7b's verdict",
+          "irrelevant padding changed qwen2.5-7b-temp0's verdict"
+        ]
+      }
+    },
+    {
+      "case_id": "case-019",
+      "stratum": "judges say pass",
+      "reasons": [
+        "outcome stratum 'judges say pass' (23 candidates, 12 picked)",
+        "judges disagree: llama3.2-3b says fail, qwen2.5-7b says pass, qwen2.5-7b-temp0 says pass",
+        "llama3.2-3b changed its verdict across repeats (fail 3, pass 2)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "fail",
+          "qwen2.5-7b": "pass",
+          "qwen2.5-7b-temp0": "pass"
+        },
+        "consensus": "pass",
+        "disagree": true,
+        "flipped": [
+          "llama3.2-3b"
+        ],
+        "pad_moved": [],
+        "uncertainty": 2.3333,
+        "reasons": [
+          "judges disagree: llama3.2-3b says fail, qwen2.5-7b says pass, qwen2.5-7b-temp0 says pass",
+          "llama3.2-3b changed its verdict across repeats (fail 3, pass 2)"
+        ]
+      }
+    },
+    {
+      "case_id": "case-027",
+      "stratum": "judges say fail",
+      "reasons": [
+        "outcome stratum 'judges say fail' (24 candidates, 12 picked)",
+        "judges disagree: llama3.2-3b says pass, qwen2.5-7b says fail, qwen2.5-7b-temp0 says fail",
+        "llama3.2-3b changed its verdict across repeats (pass 3, fail 2)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "pass",
+          "qwen2.5-7b": "fail",
+          "qwen2.5-7b-temp0": "fail"
+        },
+        "consensus": "fail",
+        "disagree": true,
+        "flipped": [
+          "llama3.2-3b"
+        ],
+        "pad_moved": [],
+        "uncertainty": 2.3333,
+        "reasons": [
+          "judges disagree: llama3.2-3b says pass, qwen2.5-7b says fail, qwen2.5-7b-temp0 says fail",
+          "llama3.2-3b changed its verdict across repeats (pass 3, fail 2)"
+        ]
+      }
+    },
+    {
+      "case_id": "case-034",
+      "stratum": "judges say fail",
+      "reasons": [
+        "outcome stratum 'judges say fail' (24 candidates, 12 picked)",
+        "spread across topics (cluster:3)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "fail",
+          "qwen2.5-7b": "fail",
+          "qwen2.5-7b-temp0": "fail"
+        },
+        "consensus": "fail",
+        "disagree": false,
+        "flipped": [],
+        "pad_moved": [],
+        "uncertainty": 0.0,
+        "reasons": []
+      }
+    },
+    {
+      "case_id": "case-024",
+      "stratum": "judges say fail",
+      "reasons": [
+        "outcome stratum 'judges say fail' (24 candidates, 12 picked)",
+        "spread across topics (cluster:2)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "fail",
+          "qwen2.5-7b": "fail",
+          "qwen2.5-7b-temp0": "fail"
+        },
+        "consensus": "fail",
+        "disagree": false,
+        "flipped": [
+          "llama3.2-3b"
+        ],
+        "pad_moved": [],
+        "uncertainty": 0.3333,
+        "reasons": [
+          "llama3.2-3b changed its verdict across repeats (fail 3, pass 2)"
+        ]
+      }
+    },
+    {
+      "case_id": "case-047",
+      "stratum": "judges say fail",
+      "reasons": [
+        "outcome stratum 'judges say fail' (24 candidates, 12 picked)",
+        "spread across topics (cluster:6)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "fail",
+          "qwen2.5-7b": "fail",
+          "qwen2.5-7b-temp0": "fail"
+        },
+        "consensus": "fail",
+        "disagree": false,
+        "flipped": [],
+        "pad_moved": [],
+        "uncertainty": 0.0,
+        "reasons": []
+      }
+    },
+    {
+      "case_id": "case-031",
+      "stratum": "judges say pass",
+      "reasons": [
+        "outcome stratum 'judges say pass' (23 candidates, 12 picked)",
+        "judges disagree: llama3.2-3b says fail, qwen2.5-7b says pass, qwen2.5-7b-temp0 says pass",
+        "llama3.2-3b changed its verdict across repeats (fail 3, pass 2)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "fail",
+          "qwen2.5-7b": "pass",
+          "qwen2.5-7b-temp0": "pass"
+        },
+        "consensus": "pass",
+        "disagree": true,
+        "flipped": [
+          "llama3.2-3b"
+        ],
+        "pad_moved": [],
+        "uncertainty": 2.3333,
+        "reasons": [
+          "judges disagree: llama3.2-3b says fail, qwen2.5-7b says pass, qwen2.5-7b-temp0 says pass",
+          "llama3.2-3b changed its verdict across repeats (fail 3, pass 2)"
+        ]
+      }
+    },
+    {
+      "case_id": "case-016",
+      "stratum": "judges say pass",
+      "reasons": [
+        "outcome stratum 'judges say pass' (23 candidates, 12 picked)",
+        "spread across topics (cluster:1)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "pass",
+          "qwen2.5-7b": "pass",
+          "qwen2.5-7b-temp0": "pass"
+        },
+        "consensus": "pass",
+        "disagree": false,
+        "flipped": [
+          "llama3.2-3b"
+        ],
+        "pad_moved": [
+          "llama3.2-3b"
+        ],
+        "uncertainty": 0.5,
+        "reasons": [
+          "llama3.2-3b changed its verdict across repeats (pass 3, fail 2)",
+          "irrelevant padding changed llama3.2-3b's verdict"
+        ]
+      }
+    },
+    {
+      "case_id": "case-029",
+      "stratum": "judges say pass",
+      "reasons": [
+        "outcome stratum 'judges say pass' (23 candidates, 12 picked)",
+        "judges disagree: llama3.2-3b says fail, qwen2.5-7b says pass, qwen2.5-7b-temp0 says pass",
+        "llama3.2-3b changed its verdict across repeats (fail 4, pass 1)",
+        "qwen2.5-7b changed its verdict across repeats (pass 3, fail 2)",
+        "irrelevant padding changed qwen2.5-7b's verdict",
+        "irrelevant padding changed qwen2.5-7b-temp0's verdict"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "fail",
+          "qwen2.5-7b": "pass",
+          "qwen2.5-7b-temp0": "pass"
+        },
+        "consensus": "pass",
+        "disagree": true,
+        "flipped": [
+          "llama3.2-3b",
+          "qwen2.5-7b"
+        ],
+        "pad_moved": [
+          "qwen2.5-7b",
+          "qwen2.5-7b-temp0"
+        ],
+        "uncertainty": 3.0,
+        "reasons": [
+          "judges disagree: llama3.2-3b says fail, qwen2.5-7b says pass, qwen2.5-7b-temp0 says pass",
+          "llama3.2-3b changed its verdict across repeats (fail 4, pass 1)",
+          "qwen2.5-7b changed its verdict across repeats (pass 3, fail 2)",
+          "irrelevant padding changed qwen2.5-7b's verdict",
+          "irrelevant padding changed qwen2.5-7b-temp0's verdict"
+        ]
+      }
+    },
+    {
+      "case_id": "case-010",
+      "stratum": "judges say fail",
+      "reasons": [
+        "outcome stratum 'judges say fail' (24 candidates, 12 picked)",
+        "judges disagree: llama3.2-3b says pass, qwen2.5-7b says fail, qwen2.5-7b-temp0 says fail",
+        "llama3.2-3b changed its verdict across repeats (pass 3, fail 2)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "pass",
+          "qwen2.5-7b": "fail",
+          "qwen2.5-7b-temp0": "fail"
+        },
+        "consensus": "fail",
+        "disagree": true,
+        "flipped": [
+          "llama3.2-3b"
+        ],
+        "pad_moved": [],
+        "uncertainty": 2.3333,
+        "reasons": [
+          "judges disagree: llama3.2-3b says pass, qwen2.5-7b says fail, qwen2.5-7b-temp0 says fail",
+          "llama3.2-3b changed its verdict across repeats (pass 3, fail 2)"
+        ]
+      }
+    },
+    {
+      "case_id": "case-025",
+      "stratum": "judges say fail",
+      "reasons": [
+        "outcome stratum 'judges say fail' (24 candidates, 12 picked)",
+        "judges disagree: llama3.2-3b says fail, qwen2.5-7b says pass, qwen2.5-7b-temp0 says fail",
+        "llama3.2-3b changed its verdict across repeats (fail 3, pass 2)",
+        "qwen2.5-7b changed its verdict across repeats (pass 3, fail 2)",
+        "irrelevant padding changed llama3.2-3b's verdict",
+        "irrelevant padding changed qwen2.5-7b's verdict"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "fail",
+          "qwen2.5-7b": "pass",
+          "qwen2.5-7b-temp0": "fail"
+        },
+        "consensus": "fail",
+        "disagree": true,
+        "flipped": [
+          "llama3.2-3b",
+          "qwen2.5-7b"
+        ],
+        "pad_moved": [
+          "llama3.2-3b",
+          "qwen2.5-7b"
+        ],
+        "uncertainty": 3.0,
+        "reasons": [
+          "judges disagree: llama3.2-3b says fail, qwen2.5-7b says pass, qwen2.5-7b-temp0 says fail",
+          "llama3.2-3b changed its verdict across repeats (fail 3, pass 2)",
+          "qwen2.5-7b changed its verdict across repeats (pass 3, fail 2)",
+          "irrelevant padding changed llama3.2-3b's verdict",
+          "irrelevant padding changed qwen2.5-7b's verdict"
+        ]
+      }
+    },
+    {
+      "case_id": "case-007",
+      "stratum": "judges say pass",
+      "reasons": [
+        "outcome stratum 'judges say pass' (23 candidates, 12 picked)",
+        "llama3.2-3b changed its verdict across repeats (pass 4, fail 1)",
+        "irrelevant padding changed qwen2.5-7b's verdict",
+        "irrelevant padding changed qwen2.5-7b-temp0's verdict"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "pass",
+          "qwen2.5-7b": "pass",
+          "qwen2.5-7b-temp0": "pass"
+        },
+        "consensus": "pass",
+        "disagree": false,
+        "flipped": [
+          "llama3.2-3b"
+        ],
+        "pad_moved": [
+          "qwen2.5-7b",
+          "qwen2.5-7b-temp0"
+        ],
+        "uncertainty": 0.6667,
+        "reasons": [
+          "llama3.2-3b changed its verdict across repeats (pass 4, fail 1)",
+          "irrelevant padding changed qwen2.5-7b's verdict",
+          "irrelevant padding changed qwen2.5-7b-temp0's verdict"
+        ]
+      }
+    },
+    {
+      "case_id": "case-009",
+      "stratum": "judges say fail",
+      "reasons": [
+        "outcome stratum 'judges say fail' (24 candidates, 12 picked)",
+        "judges disagree: llama3.2-3b says pass, qwen2.5-7b says fail, qwen2.5-7b-temp0 says fail",
+        "llama3.2-3b changed its verdict across repeats (pass 4, fail 1)"
+      ],
+      "signal": {
+        "judge_majorities": {
+          "llama3.2-3b": "pass",
+          "qwen2.5-7b": "fail",
+          "qwen2.5-7b-temp0": "fail"
+        },
+        "consensus": "fail",
+        "disagree": true,
+        "flipped": [
+          "llama3.2-3b"
+        ],
+        "pad_moved": [],
+        "uncertainty": 2.3333,
+        "reasons": [
+          "judges disagree: llama3.2-3b says pass, qwen2.5-7b says fail, qwen2.5-7b-temp0 says fail",
+          "llama3.2-3b changed its verdict across repeats (pass 4, fail 1)"
+        ]
+      }
+    }
+  ],
+  "notes": [
+    "15 of 24 picks are cases where judges disagree, flip or move under padding. They tell judges apart, but they are harder than a random case, so agreement measured on them is on the pessimistic side"
+  ]
+}
