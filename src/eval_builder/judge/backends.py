@@ -50,7 +50,7 @@ class Backend:
     note: str
     cost_per_call: float | None = None
     temperature: float = 0.7
-    max_tokens: int = 16
+    max_tokens: int = 8
     _opts: dict[str, Any] = field(default_factory=dict)
 
     def describe(self, calls: int) -> str:
@@ -75,7 +75,7 @@ def parse_spec(
     *,
     base_url: str | None = None,
     temperature: float = 0.7,
-    max_tokens: int = 16,
+    max_tokens: int = 8,
 ) -> Backend:
     """Turn a judge spec string into a Backend. Pure: never touches the network."""
     spec = spec.strip()
@@ -201,23 +201,25 @@ def _post_json(url: str, body: dict[str, Any], headers: dict[str, str], timeout:
 
 
 def _call_ollama(b: Backend, prompt: str, trial: int) -> str:
+    # /api/chat applies the model's instruct template, which small models follow far
+    # better than a raw completion. seed = trial: reproducible per trial, varied across.
     out = _post_json(
-        f"{b._opts['host']}/api/generate",
+        f"{b._opts['host']}/api/chat",
         {
             "model": b.model,
-            "prompt": prompt,
+            "messages": [{"role": "user", "content": prompt}],
             "stream": False,
             "options": {
                 "temperature": b.temperature,
                 "seed": trial,
                 "num_predict": b.max_tokens,
-                "num_ctx": 8192,
+                "num_ctx": 4096,
             },
         },
         {},
         timeout=300,
     )
-    return str(out.get("response", "")).strip()
+    return str(out.get("message", {}).get("content", "")).strip()
 
 
 def _call_openai(b: Backend, prompt: str, trial: int) -> str:

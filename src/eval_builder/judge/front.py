@@ -28,29 +28,30 @@ from .plan import build_requests
 from .sample import load_sample
 
 PAIRWISE_PROMPT = """You are comparing two AI assistant answers to the same user question. \
-Decide which answer is better overall: more helpful, relevant, accurate, and detailed.
+Judge which answer is better overall: more helpful, relevant, accurate, and detailed.
 
-User question:
+[User question]
 {input}
 
-Answer A:
+[Answer A]
 {answer_a}
 
-Answer B:
+[Answer B]
 {answer_b}
 
-Answer with exactly one letter: A or B."""
+Respond with ONLY a single character: A if Answer A is better, or B if Answer B is \
+better. No words, no punctuation, no explanation."""
 
 POINTWISE_PROMPT = """You are a strict grader. Decide whether the AI assistant's answer is a \
 good response to the user's request: helpful, relevant, accurate, and appropriately detailed.
 
-User request:
+[User request]
 {input}
 
-Assistant answer:
+[Answer]
 {output}
 
-Answer with exactly one word: pass or fail."""
+Respond with ONLY one word: pass or fail. No explanation."""
 
 Progress = Callable[[int, int], None]
 

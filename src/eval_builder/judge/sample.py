@@ -60,22 +60,40 @@ def load_sample(
 def _balanced_head(rows: list[dict[str, Any]], n: int) -> list[dict[str, Any]]:
     """Take n rows spread evenly across categories and keeping A/B labels close to even.
 
-    Deterministic: walks the categories round-robin in their fixed order, and within a
-    category alternates the two human-winner labels so a short run stays balanced.
+    Deterministic: within each category the two human-winner labels are interleaved
+    (A, B, A, B, ...) so a short prefix stays balanced, then categories are walked
+    round-robin in their fixed order.
     """
     if n >= len(rows):
         return rows
     by_cat: dict[str, list[dict[str, Any]]] = {}
     for r in rows:
         by_cat.setdefault(r["category"], []).append(r)
-    for cat in by_cat:
-        by_cat[cat].sort(key=lambda r: (r["human_label"], r["id"]))
     order = list(by_cat)
+
+    def round_robin(label: str) -> list[dict[str, Any]]:
+        queues = {
+            c: sorted((r for r in by_cat[c] if r["human_label"] == label), key=lambda r: r["id"])
+            for c in order
+        }
+        out: list[dict[str, Any]] = []
+        idx = dict.fromkeys(order, 0)
+        while any(idx[c] < len(queues[c]) for c in order):
+            for c in order:
+                if idx[c] < len(queues[c]):
+                    out.append(queues[c][idx[c]])
+                    idx[c] += 1
+        return out
+
+    # category-spread within each label, then alternate labels so the prefix stays balanced
+    a, b = round_robin("A"), round_robin("B")
     picked: list[dict[str, Any]] = []
-    idx = dict.fromkeys(order, 0)
-    while len(picked) < n and any(idx[c] < len(by_cat[c]) for c in order):
-        for c in order:
-            if idx[c] < len(by_cat[c]) and len(picked) < n:
-                picked.append(by_cat[c][idx[c]])
-                idx[c] += 1
+    ia = ib = 0
+    while len(picked) < n and (ia < len(a) or ib < len(b)):
+        if ia < len(a) and (ia <= ib or ib >= len(b)):
+            picked.append(a[ia])
+            ia += 1
+        elif ib < len(b):
+            picked.append(b[ib])
+            ib += 1
     return picked
