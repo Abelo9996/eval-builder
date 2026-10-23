@@ -1,6 +1,6 @@
 [project]
 name = "eval-builder"
-version = "0.1.4"
+version = "0.2.0"
 description = "Turn real LLM app logs into an eval suite and measure which LLM judges you can trust."
 readme = "README.md"
 license = "MIT"
@@ -36,6 +36,8 @@ packages = ["src/eval_builder"]
 
 [tool.hatch.build.targets.wheel.force-include]
 "skills/eval-builder/SKILL.md" = "eval_builder/data/SKILL.md"
+"src/eval_builder/data/sample/mt_bench_pairs.jsonl" = "eval_builder/data/sample/mt_bench_pairs.jsonl"
+"src/eval_builder/data/sample/CREDITS.md" = "eval_builder/data/sample/CREDITS.md"
 
 [tool.ruff]
 line-length = 100
