@@ -45,12 +45,7 @@ class Card:
 
 
 def _esc(s: str) -> str:
-    return (
-        s.replace("&", "&amp;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-        .replace('"', "&quot;")
-    )
+    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
 
 
 def _text(
@@ -88,9 +83,7 @@ def render_svg(card: Card) -> str:
     word = RISK_WORD[card.risk]
     pill_label = f"Coin flip risk: {word}"
     pill_w = 34 + len(pill_label) * 15
-    parts.append(
-        f'<rect x="{pad}" y="178" width="{pill_w}" height="46" rx="23" fill="{accent}"/>'
-    )
+    parts.append(f'<rect x="{pad}" y="178" width="{pill_w}" height="46" rx="23" fill="{accent}"/>')
     pill_ink = "#111111" if card.risk == "warning" else "#ffffff"
     parts.append(_text(pad + 18, 209, pill_label, 24, pill_ink, "700"))
 
@@ -108,8 +101,7 @@ def render_svg(card: Card) -> str:
         parts.append(_text(pad, y + 6, m.label, 20, INK2, "500"))
         parts.append(_text(pad + 288, y + 6, m.value_text, 22, INK, "700", anchor="end"))
         parts.append(
-            f'<rect x="{bar_x}" y="{y - 14}" width="{bar_w}" height="20" rx="10" '
-            f'fill="{TRACK}"/>'
+            f'<rect x="{bar_x}" y="{y - 14}" width="{bar_w}" height="20" rx="10" fill="{TRACK}"/>'
         )
         fill_w = max(6.0, min(1.0, m.pct) * bar_w)
         parts.append(
@@ -117,9 +109,7 @@ def render_svg(card: Card) -> str:
             f'fill="{STATUS[m.status]}"/>'
         )
         if m.ci_text:
-            parts.append(
-                _text(bar_x + bar_w, y + 28, m.ci_text, 15, MUTED, "400", anchor="end")
-            )
+            parts.append(_text(bar_x + bar_w, y + 28, m.ci_text, 15, MUTED, "400", anchor="end"))
         y += 62
 
     # footer

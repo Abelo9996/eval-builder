@@ -407,12 +407,21 @@ def build_parser() -> argparse.ArgumentParser:
         help="judge model: ollama:<model>, openai:<model>, anthropic:<model>, claude-code "
         "or codex. Omit to check an already-run workspace (the original workflow).",
     )
-    s.add_argument("--logs", nargs="+", help="your log files or folders; build cases from them "
-                   "instead of the bundled sample (pointwise)")
-    s.add_argument("--format", choices=["openai", "anthropic", "langfuse", "otel", "generic"],
-                   help="force a --logs format (default: detect per file)")
-    s.add_argument("--prompt", help="file with your own judge prompt (default: a built-in "
-                   "pairwise or pointwise prompt)")
+    s.add_argument(
+        "--logs",
+        nargs="+",
+        help="your log files or folders; build cases from them "
+        "instead of the bundled sample (pointwise)",
+    )
+    s.add_argument(
+        "--format",
+        choices=["openai", "anthropic", "langfuse", "otel", "generic"],
+        help="force a --logs format (default: detect per file)",
+    )
+    s.add_argument(
+        "--prompt",
+        help="file with your own judge prompt (default: a built-in pairwise or pointwise prompt)",
+    )
     s.add_argument("--pairs", type=int, default=20, help="cases to judge (default 20)")
     s.add_argument("--trials", type=int, default=5, help="repeats per case (default 5)")
     s.add_argument("--probe-trials", type=int, default=3, help="repeats per probe (default 3)")

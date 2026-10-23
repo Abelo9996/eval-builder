@@ -116,8 +116,10 @@ def build_plan(
         mode, probes = "pairwise", ["swap", "pad"]
     if not cases:
         raise ValueError("no usable cases were built (every candidate had an empty answer)")
-    prompt = Path(prompt_file).read_text(encoding="utf-8") if prompt_file else (
-        PAIRWISE_PROMPT if mode == "pairwise" else POINTWISE_PROMPT
+    prompt = (
+        Path(prompt_file).read_text(encoding="utf-8")
+        if prompt_file
+        else (PAIRWISE_PROMPT if mode == "pairwise" else POINTWISE_PROMPT)
     )
     rubric = {
         "version": 1,
@@ -313,9 +315,7 @@ def judge_check_now(
     write_jsonl(ws.judge_requests, requests)
     write_jsonl(ws.judgments, rows)
     if plan["labels"]:
-        write_jsonl(
-            ws.labels, [{"case_id": c, "label": v} for c, v in plan["labels"].items()]
-        )
+        write_jsonl(ws.labels, [{"case_id": c, "label": v} for c, v in plan["labels"].items()])
 
     ncases, nlabels = len(plan["cases"]), len(plan["labels"])
     th = Thresholds(
