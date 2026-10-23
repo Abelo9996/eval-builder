@@ -21,8 +21,12 @@ from .select import select as select_fn
 from .status import status as status_fn
 
 INSTRUCTIONS = (
-    "eval-builder turns an app's logs into an eval suite and checks LLM judges. It never "
-    "calls a model: you write expected behavior and run the judge model. Workflow: "
+    "eval-builder turns an app's logs into an eval suite and checks LLM judges. Fastest "
+    "path: `judge_check_now` checks a judge model in one call (ollama/openai/anthropic/"
+    "claude-code/codex) on a bundled human-labeled sample or the user's logs, and returns a "
+    "coin-flip risk level with bias and stability probes and a reliability card. The full "
+    "suite-building workflow never calls a model (you write expected behavior and run the "
+    "judge model): "
     "ingest -> select -> draft -> list_cases, then update_case and set_rubric (fill expected "
     "behavior and criteria with the user) -> validate -> judge_plan -> run every request in "
     "judge_requests.jsonl through the judge model and append {request_id, verdict} lines to "
@@ -221,6 +225,41 @@ def build_server() -> Any:
                 for jid, j in r["judges"].items()
             }
         return out
+
+    @mcp.tool()
+    def judge_check_now(
+        judge: str,
+        workspace: str = "judgecheck",
+        logs: list[str] | None = None,
+        pairs: int = 20,
+        trials: int = 5,
+        probe_trials: int = 3,
+        yes: bool = False,
+    ) -> dict[str, Any]:
+        """One command to check a judge model end to end. `judge` is a model spec with no
+        adapter to write: ollama:<model>, openai:<model>, anthropic:<model>, claude-code or
+        codex. With no `logs`, it uses a bundled human-labeled MT-Bench sample (pairwise) so
+        it can also report agreement with human experts; pass `logs` to build pointwise cases
+        from your own traces instead. It runs the judge over the cases with the swap, pad and
+        repeat probes, then returns a coin-flip risk level, the per-probe rates with 95%
+        intervals, the verdict, and the path to a reliability card.
+
+        This is the one tool that calls a model. Local Ollama models run for free; a paid API
+        judge (openai, anthropic) does nothing and returns needs_confirmation unless yes=True.
+        Quote the intervals, not only the point estimates, and say a result is about this
+        judge, this prompt and this data."""
+        from .judge.front import judge_check_now as _run
+
+        r = _run(
+            judge,
+            logs=logs,
+            pairs=pairs,
+            trials=trials,
+            probe_trials=probe_trials,
+            yes=yes,
+            workspace=workspace,
+        )
+        return {k: v for k, v in r.items() if k != "summary"}
 
     @mcp.tool()
     def export(

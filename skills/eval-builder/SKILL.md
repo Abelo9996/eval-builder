@@ -1,6 +1,6 @@
 ---
 name: eval-builder
-description: Turn an app's real LLM logs (OpenAI chat JSONL, Anthropic messages, Langfuse exports, OpenTelemetry GenAI spans, or input/output JSONL) into an eval suite, measure which LLM judges can be trusted (flip rate, agreement with human labels, position and length bias), and export to promptfoo, DeepEval, Inspect AI or JSONL. Use when the user wants evals from production traces, wants to know whether an LLM-as-a-judge is reliable, or wants regression tests from real conversations.
+description: Check whether an LLM-as-a-judge is a coin flip in one command (position bias, flip-flopping, padding bias, agreement with human labels, with 95% intervals and a reliability card) for any judge model (ollama, openai, anthropic, claude-code, codex), and turn an app's real LLM logs (OpenAI chat JSONL, Anthropic messages, Langfuse exports, OpenTelemetry GenAI spans, or input/output JSONL) into an eval suite exported to promptfoo, DeepEval, Inspect AI or JSONL. Use when the user wants to know whether a judge is reliable, wants evals from production traces, or wants regression tests from real conversations.
 ---
 
 # eval-builder
@@ -10,12 +10,31 @@ are the brain: you write expected behavior with the user, you run judges through
 user's own provider, and eval-builder does the bookkeeping, the selection and the
 statistics, and records evidence for every step.
 
-Use the MCP tools when they are available (`ingest`, `select`, `draft`, `list_cases`,
-`update_case`, `set_rubric`, `validate`, `judge_plan`, `label`, `label_import`,
-`judge_check`, `export`, `report`, `status`). Otherwise use the CLI with `--json`. All steps share one
-workspace directory (default `./evalset`).
+Use the MCP tools when they are available (`judge_check_now`, `ingest`, `select`,
+`draft`, `list_cases`, `update_case`, `set_rubric`, `validate`, `judge_plan`, `label`,
+`label_import`, `judge_check`, `export`, `report`, `status`). Otherwise use the CLI with
+`--json`. All steps share one workspace directory (default `./evalset`).
 
-## Workflow
+## Fastest check: one command
+
+If the user just wants to know whether a judge model is reliable, do not build a suite
+first. Run `judge_check_now` (CLI: `eval-builder judge-check <model>`). `<model>` is a
+spec with no adapter to write: `ollama:<model>`, `openai:<model>` (or any
+OpenAI-compatible base URL), `anthropic:<model>`, `claude-code` or `codex`.
+
+- With no `logs`, it uses a bundled human-labeled MT-Bench sample (pairwise), so it also
+  reports agreement with human experts. Pass the user's `logs` to build pointwise cases
+  from their own traces instead (then only stability and padding are measured, since
+  there is one answer per case and no human labels).
+- It calls the model. Local Ollama models run for free. A paid API judge (openai,
+  anthropic) returns `needs_confirmation` and spends nothing until the user confirms
+  (CLI `--yes`, tool `yes=True`); tell the user the call count and estimated cost first.
+  `claude-code`/`codex` drive the user's installed CLI and are slower.
+- Report the coin-flip risk, each probe rate with its 95% interval, and the verdict.
+  Say plainly that a probe result is about this judge, this prompt and this data. Give
+  the user the reliability card path. Then offer the full logs-to-suite workflow below.
+
+## Workflow (build a suite and check its judges)
 
 1. **Ingest.** Ask where the logs are. Run `ingest` on the files or folder. Redaction
    of emails, API keys, card numbers, phone numbers and SSN-shaped numbers is on by

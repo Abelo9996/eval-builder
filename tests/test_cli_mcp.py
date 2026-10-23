@@ -60,6 +60,7 @@ def test_mcp_server_lists_tools() -> None:
         "validate",
         "judge_plan",
         "judge_check",
+        "judge_check_now",
         "export",
         "report",
         "status",
