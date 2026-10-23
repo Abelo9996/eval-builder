@@ -138,6 +138,8 @@ def _cmd_judge_run(a: argparse.Namespace) -> int:
 
 
 def _cmd_judge_check(a: argparse.Namespace) -> int:
+    if a.judge:
+        return _cmd_judge_check_now(a)
     from .judge.check import Thresholds, judge_check
 
     th = Thresholds(
@@ -167,6 +169,35 @@ def _cmd_judge_check(a: argparse.Namespace) -> int:
     out = {k: v for k, v in r.items() if k != "judges"} if not a.full else r
     _print(out, a.json, "\n".join(lines))
     return 0
+
+
+def _cmd_judge_check_now(a: argparse.Namespace) -> int:
+    from .judge.front import judge_check_now, verdict_block
+
+    workspace = a.workspace if a.workspace != "evalset" else "judgecheck"
+
+    def progress(i: int, total: int) -> None:
+        if not a.json:
+            end = "\n" if i == total else "\r"
+            print(f"  judging {i}/{total} calls...", end=end, file=sys.stderr, flush=True)
+
+    r = judge_check_now(
+        a.judge,
+        logs=a.logs,
+        prompt_file=a.prompt,
+        pairs=a.pairs,
+        trials=a.trials,
+        probe_trials=a.probe_trials,
+        yes=a.yes,
+        base_url=a.base_url,
+        temperature=a.temperature,
+        workspace=workspace,
+        make_card=not a.no_card,
+        progress=progress,
+        fmt=a.format,
+    )
+    _print(r, a.json, verdict_block(r))
+    return 3 if r.get("needs_confirmation") else 0
 
 
 def _cmd_label(a: argparse.Namespace) -> int:
@@ -364,7 +395,31 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--restart", action="store_true", help="discard existing judgments.jsonl")
     s.set_defaults(func=_cmd_judge_run)
 
-    s = cmd("judge-check", "Measure judge stability, human agreement and bias.")
+    s = cmd(
+        "judge-check",
+        "Check a judge in one command: judge-check <model> runs bias and stability probes "
+        "on a bundled human-labeled sample (or your --logs) and prints a verdict and a "
+        "reliability card. With no <model>, reads judgments.jsonl from the workspace.",
+    )
+    s.add_argument(
+        "judge",
+        nargs="?",
+        help="judge model: ollama:<model>, openai:<model>, anthropic:<model>, claude-code "
+        "or codex. Omit to check an already-run workspace (the original workflow).",
+    )
+    s.add_argument("--logs", nargs="+", help="your log files or folders; build cases from them "
+                   "instead of the bundled sample (pointwise)")
+    s.add_argument("--format", choices=["openai", "anthropic", "langfuse", "otel", "generic"],
+                   help="force a --logs format (default: detect per file)")
+    s.add_argument("--prompt", help="file with your own judge prompt (default: a built-in "
+                   "pairwise or pointwise prompt)")
+    s.add_argument("--pairs", type=int, default=20, help="cases to judge (default 20)")
+    s.add_argument("--trials", type=int, default=5, help="repeats per case (default 5)")
+    s.add_argument("--probe-trials", type=int, default=3, help="repeats per probe (default 3)")
+    s.add_argument("--yes", action="store_true", help="spend money on a paid API judge")
+    s.add_argument("--base-url", help="OpenAI-compatible base URL for an openai:<model> judge")
+    s.add_argument("--temperature", type=float, default=0.7, help="judge temperature (default 0.7)")
+    s.add_argument("--no-card", action="store_true", help="do not write the reliability card")
     s.add_argument("--judgments", help="judgments file (default: <workspace>/judgments.jsonl)")
     s.add_argument("--labels", help="human labels file (default: <workspace>/labels.jsonl)")
     s.add_argument("--min-trials", type=int, default=3)
