@@ -1,5 +1,37 @@
 # Changelog
 
+## 0.2.0 (unreleased)
+
+"Is your LLM judge a coin flip?" in one command. The headline's second half, telling you
+which judges you can trust, used to need 20+ human labels, a rubric, a judge prompt and a
+hand-written judge adapter before it returned anything. Now `judge-check <model>` does it
+end to end on the first run.
+
+- `eval-builder judge-check <model>` (CLI, and MCP `judge_check_now`): the one-command
+  front door. `<model>` is a spec with no adapter to write: `ollama:<model>`,
+  `openai:<model>` (or any OpenAI-compatible base URL), `anthropic:<model>`,
+  `claude-code` or `codex`. It builds cases, runs the judge over them with the repeat,
+  swap and pad probes, and prints a coin-flip risk level (HIGH/MEDIUM/LOW), each probe
+  rate with a 95% interval, and a one-line verdict. This is the only part of eval-builder
+  that calls a model; eval-builder still ships no API keys. Local Ollama models run for
+  free; a paid API (openai, anthropic) prints the call count and estimated cost and does
+  nothing until you pass `--yes`. `claude-code`/`codex` drive your installed CLI and are
+  slower. `--prompt judge.txt` tests your own judge prompt; a built-in pairwise and
+  pointwise prompt is used otherwise.
+- With no `--logs`, it uses a bundled, human-labeled sample (80 MT-Bench turn-1 pairwise
+  comparisons with an expert winner, CC BY 4.0; `src/eval_builder/data/sample/`), so the
+  first run also reports agreement with people (accuracy and Cohen's kappa). Pass
+  `--logs` to build pointwise cases from your own traces instead (stability and padding
+  only, since there is one answer per case and no human labels).
+- A 1200×630 "judge reliability card" (SVG, and PNG when a converter is installed):
+  model, prompt hash, probe results with counts and intervals, n, date, and the command
+  to reproduce it. Honest wording: a probe result is about this judge, this prompt and
+  this data.
+- The probes follow the owner's paper, *The Coin Flip Judge? Reliability and Bias in
+  LLM-as-a-Judge Evaluation* (Yagubyan, GroundLM @ EMNLP 2026).
+- The original logs-to-suite workflow is unchanged and stays behind the same command:
+  `judge-check` with no model argument still reads `judgments.jsonl` from the workspace.
+
 ## 0.1.4
 
 ### Fixed

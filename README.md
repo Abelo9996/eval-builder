@@ -1,8 +1,68 @@
 # eval-builder
 
-Your agent turns your app's real logs into an eval suite, and tells you which of its judges you can actually trust.
+**Is your LLM judge a coin flip?** One command tests it for position bias, flip-flopping
+and padding bias, with no labels, then turns your real logs into an eval suite.
 
-Try it on 48 sample conversations (no account, no API key, no model needed for these steps):
+```sh
+uvx eval-builder judge-check ollama:llama3.2:3b
+```
+
+`<judge>` is a model spec with no adapter to write: `ollama:<model>`, `openai:<model>`
+(or any OpenAI-compatible base URL), `anthropic:<model>`, or your installed agent CLI
+(`claude-code`, `codex`). With no logs it uses a bundled, human-labeled sample so it can
+also report agreement with people. Local models run for free; paid APIs ask first.
+
+It judges the same answer pairs repeatedly, with the order swapped and with an irrelevant
+paragraph appended, and prints a verdict:
+
+```
+Coin flip risk: HIGH   (judge-check verdict: unstable)
+
+Flips on 55% of identical repeats; follows the first-shown answer 64% of the time;
+prefers the padded answer 0% of the time.
+
+  Flips on identical repeats                55%  CI 34 to 74%
+  Follows the first-shown answer            64%  CI 56 to 71%
+  Prefers the padded answer                  0%  CI 0 to 16%
+  Agreement with humans (80% acc)    kappa 0.60  CI 0.25 to 0.95
+
+20 cases, 220 calls in 122.6s
+card (svg): judgecheck/card.svg
+```
+
+…and a 1200×630 reliability card you can post:
+
+<img src="docs/judge-card.svg" alt="Judge reliability card for ollama:llama3.2:3b: coin flip risk HIGH, flips on 55% of identical repeats, follows the first-shown answer 64% of the time" width="640">
+
+### Three local judges on the bundled sample
+
+Each judge graded the same 20 human-labeled MT-Bench answer pairs: 5 times per pair, 5
+more with the two answers swapped, and 5 more with an irrelevant paragraph appended to
+one answer, so 220 calls per judge (0 errors, 0 unparseable outputs). Run on this Mac
+(Apple M4, 16 GB) at the default settings, one model at a time:
+
+| judge | verdict | coin-flip risk | flips on repeats | follows the first-shown answer | survives answer swap | agreement: accuracy / kappa |
+|---|---|---|---|---|---|---|
+| llama3.2:3b | unstable | HIGH | 55% [34%, 74%] | 64% [56%, 71%] | 50% [30%, 70%] | 80% [58%, 92%] / 0.60 [0.25, 0.95] |
+| qwen2.5:3b-instruct | biased | MEDIUM | 10% [3%, 30%] | 70% [63%, 77%] | 35% [18%, 57%] | 70% [48%, 85%] / 0.40 [-0.00, 0.80] |
+| qwen2.5:7b-instruct | biased | MEDIUM | 10% [3%, 30%] | 66% [59%, 73%] | 60% [39%, 78%] | 60% [39%, 78%] / 0.20 [-0.23, 0.63] |
+
+n = 20 pairs per judge; brackets are 95% intervals; padding moved no verdict toward the
+padded answer (0%, interval up to 16%). Wall time 123 s, 138 s and 270 s. None of the
+three is safe to grade with as is: llama3.2 changed its verdict on more than half of
+identical repeats, and both qwen models lean toward whichever answer they saw first and
+survive the swap on well under 80% of pairs. These numbers are about these judges, this
+prompt and these 20 pairs; wider runs (`--pairs 80`) tighten the intervals.
+
+This builds on the owner's paper, [*The Coin Flip Judge? Reliability and Bias in
+LLM-as-a-Judge Evaluation*](https://arxiv.org/abs/2606.13685) (Yagubyan, GroundLM @ EMNLP
+2026): the position, repeat and padding probes follow it. Pass `--prompt judge.txt` to
+test your own judge prompt instead of the built-in one.
+
+## Turn your real logs into an eval suite
+
+The other half: build a reusable suite from your own traces. Try it on 48 sample
+conversations (no account, no API key, no model needed for these steps):
 
 ```sh
 curl -sLO https://raw.githubusercontent.com/Abelo9996/eval-builder/main/examples/sample_logs.jsonl
@@ -38,9 +98,10 @@ coding agent does, through the MCP server (next section).
 
 eval-builder is not another eval platform. It builds the suite and checks the judges,
 then exports to the tools you already run: promptfoo, DeepEval, Inspect AI, or plain
-JSONL. It never calls a model. Your coding agent (Claude Code, Codex, Cursor) does the
-thinking; eval-builder does the selection, the bookkeeping and the statistics, and
-writes down the evidence.
+JSONL. Only `judge-check <model>` calls a model (the judge you point it at); every
+suite-building step runs locally and calls nothing. Your coding agent (Claude Code,
+Codex, Cursor) does the thinking; eval-builder does the selection, the bookkeeping and
+the statistics, and writes down the evidence.
 
 ## Use it with your agent
 
@@ -184,6 +245,7 @@ same call on the missing poem. Now no judge is wired in unless you force one wit
 
 | step | what it does | what it uses |
 |---|---|---|
+| `judge-check <model>` | The one-command front door. Resolves a model spec (`ollama`, `openai`/OpenAI-compatible, `anthropic`, `claude-code`, `codex`), builds cases from a bundled human-labeled sample or your `--logs`, runs the judge over them with the repeat, swap and pad probes, and prints a coin-flip risk level plus a 1200×630 SVG reliability card. The only part of eval-builder that calls a model; local models are free, paid APIs need `--yes`. | your model; standard library |
 | `ingest` | Reads OpenAI chat JSONL (fine-tuning style or request/response logs), Anthropic messages, Langfuse trace exports, OpenTelemetry GenAI spans (OTLP JSON, current `gen_ai.input.messages` and older `gen_ai.prompt.N` attributes), or generic input/output JSONL. Normalizes to one schema with input, output, earlier turns, tools called, error flag, user feedback, route and model. Redacts emails, API keys, Luhn-valid card numbers, phone numbers and SSN-shaped numbers by default and reports counts. | Python standard library |
 | `select` | Removes exact duplicates (normalized hash of the user turns) and near-duplicates (character n-gram cosine), clusters the rest by topic, then picks: failures first (errors, negative feedback), at least one case per stratum (route, tool, feedback, any metadata key you name), one central case per cluster, and fills the rest by cluster size with the least similar remaining cases. Every pick records why it was picked. | scikit-learn (TF-IDF, k-means) |
 | `draft`, `validate` | Writes `cases.yaml` and `rubric.yaml` with TODO markers. The agent fills in expected behavior and criteria with you. Validation refuses ready cases that still contain TODO or reference unknown criteria. | PyYAML |
@@ -215,9 +277,9 @@ Cursor (`~/.cursor/mcp.json`), and copies the agent instructions to
 file it edits and does nothing on a second run. The workflow the agent follows is in
 [`skills/eval-builder/SKILL.md`](skills/eval-builder/SKILL.md).
 
-MCP tools: `ingest`, `select`, `draft`, `list_cases`, `update_case`, `set_rubric`,
-`validate`, `judge_plan`, `label`, `label_import`, `judge_check`, `export`, `report`,
-`status`. The judge runner
+MCP tools: `judge_check_now` (the one-command front door), `ingest`, `select`, `draft`,
+`list_cases`, `update_case`, `set_rubric`, `validate`, `judge_plan`, `label`,
+`label_import`, `judge_check`, `export`, `report`, `status`. The judge runner
 is CLI only, because it executes a command.
 
 ## What it can't do
@@ -252,9 +314,12 @@ is CLI only, because it executes a command.
 
 ## Privacy and safety
 
-Everything runs locally. eval-builder makes no network calls and sends nothing
-anywhere. The only process it starts is the judge command you name with
-`judge-run --enable-judge-plugin`. The labeling sheet is one HTML file with a content
+The suite-building steps run locally and make no network calls. The exceptions are
+explicit: `judge-check <model>` calls the judge model you name (a local Ollama server,
+an OpenAI-compatible or Anthropic API with your key from the environment, or your
+installed `claude`/`codex` CLI), and paid APIs do nothing until you pass `--yes`;
+`judge-run --enable-judge-plugin` starts the judge command you name. eval-builder ships
+no API keys. The labeling sheet is one HTML file with a content
 security policy that blocks every network request; it keeps unexported labels in the
 browser's local storage on that machine. Exported test files can call a model when
 you run them (the DeepEval test calls the judge it was given). Redaction is on unless you pass `--no-redact`, and

@@ -179,7 +179,7 @@ def _ci(d: dict[str, Any] | None) -> str:
     ci = (d or {}).get("ci95")
     if not ci:
         return ""
-    return f"CI {ci[0] * 100:.0f}–{ci[1] * 100:.0f}%"
+    return f"CI {ci[0] * 100:.0f} to {ci[1] * 100:.0f}%"
 
 
 def _worst(statuses: list[str]) -> str:
@@ -215,7 +215,7 @@ def build_meters(j: dict[str, Any], mode: str) -> tuple[list[card_mod.Meter], li
         ci = pos["first_position_rate"].get("ci95")
         if ci and fp < 0.5:  # bar measures the second-shown share, so flip the interval
             ci = [1 - ci[1], 1 - ci[0]]
-        ci_text = f"CI {ci[0] * 100:.0f}–{ci[1] * 100:.0f}%" if ci else ""
+        ci_text = f"CI {ci[0] * 100:.0f} to {ci[1] * 100:.0f}%" if ci else ""
         meters.append(
             card_mod.Meter(f"Follows the {side} answer", follow, status, f"{follow:.0%}", ci_text)
         )
@@ -244,7 +244,7 @@ def build_meters(j: dict[str, Any], mode: str) -> tuple[list[card_mod.Meter], li
         ci = ""
         if ag.get("kappa_ci95"):
             lo, hi = ag["kappa_ci95"]
-            ci = f"CI {lo:.2f}–{hi:.2f}"
+            ci = f"CI {lo:.2f} to {hi:.2f}"
         meters.append(
             card_mod.Meter(f"Agreement with humans ({acc:.0%} acc)", pct, status, vtext, ci)
         )
