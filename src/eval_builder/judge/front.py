@@ -248,8 +248,7 @@ def build_meters(j: dict[str, Any], mode: str) -> tuple[list[card_mod.Meter], li
         meters.append(
             card_mod.Meter(f"Agreement with humans ({acc:.0%} acc)", pct, status, vtext, ci)
         )
-        kstr = "n/a" if kappa is None else f"{kappa:.2f}"
-        sentences.append(f"agrees with human experts at kappa {kstr} ({acc:.0%} accuracy)")
+        # agreement stays its own meter; the headline is the no-label coin-flip summary
 
     return meters, sentences
 

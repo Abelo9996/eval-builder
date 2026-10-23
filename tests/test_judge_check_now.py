@@ -204,4 +204,5 @@ def test_build_meters_bands() -> None:
     }
     meters, sentences = build_meters(j, "pairwise")
     assert [m.status for m in meters] == ["good", "good", "good", "good"]
-    assert len(sentences) == 4
+    # the headline summarizes the three no-label probes; agreement stays its own meter
+    assert len(sentences) == 3
