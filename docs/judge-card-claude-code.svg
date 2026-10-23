@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img">
+<rect width="1200" height="630" fill="#0d0d0d"/>
+<rect x="24" y="24" width="1152" height="582" rx="20" fill="#1a1a19" stroke="rgba(255,255,255,0.10)"/>
+<rect x="24" y="24" width="10" height="582" rx="5" fill="#0ca30c"/>
+<text x="72.0" y="96.0" font-size="22" fill="#898781" font-weight="700" text-anchor="start" font-family="system-ui,-apple-system,Segoe UI,sans-serif">LLM JUDGE RELIABILITY CARD</text>
+<text x="72.0" y="152.0" font-size="44" fill="#f0efec" font-weight="700" text-anchor="start" font-family="system-ui,-apple-system,Segoe UI,sans-serif">claude-code (haiku)</text>
+<rect x="72" y="178" width="319" height="46" rx="23" fill="#0ca30c"/>
+<text x="90.0" y="209.0" font-size="24" fill="#ffffff" font-weight="700" text-anchor="start" font-family="system-ui,-apple-system,Segoe UI,sans-serif">Coin flip risk: LOW</text>
+<text x="72.0" y="272.0" font-size="21" fill="#c3c2b7" font-weight="400" text-anchor="start" font-family="system-ui,-apple-system,Segoe UI,sans-serif">Flips on 17% of identical repeats; follows the first-shown answer 53% of the</text>
+<text x="72.0" y="302.0" font-size="21" fill="#c3c2b7" font-weight="400" text-anchor="start" font-family="system-ui,-apple-system,Segoe UI,sans-serif">time; prefers the padded answer 0% of the time.</text>
+<text x="72.0" y="354.0" font-size="20" fill="#c3c2b7" font-weight="500" text-anchor="start" font-family="system-ui,-apple-system,Segoe UI,sans-serif">Flips on identical repeats</text>
+<text x="360.0" y="354.0" font-size="22" fill="#f0efec" font-weight="700" text-anchor="end" font-family="system-ui,-apple-system,Segoe UI,sans-serif">17%</text>
+<rect x="372" y="334" width="720" height="20" rx="10" fill="#2c2c2a"/>
+<rect x="372" y="334" width="120.0" height="20" rx="10" fill="#0ca30c"/>
+<text x="1092.0" y="376.0" font-size="15" fill="#898781" font-weight="400" text-anchor="end" font-family="system-ui,-apple-system,Segoe UI,sans-serif">CI 3 to 56%</text>
+<text x="72.0" y="416.0" font-size="20" fill="#c3c2b7" font-weight="500" text-anchor="start" font-family="system-ui,-apple-system,Segoe UI,sans-serif">Follows the first-shown answer</text>
+<text x="360.0" y="416.0" font-size="22" fill="#f0efec" font-weight="700" text-anchor="end" font-family="system-ui,-apple-system,Segoe UI,sans-serif">53%</text>
+<rect x="372" y="396" width="720" height="20" rx="10" fill="#2c2c2a"/>
+<rect x="372" y="396" width="384.0" height="20" rx="10" fill="#0ca30c"/>
+<text x="1092.0" y="438.0" font-size="15" fill="#898781" font-weight="400" text-anchor="end" font-family="system-ui,-apple-system,Segoe UI,sans-serif">CI 36 to 70%</text>
+<text x="72.0" y="478.0" font-size="20" fill="#c3c2b7" font-weight="500" text-anchor="start" font-family="system-ui,-apple-system,Segoe UI,sans-serif">Prefers the padded answer</text>
+<text x="360.0" y="478.0" font-size="22" fill="#f0efec" font-weight="700" text-anchor="end" font-family="system-ui,-apple-system,Segoe UI,sans-serif">0%</text>
+<rect x="372" y="458" width="720" height="20" rx="10" fill="#2c2c2a"/>
+<rect x="372" y="458" width="6.0" height="20" rx="10" fill="#0ca30c"/>
+<text x="1092.0" y="500.0" font-size="15" fill="#898781" font-weight="400" text-anchor="end" font-family="system-ui,-apple-system,Segoe UI,sans-serif">CI 0 to 39%</text>
+<text x="72.0" y="540.0" font-size="20" fill="#c3c2b7" font-weight="500" text-anchor="start" font-family="system-ui,-apple-system,Segoe UI,sans-serif">Agreement with humans (83% acc)</text>
+<text x="360.0" y="540.0" font-size="22" fill="#f0efec" font-weight="700" text-anchor="end" font-family="system-ui,-apple-system,Segoe UI,sans-serif">kappa 0.67</text>
+<rect x="372" y="520" width="720" height="20" rx="10" fill="#2c2c2a"/>
+<rect x="372" y="520" width="480.0" height="20" rx="10" fill="#0ca30c"/>
+<text x="1092.0" y="562.0" font-size="15" fill="#898781" font-weight="400" text-anchor="end" font-family="system-ui,-apple-system,Segoe UI,sans-serif">CI 0.07 to 1.00</text>
+<line x1="72" y1="544" x2="1128" y2="544" stroke="#2c2c2a"/>
+<text x="72.0" y="574.0" font-size="15" fill="#898781" font-weight="400" text-anchor="start" font-family="system-ui,-apple-system,Segoe UI,sans-serif">n = 6 pairs, 42 calls  ·  2026-10-23  ·  LMSYS MT-Bench human judgments (CC BY 4.0), Zheng et al. 2023, 'Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena'</text>
+<text x="72.0" y="598.0" font-size="16" fill="#c3c2b7" font-weight="600" text-anchor="start" font-family="system-ui,-apple-system,Segoe UI,sans-serif">uvx eval-builder judge-check claude-code</text>
+</svg>

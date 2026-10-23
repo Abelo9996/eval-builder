@@ -12,10 +12,15 @@ src/eval_builder/
   redact.py        default-on secret and PII redaction with counts
   select.py        dedupe, near-duplicates, k-means clusters, strata, failure oversampling
   draft.py         case and rubric skeletons, validation, update_case
+  judge/front.py   `judge-check <model>`: the one-command front door (data, run, verdict, card)
+  judge/backends.py judge model backends (ollama, openai, anthropic, claude-code, codex)
+  judge/sample.py  the bundled human-labeled MT-Bench sample loader
+  judge/card.py    the 1200x630 reliability card (SVG, optional PNG)
   judge/plan.py    judge requests with repeated trials and swap/pad probes
   judge/run.py     opt-in judge plugin runner (off by default, runs a user command)
   judge/check.py   flip rate, kappa, accuracy, probes, verdicts
   judge/stats.py   Wilson interval, Cohen's kappa, majority vote
+  data/sample/     bundled MT-Bench pairs (CC BY 4.0) used when the user gives no logs
   label.py         which cases a person should label, the CSV sheet, `label import`
   label_sheet.py   the offline HTML labeling sheet (one file, inline JS, no network)
   balance.py       the warning when cases or labels are mostly one outcome
@@ -28,9 +33,12 @@ src/eval_builder/
 
 ## Rules
 
-- No model calls and no network access in the package. (Exported files may call a
-  model when the user runs them, for example the DeepEval test calling a wired judge.) The judge runner only starts a
-  command the user names, and only with an explicit flag.
+- Only `judge-check <model>` (`judge/front.py` and `judge/backends.py`) calls a model:
+  the judge the user names. It ships no API keys (openai/anthropic read them from the
+  environment), runs local models for free, and does nothing for a paid API until `--yes`.
+  Every other step makes no model or network call. (Exported files may call a model when
+  the user runs them, for example the DeepEval test calling a wired judge.) The judge
+  runner only starts a command the user names, and only with an explicit flag.
 - Deterministic: same inputs and seed give the same selection and the same files.
 - Every number the tool reports must be traceable to a file in the workspace.
 - Tests are offline, fast, and never touch the real home directory (`conftest.py`

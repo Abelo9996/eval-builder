@@ -54,6 +54,13 @@ identical repeats, and both qwen models lean toward whichever answer they saw fi
 survive the swap on well under 80% of pairs. These numbers are about these judges, this
 prompt and these 20 pairs; wider runs (`--pairs 80`) tighten the intervals.
 
+The same command drives a hosted or agent-CLI judge. As a non-Ollama check,
+`eval-builder judge-check claude-code` (Claude Haiku through the installed `claude` CLI)
+on a tiny 6-pair run cleared every probe (no order preference, kappa 0.67 with the human
+experts), 42 calls, 0 errors, in 235 s. Six pairs is far too few to conclude much, and
+agent CLIs are slower than a local model, but it shows the `openai`/`anthropic`/
+`claude-code`/`codex` path works end to end.
+
 This builds on the owner's paper, [*The Coin Flip Judge? Reliability and Bias in
 LLM-as-a-Judge Evaluation*](https://arxiv.org/abs/2606.13685) (Yagubyan, GroundLM @ EMNLP
 2026): the position, repeat and padding probes follow it. Pass `--prompt judge.txt` to
