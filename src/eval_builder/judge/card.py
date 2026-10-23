@@ -93,24 +93,25 @@ def render_svg(card: Card) -> str:
         parts.append(_text(pad, y, line, 21, INK2, "400"))
         y += 30
 
-    # meters
-    y = 348
-    bar_x = pad + 300
-    bar_w = W - pad - bar_x - 36
+    # meters: label | bar | value with its interval underneath, in three columns that never overlap
+    y = 340
+    bar_x = pad + 390
+    bar_w = W - pad - bar_x - 200
+    val_x = bar_x + bar_w + 20
     for m in card.meters:
-        parts.append(_text(pad, y + 6, m.label, 20, INK2, "500"))
-        parts.append(_text(pad + 288, y + 6, m.value_text, 22, INK, "700", anchor="end"))
+        parts.append(_text(pad, y + 6, m.label, 19, INK2, "500"))
         parts.append(
-            f'<rect x="{bar_x}" y="{y - 14}" width="{bar_w}" height="20" rx="10" fill="{TRACK}"/>'
+            f'<rect x="{bar_x}" y="{y - 10}" width="{bar_w}" height="18" rx="9" fill="{TRACK}"/>'
         )
         fill_w = max(6.0, min(1.0, m.pct) * bar_w)
         parts.append(
-            f'<rect x="{bar_x}" y="{y - 14}" width="{fill_w:.1f}" height="20" rx="10" '
+            f'<rect x="{bar_x}" y="{y - 10}" width="{fill_w:.1f}" height="18" rx="9" '
             f'fill="{STATUS[m.status]}"/>'
         )
+        parts.append(_text(val_x, y + 7, m.value_text, 22, INK, "700"))
         if m.ci_text:
-            parts.append(_text(bar_x + bar_w, y + 28, m.ci_text, 15, MUTED, "400", anchor="end"))
-        y += 62
+            parts.append(_text(val_x, y + 27, m.ci_text, 13, MUTED, "400"))
+        y += 52
 
     # footer
     fy = H - 56
@@ -118,6 +119,8 @@ def render_svg(card: Card) -> str:
         f'<line x1="{pad}" y1="{fy - 30}" x2="{W - pad}" y2="{fy - 30}" stroke="{TRACK}"/>'
     )
     footer = f"{card.n_text}  ·  {card.date}  ·  {card.source}"
+    if len(footer) > 128:  # keep the attribution on the card instead of running off the edge
+        footer = footer[:127].rstrip() + "…"
     parts.append(_text(pad, fy, footer, 15, MUTED, "400"))
     parts.append(_text(pad, fy + 24, _esc_cmd(card.reproduce), 16, INK2, "600"))
     parts.append("</svg>")
@@ -157,6 +160,13 @@ def write_card(card: Card, svg_path: str | Path) -> dict[str, str]:
 
 
 def _try_png(svg: str, png_path: Path) -> str | None:
+    try:
+        import resvg_py  # type: ignore[import-not-found]
+
+        png_path.write_bytes(bytes(resvg_py.svg_to_bytes(svg_string=svg)))
+        return str(png_path)
+    except Exception:  # fall back to cairosvg if it is installed
+        pass
     try:
         import cairosvg  # type: ignore
     except Exception:

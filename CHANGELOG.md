@@ -23,7 +23,7 @@ end to end on the first run.
   first run also reports agreement with people (accuracy and Cohen's kappa). Pass
   `--logs` to build pointwise cases from your own traces instead (stability and padding
   only, since there is one answer per case and no human labels).
-- A 1200×630 "judge reliability card" (SVG, and PNG when a converter is installed):
+- A 1200×630 "judge reliability card" (SVG and PNG, rendered in process):
   model, prompt hash, probe results with counts and intervals, n, date, and the command
   to reproduce it. Honest wording: a probe result is about this judge, this prompt and
   this data.
@@ -31,6 +31,7 @@ end to end on the first run.
   LLM-as-a-Judge Evaluation* (Yagubyan, GroundLM @ EMNLP 2026).
 - The original logs-to-suite workflow is unchanged and stays behind the same command:
   `judge-check` with no model argument still reads `judgments.jsonl` from the workspace.
+- `judge-check` unloads an Ollama model after the run if the run is what loaded it, so a one-shot check never leaves a multi-GB model pinned in memory (some Ollama setups keep models loaded forever).
 
 ## 0.1.4
 

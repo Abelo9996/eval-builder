@@ -16,6 +16,7 @@ and the agent CLIs use whatever the user has already signed in.
 
 from __future__ import annotations
 
+import contextlib
 import json
 import os
 import re
@@ -288,3 +289,22 @@ _CALLERS = {
     "claude-code": _call_claude_code,
     "codex": _call_codex,
 }
+
+
+def ollama_loaded(b: Backend) -> bool | None:
+    """Is this Ollama model already loaded? None when the server cannot say."""
+    if b.kind != "ollama":
+        return None
+    try:
+        with urllib.request.urlopen(f"{b._opts['host']}/api/ps", timeout=5) as resp:
+            models = json.loads(resp.read().decode("utf-8")).get("models", [])
+    except (urllib.error.URLError, OSError, ValueError):
+        return None
+    return any(m.get("name") == b.model or m.get("model") == b.model for m in models)
+
+
+def ollama_unload(b: Backend) -> None:
+    """Ask Ollama to free the model now. Best effort; a failure only means it stays loaded."""
+    body = {"model": b.model, "keep_alive": 0}
+    with contextlib.suppress(Exception):  # unloading is a courtesy, never an error
+        _post_json(f"{b._opts['host']}/api/generate", body, {}, timeout=30)

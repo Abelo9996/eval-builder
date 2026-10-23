@@ -19,6 +19,7 @@ dependencies = [
     "pyyaml>=6.0",
     "mcp>=1.30",
     "scipy>=1.10",
+    "resvg-py>=0.2",
 ]
 
 [project.scripts]

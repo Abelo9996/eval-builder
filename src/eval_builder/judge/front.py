@@ -22,7 +22,7 @@ from typing import Any
 from ..io import read_json, write_json, write_jsonl
 from ..workspace import Workspace
 from . import card as card_mod
-from .backends import Backend, parse_spec, preflight
+from .backends import Backend, ollama_loaded, ollama_unload, parse_spec, preflight
 from .check import Thresholds, check_judge
 from .plan import build_requests
 from .sample import load_sample
@@ -307,8 +307,15 @@ def judge_check_now(
         if problem:
             raise ValueError(f"cannot run {b.model!r}: {problem}")
 
+    # A one-shot check should not leave a multi-GB model pinned in memory (some Ollama setups
+    # keep models loaded forever), so unload it afterwards, but only if this run loaded it.
+    was_loaded = ollama_loaded(b) if backend is None else None
     t0 = time.monotonic()
-    rows, errors = _run_requests(b, requests, progress)
+    try:
+        rows, errors = _run_requests(b, requests, progress)
+    finally:
+        if was_loaded is False:
+            ollama_unload(b)
     seconds = round(time.monotonic() - t0, 1)
 
     # persist the evidence
